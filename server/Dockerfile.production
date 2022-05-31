@@ -1,0 +1,18 @@
+FROM node:14-alpine3.15
+
+LABEL version="1.0"
+LABEL description="Production image for the API server"
+
+WORKDIR /usr/src/app
+
+COPY ["package.json","package-lock.json*","npm-shrinkwrap.json*", "./"]
+
+RUN npm install && npm cache clean --force
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 5000
+
+CMD ["npm", "run", "start"]

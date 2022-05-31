@@ -1,0 +1,18 @@
+FROM node:14-alpine3.15
+
+LABEL version="1.0"
+LABEL description="Development image for the socket server"
+
+WORKDIR /usr/src/app
+
+COPY ["package.json", "package-lock.json*","npm-shrinkwrap.json*", "./"]
+
+RUN npm install && npm cache clean --force
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 8900
+
+CMD ["npm", "run", "dev"]

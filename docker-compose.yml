@@ -1,0 +1,80 @@
+version: '3.9'
+services:
+  react-app:
+    restart: always
+    build: 
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: react_app
+    ports:
+      - 3000:3000
+    networks:
+      - trip-booking-app
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - api-server
+      
+  api-server:
+    restart: always
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: api_server
+    ports:
+      - 5000:5000
+    networks:
+      - trip-booking-app
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+
+  socket-server:
+    restart: always
+    build:
+      context: ./socket
+      dockerfile: Dockerfile.dev
+    container_name: socket_server
+    ports:
+      - 8900:8900
+    networks:
+      - trip-booking-app
+    volumes:
+      - ./socket/:/usr/src/app
+      - /usr/src/app/node_modules
+
+  nginx:
+    restart: always
+    depends_on:
+      - api-server
+      - react-app
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    container_name: nginx
+    ports:
+      - 8080:80
+    networks:
+      - trip-booking-app
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - trip-booking-app
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  trip-booking-app:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+

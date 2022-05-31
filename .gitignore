@@ -1,0 +1,14 @@
+
+.DS_Store
+.env
+package-lock.json
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+build/
+node_modules/
+/socket/production.env
+/server/production.env
+/client/production.env

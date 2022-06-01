@@ -16,6 +16,9 @@ const ExperienceEditForm = (props) => {
   } = props;
   const { title, description, image, price, startDate, endDate, available } =
     values;
+
+    console.log(moment(props.values.startDate))
+    console.log(moment(props.values.startDate).format('YYYY-MM-DD'))
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -122,7 +125,7 @@ const ExperienceEditForm = (props) => {
 
               <div class="col-span-6 sm:col-span-6 lg:col-span-3">
                 <DatePicker
-                defaultValue={moment(startDate)}
+                  defaultValue={moment(startDate)}
                   placeholder="From date"
                   className="w-full
                   rounded-sm

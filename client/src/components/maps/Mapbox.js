@@ -7,6 +7,7 @@ import Map, {
   ScaleControl,
   GeolocateControl,
 } from "react-map-gl";
+import mapboxgl from 'mapbox-gl';
 import { getCenter } from "geolib";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,9 @@ import { getExperiences } from "../../actions/experience";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { ImLocation2 } from "react-icons/im";
 import ImageComponent from "../shared/ImageComponent";
+
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const Mapbox = ({ experiences }) => {
   const source = axios.CancelToken.source();

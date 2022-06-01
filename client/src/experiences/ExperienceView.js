@@ -83,7 +83,7 @@ const ExperienceView = ({ match, history }) => {
   const [ratingAverage, setRatingAverage] = useState(0);
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));
-  const {user} = auth
+  const user = auth === undefined ? null : auth?.user;
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -345,7 +345,7 @@ const ExperienceView = ({ match, history }) => {
             <div class="antialiased items-left  max-w-screen-md">
               <h3 class="mb-4 text-xl font-semibold text-gray-900">Reviews</h3>
               <div class="space-y-4">
-                {user._id !== experience.postedBy._id && typeof(experience.postedBy._id !== 'undefined') && experience.postedBy._id !== null && (<ReviewsCreate expId={experience._id} />)}
+                {user && experience.postedBy && user._id !== experience.postedBy._id && (<ReviewsCreate expId={experience._id} />)}
                 {experience.reviews &&
                   experience.reviews.map((review) => (
                     <ReviewsView review={review} />

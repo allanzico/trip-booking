@@ -19,7 +19,8 @@ import {
 const InfoCard = ({ exp }) => {
   const favorites = useSelector((state) => state.experiences.favorites);
   const { auth } = useSelector((state) => ({ ...state }));
-  const { user, token } = auth;
+  const user = auth === undefined ? null : auth?.user;
+  const token = auth === undefined ? null : auth?.token;
   const history = useHistory();
   const source = axios.CancelToken.source();
   const [alreadyFavorited, setAlreadyFavorited] = useState(false);
@@ -28,6 +29,7 @@ const InfoCard = ({ exp }) => {
   let location = useLocation();
   useEffect(() => {
     loadFavorites();
+    if (auth == null) return
     if (exp.postedBy._id === user._id) {
       setIsOwner(true)
     }

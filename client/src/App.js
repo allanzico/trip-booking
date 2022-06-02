@@ -43,6 +43,8 @@ function App() {
           component={ResetPassword}
         />
         <Route exact path="/experience/:expId" component={ExperienceView} />
+        <Route exact path="/booking/:bookingId" component={ViewBooking} />
+   
         {/* <PrivateRoute
           exact
           path="/booking/:bookingId"

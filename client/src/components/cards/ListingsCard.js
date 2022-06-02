@@ -14,7 +14,7 @@ import IconMenu from "../shared/IconMenu";
 const ListingsCard = ({ exp }) => {
 
   return (
-    <div className="grid grid-cols-9 gap-2 flex py-7 px-2 pr-4 border-b hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
+    <div className="grid grid-cols-9 bg-white gap-2 flex py-7 px-2 pr-4 border-b hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
       <div className="col-span-4">
         <div className="flex flex-row flex-grow pl-5 gap-2">
           <div className="flex flex-col items-start px-2 gap-2">

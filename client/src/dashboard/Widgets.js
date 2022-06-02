@@ -1,5 +1,6 @@
 import { SearchIcon } from '@heroicons/react/outline'
 import React from 'react'
+import CalendarWidget from '../components/widgets/CalendarWidget'
 
 const Widgets = () => {
   return (
@@ -8,9 +9,10 @@ const Widgets = () => {
       <SearchIcon className='h-5 w-5 text-gray-400'/>
       <input type="text" placeholder="search shit" className='flex-1 outline-none bg-transparent' />
 </div>
-<div>
-  ADD SOME MORE SHIT
+<div className='m-2'>
+<CalendarWidget />
 </div>
+
 </div>
   )
 }

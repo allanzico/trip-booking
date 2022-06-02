@@ -26,16 +26,16 @@ const MiddleContent = () => {
     case "/user-tickets":
       heading = "Tickets";
       break;
-    case "Mangoes":
-      heading = "Listings";
+    case "/add-payment-method":
+      heading = "Payments";
       break;
   }
 
   return (
-    <div className="col-span-7 lg:col-span-5 mt-2 pb-5">
+    <div className="col-span-7 h-screen lg:col-span-5 mt-2 pb-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="px-3 py-2 pb-0 text-2xl md:text-4xl font-bold">
+          <h1 className="px-1 md:px-2 py-1 md:py-2 pb-0 text-2xl md:text-4xl font-bold">
             {heading}
             {/* Hello, <span className="text-orange-500">{user.name}</span> */}
           </h1>
@@ -45,8 +45,9 @@ const MiddleContent = () => {
         </div>
         {/* <RefreshIcon className='h-8 w-8 cursor-pointer text-orange-500 transition-all duration-500 ease-out hover:rotate-180 active:scale-125' hidden={heading !=='Listings'} /> */}
       </div>
+      <hr className="m-1 md:m-2 text-gray-600" />
  
-      <section className="p-3 pb-0 ">
+      <section className="px-1 md:px-2 pb-0 ">
         <Switch>
           <PrivateRoute
             exact

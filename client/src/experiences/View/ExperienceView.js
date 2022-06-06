@@ -5,16 +5,15 @@ import {
   diffDays,
   getSingleExperience,
   isAlreadyBooked,
-} from "../actions/experience";
-import { currencyFormatter, getSessionId } from "../actions/stripe";
-import PageTitle from "../components/Typography/PageTitle";
+} from "../../actions/experience";
+import { currencyFormatter, getSessionId } from "../../actions/stripe";
 import { loadStripe } from "@stripe/stripe-js";
 import { StarIcon } from "@heroicons/react/solid";
 import { RadioGroup } from "@headlessui/react";
-import ReviewsView from "../reviews/ReviewsView";
-import ReviewsCreate from "../reviews/ReviewsCreate";
+import ReviewsView from "../../reviews/ReviewsView";
+import ReviewsCreate from "../../reviews/ReviewsCreate";
 import axios from "axios";
-import { fetchSingleExperience } from "../Redux/reducers/experiences";
+import { fetchSingleExperience } from "../../Redux/reducers/experiences";
 
 const product = {
   name: "Basic Tee 6-Pack",

@@ -1,17 +1,17 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { getExperiences } from "../actions/experience";
+import { getExperiences } from "../../actions/experience";
 
-import HorizontalCard from "../components/cards/HorizontalCard";
-import InfoCard from "../components/cards/InfoCard";
-import MainFooter from "../components/footers/MainFooter";
-import ExperiencesHeader from "../components/headers/ExperiencesHeader";
-import Mapbox from "../components/maps/Mapbox";
-import PageTitle from "../components/Typography/PageTitle";
-import { useIsMounted } from "../hooks/useIsMounted";
+import HorizontalCard from "../../components/cards/HorizontalCard";
+import InfoCard from "../../components/cards/InfoCard";
+import MainFooter from "../../components/footers/MainFooter";
+import ExperiencesHeader from "../../components/headers/ExperiencesHeader";
+import Mapbox from "../../components/maps/Mapbox";
+import PageTitle from "../../components/Typography/PageTitle";
+import { useIsMounted } from "../../hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchExperiences } from "../Redux/reducers/experiences";
-import useFetch from "../hooks/useFetch";
+import { fetchExperiences } from "../../Redux/reducers/experiences";
+import useFetch from "../../hooks/useFetch";
 
 const Experiences = () => {
   const experiences = useSelector((state) => state.experiences.experiences);

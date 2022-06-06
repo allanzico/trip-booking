@@ -4,14 +4,15 @@ import { useSelector } from "react-redux";
 import { Switch, useLocation, Link } from "react-router-dom";
 import BookingsComponent from "../components/bookings/BookingsComponent";
 import PrivateRoute from "../components/PrivateRoute";
-import EditExperience from "../experiences/EditExperience";
-import NewExperiences from "../experiences/NewExperience";
+import EditExperience from "../experiences/Edit/EditExperience";
+import NewExperiences from "../experiences/Create/NewExperience";
 import DashboardSeller from "../user/DashboardSeller";
 import EditProfile from "../user/EditProfile";
 import Messaging from '../messaging/Messaging'
 import PaymentComponent from '../components/payment/PaymentComponent'
 import Tickets from '../components/tickets/Tickets'
 import ViewBookings from "../components/bookings/ViewBookings";
+import CreateExperience from "../experiences/Create/CreateExperience";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -32,7 +33,7 @@ const MiddleContent = () => {
   }
 
   return (
-    <div className="col-span-7 h-screen lg:col-span-5 mt-2 pb-5">
+    <div className="col-span-7 lg:col-span-5 mt-2 pb-5">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="px-1 md:px-2 py-1 md:py-2 pb-0 text-2xl md:text-4xl font-bold">
@@ -62,7 +63,7 @@ const MiddleContent = () => {
           <PrivateRoute
             exact
             path="/experiences/new"
-            component={NewExperiences}
+            component={CreateExperience}
           />
           <PrivateRoute
             exact

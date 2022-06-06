@@ -1,6 +1,6 @@
 import { SearchIcon } from '@heroicons/react/outline'
 import React from 'react'
-import CalendarWidget from '../components/widgets/CalendarWidget'
+import CalendarWidget from '../components/widgets/calendar/CalendarWidget'
 
 const Widgets = () => {
   return (

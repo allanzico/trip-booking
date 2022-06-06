@@ -6,7 +6,7 @@ import Widgets from './Widgets'
 
 const MainDashboard = () => {
   return (
-    <div className='lg:max-full max-h-screen'>
+    <div className='lg:max-full'>
     <main className='grid grid-cols-9 bg-slate-50'>
     <HashRouter>
     <SideBar />

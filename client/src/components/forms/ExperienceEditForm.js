@@ -17,8 +17,6 @@ const ExperienceEditForm = (props) => {
   const { title, description, image, price, startDate, endDate, available } =
     values;
 
-    console.log(moment(props.values.startDate))
-    console.log(moment(props.values.startDate).format('YYYY-MM-DD'))
   return (
     <>
       <form onSubmit={handleSubmit}>

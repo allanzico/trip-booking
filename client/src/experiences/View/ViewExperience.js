@@ -5,9 +5,9 @@ import {
   diffDays,
   getSingleExperience,
   isAlreadyBooked,
-} from "../actions/experience";
-import { currencyFormatter, getSessionId } from "../actions/stripe";
-import PageTitle from "../components/Typography/PageTitle";
+} from "../../actions/experience";
+import { currencyFormatter, getSessionId } from "../../actions/stripe";
+import PageTitle from "../../components/Typography/PageTitle";
 import { loadStripe } from "@stripe/stripe-js";
 
 const ViewExperience = ({ match, history }) => {

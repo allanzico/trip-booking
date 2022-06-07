@@ -72,6 +72,34 @@ const ExperienceType = new Schema(
       type: Number,
       default: 0,
     },
+    tickets: [
+      {
+        title: {
+          type: String,
+          required: [true, "title is required"],
+        },
+        price: {
+          type: Number,
+          trim: true,
+          required: [true, "price is required"],
+        },
+        available: {
+          type: Number,
+          trim: true,
+          required: [true, "availability is required"],
+        },
+        minTickets: {
+          type: Number,
+          trim: true,
+          required: [true, "Min tickets field is required"],
+        },
+        maxTickets: {
+          type: Number,
+          trim: true,
+          required: [true, "Max tickets field is required"],
+        },
+      }
+    ]
   },
   { timestamps: true }
 );

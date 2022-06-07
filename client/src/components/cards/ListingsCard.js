@@ -1,7 +1,7 @@
 import React from "react";
 import { currencyFormatter } from "../../actions/stripe";
 import moment from "moment";
-import { DotsVerticalIcon } from "@heroicons/react/solid";
+import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Menu from "@mui/material/Menu";
 import PopupState, {

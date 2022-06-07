@@ -5,7 +5,7 @@ import { createExperience } from "../../actions/experience";
 import { useDispatch, useSelector } from "react-redux";
 import ExperienceForm from "../../components/forms/ExperienceForm";
 import toast from "react-hot-toast";
-import CreateTicketModal from "../../components/modals/CreateTicketModal";
+import CreateTicketModal from "./CreateTicketModal";
 import CreateTicketForm from "./CreateTicketForm";
 
 const CreateExperience = () => {
@@ -43,7 +43,6 @@ const CreateExperience = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     const refreshToast = toast.loading("Adding...");
-
     try {
       let experienceData = new FormData();
       experienceData.append("title", title);
@@ -56,6 +55,11 @@ const CreateExperience = () => {
       experienceData.append("location", address);
       experienceData.append("lat", coordinates.lat);
       experienceData.append("lng", coordinates.lng);
+      experienceData.append(`tickets`, JSON.stringify(ticketArray))
+      // ticketArray.map((ticket) => {
+      //   experienceData.append(`tickets`, JSON.stringify(ticket))
+      // })
+      console.log(experienceData.getAll('tickets'))
       const res = await createExperience(token, experienceData);
       // dispatch(createExperience(res.data))
       toast.success("Added new experience", {
@@ -92,6 +96,9 @@ const CreateExperience = () => {
     setCoordinates(latLng);
     setLocation({ lat: coordinates.lat, lng: coordinates.lng, place: value });
   };
+
+  
+
   return (
     <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
       <div className="grid grid-cols-1">
@@ -127,7 +134,7 @@ const CreateExperience = () => {
                 hover:bg-orange-700
                 uppercase
                 "
-                onClick={console.log(ticketArray)}
+                onClick={handleSubmit}
               >
                 Save
               </button>

@@ -8,16 +8,16 @@ import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./user/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import StripeCallback from "./stripe/StripeCallback";
-import Experiences from "./experiences/Experiences";
+import Experiences from "./experiences/View/Experiences";
 import ResponsiveNav from "./components/navigation/ResponsiveNav";
 import "@material-tailwind/react/tailwind.css";
-import ViewExperience from "./experiences/ViewExperience";
+import ViewExperience from "./experiences/View/ViewExperience";
 import ViewBooking from "./components/bookings/ViewBookings";
 import StripeCancel from "./stripe/StripeCancel";
 import StripeSuccess from "./stripe/StripeSuccess";
 import SearchResults from "./search/SearchResults";
 import Messaging from "./messaging/Messaging";
-import ExperienceView from "./experiences/ExperienceView";
+import ExperienceView from "./experiences/View/ExperienceView";
 import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainDashboard from "./dashboard/MainDashboard";
@@ -43,6 +43,8 @@ function App() {
           component={ResetPassword}
         />
         <Route exact path="/experience/:expId" component={ExperienceView} />
+        <Route exact path="/booking/:bookingId" component={ViewBooking} />
+   
         {/* <PrivateRoute
           exact
           path="/booking/:bookingId"

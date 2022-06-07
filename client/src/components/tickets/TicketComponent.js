@@ -7,9 +7,9 @@ import { QrcodeOutlined } from "@ant-design/icons";
 import { AiOutlineQrcode } from "react-icons/ai";
 
 const TicketComponent = ({ booking }) => {
-  console.log(booking);
+  
   return (
-    <div className="grid rounded-lg border grid-cols-9 flex pr-2 hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
+    <div className="grid rounded-lg bg-white border grid-cols-9 flex pr-2 hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
       <div className="col-span-7 ">
         <div className="flex flex-row justify-between items-center">
           <div className="ml-5 mt-4 items-center border border-white">
@@ -38,14 +38,7 @@ const TicketComponent = ({ booking }) => {
               {" "}
               {booking.experience.location}
             </div>
-            <div className="py-2">
-            <button
-              type="submit"
-              className="cursor-pointer text-black border rounded-sm text-xs font-semibold px-3 py-2 text-center uppercase"
-            >
-              Download
-            </button>
-            </div>
+
           </div>
           <div className="flex px-3 flex-col items-center gap-1">
             <span className="uppercase text-l text-gray-900 font-semibold">

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { getSingleBooking } from '../../actions/experience';
@@ -6,12 +6,15 @@ import { fetchSingleBooking } from '../../Redux/reducers/experiences';
 import { createConversation, getConversations } from '../../actions/conversations';
 import { fetchConversations } from '../../Redux/reducers/messaging';
 import { useHistory } from 'react-router-dom';
+import SingleBooking from './SingleBooking';
 
 const ViewBookings = ({match}) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token, user } = auth;
   const bookings = useSelector((state) => state.experiences);
+  const singleBooking = useSelector((state) => state.experiences.singleBooking);
   const conversations = useSelector((state) => state.messaging.conversations);
+  const [image, setImage] = useState("");
   const dispatch = useDispatch();
   const source = axios.CancelToken.source();
 
@@ -27,6 +30,7 @@ const ViewBookings = ({match}) => {
     try {
       const res = await getSingleBooking(match.params.bookingId, token, source.token);
       dispatch(fetchSingleBooking(res.data));
+      setImage(`${process.env.REACT_APP_API}/experience/image/${res.data.experience._id}`);
     } catch (error) {
       console.log(error);
     }
@@ -65,12 +69,9 @@ const ViewBookings = ({match}) => {
     } catch (error) {}
   };
 
-
   return (
     <div>
-      <button onClick={handleCreateConversation}>
-        Message seller
-      </button>
+          <SingleBooking handleCreateConversation={handleCreateConversation} booking={singleBooking} image={image} />
     </div>
   )
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import PageTitle from "../components/Typography/PageTitle";
+import PageTitle from "../../components/Typography/PageTitle";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import {
   getSingleExperience,
   updateExperience,
-} from "../actions/experience";
+} from "../../actions/experience";
 import { useSelector } from "react-redux";
-import ExperienceEditForm from "../components/forms/ExperienceEditForm";
+import ExperienceEditForm from "../../components/forms/ExperienceEditForm";
 import axios from "axios";
 import toast from "react-hot-toast";
 

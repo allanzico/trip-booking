@@ -13,15 +13,19 @@ import {FaBoxOpen} from "react-icons/fa"
 const BookingsComponent = () => {
   const bookings = useSelector((state) => state.experiences.bookings);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false)
   const source = axios.CancelToken.source();
   const {
     auth: { token },
   } = useSelector((state) => ({ ...state }));
 
   const loadUserBookings = async () => {
+    
     try {
       const res = await getUserBookings(token, source.token);
+      if (!res) setLoading(true)
       dispatch(fetchUserBookings(res.data));
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +39,7 @@ const BookingsComponent = () => {
   }, []);
 
   return (
-    <main className="max-w-full mx-auto shadow-xs bg-white rounded-md py-3">
+    <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
         <div className="grid grid-cols-1 space-x-2 md:grid-cols-4 my-2 ">
           {bookings.length < 1  ? (<div className="flex row justify-center items-center min-w-1/2 h-56">
             <span><FaBoxOpen className="h-32 w-32" /></span>

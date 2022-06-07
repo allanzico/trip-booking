@@ -1,33 +1,70 @@
 import React, { useState } from "react";
-import { DatePicker } from "antd";
-import moment from "moment";
-import GooglePlacesSearch from "../GooglePlacesSearch";
-const ExperienceForm = (props) => {
-  const {
-    values,
-    setValues,
-    address,
-    setAddress,
-    handleChange,
-    handleImageChange,
-    handleSelect,
-    handleSubmit,
-  } = props;
-  const { title, description, image, price, startDate, endDate, available } =
-    values;
+import { Button, Modal } from "antd";
+import { v4 as uuidv4 } from 'uuid';
 
+const CreateTicketModal = (props) => {
+    const handleOk = () => {
+      setShowModal(!showModal);
+    };
+const { showModal, setShowModal, ticketData, setTicketData, setTicketArray, ticketArray } = props
+  const {title, price, available, minTickets, maxTickets} = ticketData
+
+  const handleChange = (evt) => {
+    setTicketData({
+      ...ticketData,
+      [evt.target.name]: evt.target.value,
+    });
+  };
+
+  const handleTicketSave = (evt) => {
+      evt.preventDefault()
+      ticketArray.push({...ticketData, ticketId: uuidv4()})
+      setTicketData({})
+      setShowModal(!showModal)
+  }
+  
   return (
+      <Modal
+        visible={showModal}
+        centered
+        onOk={handleOk}
+        title="Add new ticket"
+        onCancel={() => setShowModal(!showModal)}
+        footer={[
+          <Button
+            key="back"
+            className="
+              bg-gray-200
+              rounded-sm
+              transition
+              outline-none
+              hover:border-gray-500
+              hover:text-gray-500
+              uppercase"
+            onClick={() => setShowModal(!showModal)}
+          >
+            cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            className=" 
+              text-white
+              outline-none
+              bg-orange-500
+              rounded-sm
+              transition
+              hover:bg-orange-700
+              uppercase"
+              onClick={handleTicketSave}
+          >
+            Save
+          </Button>,
+        ]}
+      >
+    
     <div className="flex flex-col">
-      {/* Image Preview */}
-      <div className="col-span-6">
-        <h2>Main event image</h2>
-        <p>
-          This is the first image attendees will see at the top of your listing.
-          Use a high quality image: 2160x1080px (2:1 ratio)
-        </p>
-      </div>
-
-      {/* Title input */}
+              {/* Title input */}
       <div className="col-span-6">
         <div className="relative mb-4 ">
           <input
@@ -54,7 +91,7 @@ const ExperienceForm = (props) => {
             className="absolute bg-white left-2 px-2 -top-2.5 text-gray-600 text-xs peer-placeholder-shown:text-xs peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all 
                     peer-focus:-top-2.5 
                     peer-focus:text-orange-500 
-                    peer-focus:text-xs
+                    peer-focus:text-xs 
                     peer-focus:-z-1 
                     peer-focus:duration-300 
                     peer-focus:origin-0"
@@ -64,53 +101,7 @@ const ExperienceForm = (props) => {
         </div>
       </div>
 
-      {/* Description input */}
-      <div className="col-span-6">
-        <div class="relative mb-2">
-          <textarea
-            type="text"
-            name="description"
-            placeholder="description"
-            onChange={handleChange}
-            value={description}
-            className="
-                    peer
-                    placeholder-transparent
-                    w-full
-                    rounded-sm
-                    py-4
-                    px-2
-                    border border-gray
-                    outline-none
-                    focus:outline-orange-500
-                    focus:outline-1
-                    "
-          />
-          <label
-            for="description"
-            className="absolute bg-white left-2 px-2 -top-2.5 text-gray-600 text-xs peer-placeholder-shown:text-xs peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all 
-                    peer-focus:-top-2.5 
-                    peer-focus:text-orange-500 
-                    peer-focus:text-xs 
-                    peer-focus:-z-1 
-                    peer-focus:duration-300 
-                    peer-focus:origin-0"
-          >
-            Description
-          </label>
-        </div>
-      </div>
-
-      {/* Location input */}
-      <div className="col-span-6 mb-2">
-        <GooglePlacesSearch
-          address={address}
-          setAddress={setAddress}
-          handleSelect={handleSelect}
-        />
-      </div>
-
-      {/* Numbers input */}
+       {/* Numbers input */}
       <div className="grid grid-cols-6 md:space-x-4">
         <div className="relative mb-4 col-span-6 sm:col-span-6 md:col-span-3">
           <input
@@ -126,7 +117,8 @@ const ExperienceForm = (props) => {
                   rounded-sm
                   py-2
                   px-2
-                  border border-gray
+                  border 
+                  border-gray
                   outline-none
                   focus:outline-orange-500
                   focus:outline-1
@@ -172,7 +164,7 @@ const ExperienceForm = (props) => {
             className="absolute bg-white left-2 px-2 -top-2.5 text-xs peer-placeholder-shown:text-xs peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all 
                     peer-focus:-top-2.5 
                     peer-focus:text-orange-500 
-                    peer-focus:text-xs
+                    peer-focus:text-xs 
                     peer-focus:-z-1 
                     peer-focus:duration-300 
                     peer-focus:origin-0"
@@ -181,13 +173,48 @@ const ExperienceForm = (props) => {
           </label>
         </div>
       </div>
-
-      {/* Dates input */}
-      <div className="grid grid-cols-6 md:space-x-4">
-        <div class="col-span-6 mb-4 sm:col-span-6 md:col-span-3">
-          <DatePicker
-            placeholder="Starts"
-            name="start"
+             {/* Numbers input */}
+        <div className="relative mb-4 col-span-6">
+          <input
+            type="number"
+            placeholder="min tickets"
+            name="minTickets"
+            onChange={handleChange}
+            value={minTickets}
+            className="
+                  peer
+                  placeholder-transparent
+                  w-full
+                  rounded-sm
+                  py-2
+                  px-2
+                  border 
+                  border-gray
+                  outline-none
+                  focus:outline-orange-500
+                  focus:outline-1
+                  "
+          />
+          <label
+            for="price"
+            className="absolute bg-white left-2 px-2 -top-2.5 text-gray-600 text-xs peer-placeholder-shown:text-xs peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all 
+                    peer-focus:-top-2.5 
+                    peer-focus:text-orange-500 
+                    peer-focus:text-xs 
+                    peer-focus:-z-1 
+                    peer-focus:duration-300 
+                    peer-focus:origin-0"
+          >
+            Min tickets per person
+          </label>
+        </div>
+        <div className="relative mb-4 col-span-6">
+          <input
+            type="number"
+            placeholder="Max tickets"
+            name="maxTickets"
+            onChange={handleChange}
+            value={maxTickets}
             className="
                   peer
                   placeholder-transparent
@@ -200,73 +227,26 @@ const ExperienceForm = (props) => {
                   hover:outline-orange-500
                   hover:outline-1
                   focus-visible:shadow-none
-                  focus:border-primary "
-            onChange={(dateString) =>
-              setValues({ ...values, startDate: dateString })
-            }
-            disabledDate={(current) =>
-              current && current.valueOf() < moment().subtract(1, "days")
-            }
+                  focus:border-primary
+                  "
           />
+          <label
+            for="available"
+            className="absolute bg-white left-2 px-2 -top-2.5 text-xs peer-placeholder-shown:text-xs peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all 
+                    peer-focus:-top-2.5 
+                    peer-focus:text-orange-500 
+                    peer-focus:text-xs 
+                    peer-focus:-z-1 
+                    peer-focus:duration-300 
+                    peer-focus:origin-0"
+          >
+            Max tickets per person
+          </label>
         </div>
-
-        <div class="col-span-6 mb-4 sm:col-span-6 md:col-span-3">
-          <DatePicker
-            placeholder="Ends"
-            name="end"
-            className="
-                  peer
-                  placeholder-transparent
-                  w-full
-                  rounded-sm
-                  py-2
-                  px-2
-                  border border-gray
-                  outline-none
-                  hover:outline-orange-500
-                  hover:outline-1
-                  focus-visible:shadow-none
-                  focus:border-primary "
-            onChange={(dateString) =>
-              setValues({ ...values, endDate: dateString })
-            }
-            disabledDate={(current) =>
-              current && current.valueOf() < moment().subtract(1, "days")
-            }
-          />
-        </div>
-      </div>
-
-      {/* Image upload */}
-      <div className="grid grid-cols-6">
-        <div className="col-span-6 mb-4 md:col-span-3">
-          <div class="mb-3 w-full">
-            <input
-              className="form-control
-                    block
-                    w-full
-                    rounded-sm
-                    py-2
-                    px-2
-                    border border-gray
-                    outline-none
-                    hover:outline-orange-500
-                    hover:outline-1
-                    focus-visible:shadow-none
-                    focus:border-primary
-                    transition
-                    ease-in-out
-                    m-0"
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
-        </div>
-      </div>
     </div>
-  );
-};
+    
+      </Modal>
+    );
+}
 
-export default ExperienceForm;
+export default CreateTicketModal

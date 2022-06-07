@@ -7,9 +7,11 @@ export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     try {
       let fields = req.fields;
+      const ticketFields = JSON.parse(fields.tickets)
       let files = req.files;
       let experience = new Experience(fields);
       experience.postedBy = req.user._id;
+      experience.tickets = ticketFields
 
       //read Image data
       if (files.image) {

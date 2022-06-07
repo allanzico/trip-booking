@@ -6,6 +6,7 @@ export const CREATE_EXPERIENCES = "CREATE_EXPERIENCES";
 export const FETCH_SINGLE_EXPERIENCE = "FETCH_SINGLE_EXPERIENCE";
 export const FAVORITE_EXPERIENCE = "FAVORITE_EXPERIENCE";
 export const FETCH_FAVORITES = "FETCH_FAVORITES"
+export const  DELETE_EXPERIENCE = ' DELETE_EXPERIENCE'
 
 const initialState = {
   experiences: [],
@@ -36,6 +37,13 @@ export function createExperience(experiences) {
   return {
     type: CREATE_EXPERIENCES,
     payload: experiences,
+  };
+}
+
+export function removeExperience(expId) {
+  return {
+    type: DELETE_EXPERIENCE,
+    payload: expId,
   };
 }
 
@@ -88,6 +96,8 @@ export const experiencesReducer = (state = initialState, { type, payload }) => {
       return { ...state, bookings: payload };
       case "FETCH_SINGLE_BOOKING":
         return { ...state, singleBooking: payload };
+        case "DELETE_EXPERIENCE":
+          return { ...state, experiences: state.experiences.filter(exp => exp._id !== payload) }
     default:
       return state;
   }

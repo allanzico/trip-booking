@@ -89,8 +89,9 @@ export class ExperienceSetup {
     try {
       let fields = req.fields;
       let files = req.files;
-
+      const ticketFields = JSON.parse(fields.tickets)
       let data = { ...fields };
+      data.tickets = ticketFields
 
       if (files.image) {
         let image: any = { data: "", contentType: "" };
@@ -106,6 +107,10 @@ export class ExperienceSetup {
       console.log(error);
       res.status(400).send("Update failed");
     }
+  }
+
+  async deleteExperience (req: any, res: any) {
+    await Experience.findByIdAndDelete(req.params.expId)
   }
 
   async getUserBookings(req: any, res: any) {
@@ -213,7 +218,6 @@ export class ExperienceSetup {
     }
   }
 
-  async deleteExperience(req: any, res: any) {}
 
   async favoriteExperience(req: any, res: any) {
     const { experience, favoritedBy } = req.body;

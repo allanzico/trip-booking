@@ -50,6 +50,17 @@ export const getSingleExperience = async (expId, cancelToken) => {
   return await axios.get(`${process.env.REACT_APP_API}/experience/${expId}`, {cancelToken:cancelToken});
 };
 
+export const deleteSingleExperience = async ( expId , token) => {
+  return await axios.delete(
+    `${process.env.REACT_APP_API}/delete-experience/${expId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 export const getUserBookings = async (token, cancelToken) => {
   return await axios.get(`${process.env.REACT_APP_API}/user-experience-bookings`, {
     headers: {

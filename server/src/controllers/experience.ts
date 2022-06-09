@@ -7,11 +7,11 @@ export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     try {
       let fields = req.fields;
-      const ticketFields = JSON.parse(fields.tickets)
+      const ticketFields = JSON.parse(fields.tickets);
       let files = req.files;
       let experience = new Experience(fields);
       experience.postedBy = req.user._id;
-      experience.tickets = ticketFields
+      experience.tickets = ticketFields;
 
       //read Image data
       if (files.image) {
@@ -89,9 +89,9 @@ export class ExperienceSetup {
     try {
       let fields = req.fields;
       let files = req.files;
-      const ticketFields = JSON.parse(fields.tickets)
+      const ticketFields = JSON.parse(fields.tickets);
       let data = { ...fields };
-      data.tickets = ticketFields
+      data.tickets = ticketFields;
 
       if (files.image) {
         let image: any = { data: "", contentType: "" };
@@ -109,8 +109,23 @@ export class ExperienceSetup {
     }
   }
 
-  async deleteExperience (req: any, res: any) {
-    await Experience.findByIdAndDelete(req.params.expId)
+  async deleteExperience(req: any, res: any) {
+    await Experience.findByIdAndDelete(req.params.expId);
+  }
+
+  async deleteTicket(req: any, res: any) {
+    const { ticketId } = req.body;
+    const expId = req.params.expId;
+    try {
+      await Experience.updateOne(
+        { _id: expId },
+        { $pull: { tickets: { _id: ticketId } } }
+      );
+      res.status(200).send("success");
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(" failed");
+    }
   }
 
   async getUserBookings(req: any, res: any) {
@@ -217,7 +232,6 @@ export class ExperienceSetup {
       console.log(error);
     }
   }
-
 
   async favoriteExperience(req: any, res: any) {
     const { experience, favoritedBy } = req.body;

@@ -18,7 +18,7 @@ import DeleteModal from "./DeleteModal";
 import EditTicketModal from "./EditTicketModal";
 import CreateTicketModal from "../Create/CreateTicketModal";
 
-const EditTicketForm = ({ setTicketArray, ticketArray }) => {
+const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -157,6 +157,7 @@ const EditTicketForm = ({ setTicketArray, ticketArray }) => {
                         ticketArray={ticketArray}
                         setTicketArray={setTicketArray}
                         ticket={ticket}
+                        match={match}
                       />
                     )}
                     {showEditModal && (
@@ -166,6 +167,7 @@ const EditTicketForm = ({ setTicketArray, ticketArray }) => {
                         ticketArray={ticketArray}
                         showEditModal={showEditModal}
                         setShowEditModal={setShowEditModal}
+                        match={match}
                       />
                     )}
                   </div>

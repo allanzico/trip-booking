@@ -10,7 +10,7 @@ const auth = new Authentication()
  router.post('/login', auth.loginUser)
  router.post('/forgot-password', auth.forgotPassword)
  router.post('/reset-password/:resetToken', auth.resetPassword)
- router.post('/enable-2fa', auth.enableTwofactorAuth)
+ router.post('/enable-2fa', requireSignIn, auth.enableTwofactorAuth)
  router.post('/verify-2fa/:twoFactorToken', auth.verifyTwofactorAuth)
  router.put('/edit-profile', requireSignIn, auth.updateUser)
  

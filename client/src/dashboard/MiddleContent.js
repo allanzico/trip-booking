@@ -7,12 +7,12 @@ import PrivateRoute from "../components/PrivateRoute";
 import EditExperience from "../experiences/Edit/EditExperience";
 import NewExperiences from "../experiences/Create/NewExperience";
 import DashboardSeller from "../user/DashboardSeller";
-import EditProfile from "../user/EditProfile";
-import Messaging from '../messaging/Messaging'
-import PaymentComponent from '../components/payment/PaymentComponent'
-import Tickets from '../components/tickets/Tickets'
+import Messaging from "../messaging/Messaging";
+import PaymentComponent from "../components/payment/PaymentComponent";
+import Tickets from "../components/tickets/Tickets";
 import ViewBookings from "../components/bookings/ViewBookings";
 import CreateExperience from "../experiences/Create/CreateExperience";
+import Settings from "../settings/Settings";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -30,6 +30,9 @@ const MiddleContent = () => {
     case "/add-payment-method":
       heading = "Payments";
       break;
+      case "/settings":
+        heading = "Settings";
+        break;
   }
 
   return (
@@ -47,7 +50,7 @@ const MiddleContent = () => {
         {/* <RefreshIcon className='h-8 w-8 cursor-pointer text-orange-500 transition-all duration-500 ease-out hover:rotate-180 active:scale-125' hidden={heading !=='Listings'} /> */}
       </div>
       <hr className="m-1 md:m-2 text-gray-600" />
- 
+
       <section className="px-1 md:px-2 pb-0 ">
         <Switch>
           <PrivateRoute
@@ -70,20 +73,20 @@ const MiddleContent = () => {
             path="/experience/edit/:expId"
             component={EditExperience}
           />
-                    <PrivateRoute
+          <PrivateRoute exact path="/user-tickets" component={Tickets} />
+          <PrivateRoute exact path="/settings" component={Settings} />
+
+          <PrivateRoute
             exact
-            path="/user-tickets"
-            component={Tickets}
+            path="/booking/:bookingId"
+            component={ViewBookings}
           />
 
-                  <PrivateRoute
-          exact
-          path="/booking/:bookingId"
-          component={ViewBookings}
-        /> 
-          
-          <PrivateRoute exact path="/edit-profile" component={EditProfile} />
-          <PrivateRoute exact path="/add-payment-method" component={PaymentComponent} />
+          <PrivateRoute
+            exact
+            path="/add-payment-method"
+            component={PaymentComponent}
+          />
         </Switch>
       </section>
     </div>

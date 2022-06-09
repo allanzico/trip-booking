@@ -5,11 +5,12 @@ import {
   getSingleExperience,
   updateExperience,
 } from "../../actions/experience";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ExperienceEditForm from "../../components/forms/ExperienceEditForm";
 import axios from "axios";
 import toast from "react-hot-toast";
 import EditTicketForm from "./EditTicketForm";
+import {  fetchSingleExperience } from "../../Redux/reducers/experiences";
 
 const EditExperience = ({ match }) => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -18,7 +19,6 @@ const EditExperience = ({ match }) => {
   const [values, setValues] = useState({
     title: "",
     description: "",
-
     price: "",
     from: "",
     to: "",
@@ -41,6 +41,8 @@ const EditExperience = ({ match }) => {
     "https://via.placeholder.com/300x150.png?text=PREVIEW"
   );
   const [ticketArray, setTicketArray] = useState([])
+  const experience = useSelector((state) => state.experiences.singleExperience);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     loadSellerExperience();
@@ -51,10 +53,11 @@ const EditExperience = ({ match }) => {
 
   const loadSellerExperience = async () => {
     let res = await getSingleExperience(match.params.expId, source.token);
-    setValues({ ...values, ...res.data });
-    setTicketArray(res.data.tickets)
-    setAddress(res.data.location);
-    setPreview(`${process.env.REACT_APP_API}/experience/image/${res.data._id}`);
+    dispatch(fetchSingleExperience(res.data))
+    setValues({ ...values, experience });
+    setTicketArray(experience.tickets)
+    setAddress(experience.location);
+    setPreview(`${process.env.REACT_APP_API}/experience/image/${experience._id}`);
   };
 
   const handleSubmit = async (evt) => {
@@ -129,7 +132,7 @@ const EditExperience = ({ match }) => {
             />
     </div>
     <div className="grid grid-cols-1 ">
-      <EditTicketForm ticketArray={ticketArray} setTicketArray={setTicketArray} />
+      <EditTicketForm ticketArray={ticketArray} setTicketArray={setTicketArray} match={match} />
     </div>
     <div className="grid grid-cols-1 mt-3 ">
     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

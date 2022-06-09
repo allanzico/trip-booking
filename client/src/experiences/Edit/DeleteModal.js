@@ -1,12 +1,28 @@
 import React from 'react'
 import { Button, Modal } from "antd";
+import { deleteTicket } from '../../actions/experience';
+import { useDispatch, useSelector } from 'react-redux';
 
-const DeleteModal = ({setShowDeleteModal, showDeleteModal, ticketArray, setTicketArray, ticket }) => {
-    const handleOk = () => {
+const DeleteModal = ({setShowDeleteModal, showDeleteModal, ticketArray, setTicketArray, ticket, match }) => {
+  const { auth } = useSelector((state) => ({ ...state }));
+  const experience = useSelector((state) => state.experiences.singleExperience);
+  const { token } = auth;
+  const dispatch = useDispatch()
+  const handleOk = () => {
         setShowDeleteModal(!showDeleteModal);
       };
 
-      const handleDelete = () => {
+      const handleDelete = async () => {
+        const data = {
+          ticketId: ticket._id
+        }
+        try {
+          await deleteTicket(match.params.expId, data, token)
+          setTicketArray(experience.tickets)
+          setShowDeleteModal(!showDeleteModal)
+        } catch (error) {
+          
+        }
         // const newTicketArray = ticketArray.filter(t => t.ticketId != ticket.ticketId);
         // setTicketArray(newTicketArray)
         // setShowDeleteModal(!showDeleteModal)

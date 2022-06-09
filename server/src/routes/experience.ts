@@ -21,6 +21,12 @@ router.delete(
   experience.deleteExperience
 );
 
+router.patch(
+  "/delete-ticket/:expId",
+  requireSignIn,
+  experience.deleteTicket
+);
+
 router.post(
   "/search-listings",
   experience.searchListings

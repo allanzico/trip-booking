@@ -20,7 +20,7 @@ const BookingsComponent = () => {
   } = useSelector((state) => ({ ...state }));
 
   const loadUserBookings = async () => {
-    
+    setLoading(true)
     try {
       const res = await getUserBookings(token, source.token);
       if (!res) setLoading(true)

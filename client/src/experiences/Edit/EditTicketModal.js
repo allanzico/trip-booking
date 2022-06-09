@@ -7,6 +7,7 @@ const EditTicketModal = ({
   ticket,
   ticketArray,
   setTicketArray,
+  match
 }) => {
   const [ticketData, setTicketData] = useState({
     ticketId: "",
@@ -40,11 +41,9 @@ const EditTicketModal = ({
   };
 
   const handleEditTicket = () => {
-    console.log(ticketArray)
+    console.log(match)
     // value={this.state.objects[`${item.id}`]?.value || ''}
   }
-
-  console.log(ticket)
 
   return (
     <Modal

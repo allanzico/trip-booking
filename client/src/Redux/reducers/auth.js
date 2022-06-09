@@ -1,4 +1,5 @@
 const UPDATE_USER = 'UPDATE_USER'
+
 let userState;
 
 if (window.localStorage.getItem('auth')) {
@@ -8,14 +9,14 @@ if (window.localStorage.getItem('auth')) {
 }
 
 //Create auth reducer
-export const authReducer = (state=userState, action) => {
-    switch(action.type) {
+export const authReducer = (state=userState, {type,payload}) => {
+    switch(type) {
       case 'LOGGED_IN_USER' :
-        return {...state, ...action.payload, };
+        return {...state, ...payload, };
       case 'UPDATE_USER' :
-        return {...state, ...action.payload, };
+        return {...state, ...payload, };
       case 'LOGOUT':
-        return action.payload;
+        return payload;
       default:
         return state;
     }
@@ -28,4 +29,6 @@ export const authReducer = (state=userState, action) => {
       payload: data,
     };
   }
+
+
 

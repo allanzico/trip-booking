@@ -33,6 +33,7 @@
     "history": "^5.3.0",
     "i": "^0.3.7",
     "intl-tel-input": "^17.0.16",
+    "libphonenumber-js": "^1.10.6",
     "mapbox-gl": "^2.8.1",
     "material-ui-popup-state": "^3.1.1",
     "moment": "^2.29.1",

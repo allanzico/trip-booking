@@ -97,7 +97,7 @@ const dispatch = useDispatch()
     []
   );
 
-  const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
+  // const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
 
   const connectedSeller = () => {
     return (

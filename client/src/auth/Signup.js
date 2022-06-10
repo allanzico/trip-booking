@@ -42,7 +42,7 @@ const Signup = ({ history }) => {
         <PageTitle>create an account</PageTitle>
       </div>
       <section class="relative ">
-        <div class="container pl-5 overflow-hidden shadow-sm mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
+        <div class="container pl-5 pt-2 overflow-hidden shadow-sm mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
           <div class="flex flex-1 flex-col items-center lg:items-start">
             <div class="flex justify-center items-center flex-wrap gap-6">
               <SignupSVG />

@@ -18,10 +18,18 @@ const ResponsiveNav = () => {
       "",
   };
 
-  const navigation = [
-    { name: "Home", to: "/", current: false },
-    { name: "Experiences", to: "/experiences", current: false },
-    { name: "Dashboard", to: "/dashboard", current: false },
+  const navigation = 
+  
+  [
+    ...auth ? [
+      { name: "Home", to: "/", current: false },
+      { name: "Experiences", to: "/experiences", current: false },
+      { name: "Dashboard", to: "/dashboard", current: false},
+    ] : [
+      { name: "Home", to: "/", current: false },
+      { name: "Experiences", to: "/experiences", current: false },
+    ],
+
   ];
 
   const authNavigation = [

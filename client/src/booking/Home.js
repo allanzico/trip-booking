@@ -40,7 +40,7 @@ const Home = () => {
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem
         accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
       </p>
-      <div className="w-full p-12 bg-gray-50 flex">
+      <div className="flex items-center justify-center mb-2 p-10 bg-gray-100">
         <SearchForm />
       </div>
       <main className="max-w-7xl mx-auto ">

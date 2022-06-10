@@ -9,6 +9,8 @@ import PageTitle from "../components/Typography/PageTitle";
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(true)
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -24,10 +26,12 @@ const Login = ({ history }) => {
           type: "LOGGED_IN_USER",
           payload: res.data,
         });
+        setShowAlert(false)
         history.push("/dashboard");
       }
     } catch (error) {
-      if (error.response.status === 400) toast.error(error.response.data);
+      setError(error.response.data.error);
+      setShowAlert(true)
     }
   };
   return (
@@ -38,7 +42,7 @@ const Login = ({ history }) => {
     </PageTitle>
       </div>
     <section class="relative ">
-      <div class="container py-5 pl-5 overflow-hidden shadow-sm mt-10 flex flex-col-reverse lg:flex-row items-center gap-12">
+      <div class="container pl-5 overflow-hidden shadow-sm mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
         <div class="flex flex-1 flex-col items-center lg:items-start">
           <div class="flex justify-center flex-wrap gap-6">
             <LoginSVG />
@@ -48,6 +52,9 @@ const Login = ({ history }) => {
               password={password}
               setEmail={setEmail}
               setPassword={setPassword}
+              error={error}
+              showAlert={showAlert}
+              setShowAlert={setShowAlert}
             />
           </div>
         </div>

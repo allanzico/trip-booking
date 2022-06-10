@@ -9,6 +9,9 @@ const SignUpForm = ({
   setEmail,
   password,
   setPassword,
+  confirmPassword,
+  error,
+  setConfirmPassword
 }) => {
   return (
     <main className="flex items-center justify-center">
@@ -77,6 +80,27 @@ const SignUpForm = ({
              "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+                    {/* Confirm password */}
+                    <div class="mb-4">
+            <input
+              type="password"
+              placeholder="retype password"
+              className="
+             w-full
+             rounded-sm
+             py-2
+             px-[14px]
+             border border-gray
+             outline-none
+             hover:outline-orange-500
+             hover:outline-1
+             focus-visible:shadow-none
+             focus:border-primary
+             "
+             onChange={(e) => setConfirmPassword(e.target.value)}
+             value={confirmPassword}
             />
           </div>
           {/* Signup Button*/}

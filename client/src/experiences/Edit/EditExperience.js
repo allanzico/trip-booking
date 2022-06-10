@@ -54,10 +54,10 @@ const EditExperience = ({ match }) => {
   const loadSellerExperience = async () => {
     let res = await getSingleExperience(match.params.expId, source.token);
     dispatch(fetchSingleExperience(res.data))
-    setValues({ ...values, experience });
+    setValues({ ...values, ...res.data });
     setTicketArray(experience.tickets)
-    setAddress(experience.location);
-    setPreview(`${process.env.REACT_APP_API}/experience/image/${experience._id}`);
+    setAddress(res.data.location);
+    setPreview(`${process.env.REACT_APP_API}/experience/image/${res.data._id}`);
   };
 
   const handleSubmit = async (evt) => {

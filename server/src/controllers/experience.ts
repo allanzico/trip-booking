@@ -183,11 +183,18 @@ export class ExperienceSetup {
 
   async searchListings(req: any, res: any) {
     const { location, date } = req.body;
-    const dates = date.split(",");
-    console.log(dates);
+    // const dates = date.split(",");
+    // console.log(dates);
+    // let result = await Experience.find({
+    //   startDate: { $gte: dates[0] },
+    //   endDate: { $lte: dates[1] },
+    //   location: new RegExp(location, "i"),
+    // })
+    //   .select("-image.data")
+    //   .exec();
+
     let result = await Experience.find({
-      startDate: { $gte: dates[0] },
-      endDate: { $lte: dates[1] },
+      startDate: { $gte: date},
       location: new RegExp(location, "i"),
     })
       .select("-image.data")

@@ -5,10 +5,12 @@ import {
   getSingleExperience,
   updateExperience,
 } from "../../actions/experience";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ExperienceEditForm from "../../components/forms/ExperienceEditForm";
 import axios from "axios";
 import toast from "react-hot-toast";
+import EditTicketForm from "./EditTicketForm";
+import {  fetchSingleExperience } from "../../Redux/reducers/experiences";
 
 const EditExperience = ({ match }) => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -17,7 +19,6 @@ const EditExperience = ({ match }) => {
   const [values, setValues] = useState({
     title: "",
     description: "",
-
     price: "",
     from: "",
     to: "",
@@ -39,6 +40,9 @@ const EditExperience = ({ match }) => {
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/300x150.png?text=PREVIEW"
   );
+  const [ticketArray, setTicketArray] = useState([])
+  const experience = useSelector((state) => state.experiences.singleExperience);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     loadSellerExperience();
@@ -49,7 +53,9 @@ const EditExperience = ({ match }) => {
 
   const loadSellerExperience = async () => {
     let res = await getSingleExperience(match.params.expId, source.token);
+    dispatch(fetchSingleExperience(res.data))
     setValues({ ...values, ...res.data });
+    setTicketArray(experience.tickets)
     setAddress(res.data.location);
     setPreview(`${process.env.REACT_APP_API}/experience/image/${res.data._id}`);
   };
@@ -67,6 +73,7 @@ const EditExperience = ({ match }) => {
       experienceData.append("endDate", endDate);
       experienceData.append("available", available);
       experienceData.append("location", address);
+      experienceData.append(`tickets`, JSON.stringify(ticketArray))
       let res = await updateExperience(
         token,
         experienceData,
@@ -110,14 +117,9 @@ const EditExperience = ({ match }) => {
   };
 
   return (
-    <>
-      <div className="container flex-1 text-center">
-        <PageTitle>Edit experience</PageTitle>
-      </div>
-      <div className="container overflow-hidden flex flex-col-reverse lg:flex-row items-center gap-6">
-        <div class="flex flex-1 flex-col items-center lg:items-start">
-          <div class="flex justify-center flex-wrap gap-6">
-            <ExperienceEditForm
+    <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
+    <div className="grid grid-cols-1">
+  <ExperienceEditForm
               values={values}
               setValues={setValues}
               setAddress={setAddress}
@@ -128,13 +130,59 @@ const EditExperience = ({ match }) => {
               address={address}
               setLocation={setLocation}
             />
-          </div>
-          <div className="grid grid-cols-3 ">
-            <img src={preview} alt="preview" className="img img-fluid m-2" />
+    </div>
+    <div className="grid grid-cols-1 ">
+      <EditTicketForm ticketArray={ticketArray} setTicketArray={setTicketArray} match={match} />
+    </div>
+    <div className="grid grid-cols-1 mt-3 ">
+    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+          <div className="cursor-pointer">
+            <button
+              type="submit"
+              className="
+              text-white
+              bg-orange-500
+              rounded-sm
+              px-5
+              py-2
+              transition
+              hover:bg-orange-700
+              uppercase
+              "
+              onClick={handleSubmit}
+            >
+              Update
+            </button>
           </div>
         </div>
-      </div>
-    </>
+    </div>
+
+  </main>
+    // <>
+    //   <div className="container flex-1 text-center">
+    //     <PageTitle>Edit experience</PageTitle>
+    //   </div>
+    //   <div className="container overflow-hidden flex flex-col-reverse lg:flex-row items-center gap-6">
+    //     <div class="flex flex-1 flex-col items-center lg:items-start">
+    //       <div class="flex justify-center flex-wrap gap-6">
+    //         <ExperienceEditForm
+    //           values={values}
+    //           setValues={setValues}
+    //           setAddress={setAddress}
+    //           handleChange={handleChange}
+    //           handleImageChange={handleImageChange}
+    //           handleSelect={handleSelect}
+    //           handleSubmit={handleSubmit}
+    //           address={address}
+    //           setLocation={setLocation}
+    //         />
+    //       </div>
+    //       <div className="grid grid-cols-3 ">
+    //         <img src={preview} alt="preview" className="img img-fluid m-2" />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </>
   );
 };
 

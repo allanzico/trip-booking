@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {Link} from 'react-router-dom'
+import ErrorAlert from "../shared/ErrorAlert";
 
 const LoginForm = ({
   handleSubmit,
@@ -7,11 +8,23 @@ const LoginForm = ({
   setEmail,
   password,
   setPassword,
+  setShowAlert,
+  showAlert,
+  error
 }) => {
+  
   return (
     <main className="flex items-center justify-center ">
       <div className="w-full ">
+
+<ErrorAlert
+          error={error}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        />
+
         <form onSubmit={handleSubmit}>
+        {/* {error && <span className="error-message">{error}</span>} */}
           {/* email input  */}
           <div class="mb-4">
             <input

@@ -7,11 +7,11 @@ export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     try {
       let fields = req.fields;
-      const ticketFields = JSON.parse(fields.tickets)
+      const ticketFields = JSON.parse(fields.tickets);
       let files = req.files;
       let experience = new Experience(fields);
       experience.postedBy = req.user._id;
-      experience.tickets = ticketFields
+      experience.tickets = ticketFields;
 
       //read Image data
       if (files.image) {
@@ -89,8 +89,9 @@ export class ExperienceSetup {
     try {
       let fields = req.fields;
       let files = req.files;
-
+      const ticketFields = JSON.parse(fields.tickets);
       let data = { ...fields };
+      data.tickets = ticketFields;
 
       if (files.image) {
         let image: any = { data: "", contentType: "" };
@@ -105,6 +106,25 @@ export class ExperienceSetup {
     } catch (error) {
       console.log(error);
       res.status(400).send("Update failed");
+    }
+  }
+
+  async deleteExperience(req: any, res: any) {
+    await Experience.findByIdAndDelete(req.params.expId);
+  }
+
+  async deleteTicket(req: any, res: any) {
+    const { ticketId } = req.body;
+    const expId = req.params.expId;
+    try {
+      await Experience.updateOne(
+        { _id: expId },
+        { $pull: { tickets: { _id: ticketId } } }
+      );
+      res.status(200).send("success");
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(" failed");
     }
   }
 
@@ -163,11 +183,18 @@ export class ExperienceSetup {
 
   async searchListings(req: any, res: any) {
     const { location, date } = req.body;
-    const dates = date.split(",");
-    console.log(dates);
+    // const dates = date.split(",");
+    // console.log(dates);
+    // let result = await Experience.find({
+    //   startDate: { $gte: dates[0] },
+    //   endDate: { $lte: dates[1] },
+    //   location: new RegExp(location, "i"),
+    // })
+    //   .select("-image.data")
+    //   .exec();
+
     let result = await Experience.find({
-      startDate: { $gte: dates[0] },
-      endDate: { $lte: dates[1] },
+      startDate: { $gte: date},
       location: new RegExp(location, "i"),
     })
       .select("-image.data")
@@ -212,8 +239,6 @@ export class ExperienceSetup {
       console.log(error);
     }
   }
-
-  async deleteExperience(req: any, res: any) {}
 
   async favoriteExperience(req: any, res: any) {
     const { experience, favoritedBy } = req.body;

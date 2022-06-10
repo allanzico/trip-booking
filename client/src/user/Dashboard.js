@@ -8,7 +8,6 @@ import NewExperiences from "../experiences/Create/NewExperience";
 import { UserOutlined } from "@ant-design/icons";
 import {RiSuitcase3Line} from 'react-icons/ri'
 import { MdOutlineSettings } from "react-icons/md";
-import EditProfile from "./EditProfile";
 
 import {
   getAccountBalance,

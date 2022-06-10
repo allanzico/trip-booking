@@ -56,10 +56,6 @@ const CreateExperience = () => {
       experienceData.append("lat", coordinates.lat);
       experienceData.append("lng", coordinates.lng);
       experienceData.append(`tickets`, JSON.stringify(ticketArray))
-      // ticketArray.map((ticket) => {
-      //   experienceData.append(`tickets`, JSON.stringify(ticket))
-      // })
-      console.log(experienceData.getAll('tickets'))
       const res = await createExperience(token, experienceData);
       // dispatch(createExperience(res.data))
       toast.success("Added new experience", {

@@ -37,24 +37,23 @@ const SearchForm = () => {
   };
 
   return (
-   
-<div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-1">
-      <div class="w-full flex flex-col md:col-span-3 lg:col-span-3">
+    <div className="grid grid-cols-9 gap-1 flex grow">
+      <div className="col-span-9 md:col-span-5">
         <GooglePlacesSearch
           address={address}
           setAddress={setAddress}
           handleSelect={handleSelect}
         />
       </div>
-      <div class="w-full flex flex-col md:col-span-2 lg:col-span-2 ">
-        <RangePicker
+      <div className="col-span-9 md:col-span-3 ">
+        <DatePicker
           onChange={(value, dateString) => setDate(dateString)}
           disabledDate={(current) =>
             current && current.valueOf() < moment().subtract(1, "days")
           }
           className=" w-full
           rounded-sm
-          py-2
+          py-3
           pl-10
           px-[14px]
           border border-gray
@@ -65,29 +64,26 @@ const SearchForm = () => {
           focus:border-primary"
         />
       </div>
-      <div class="w-full flex flex-col md:col-span-1 lg:col-span-1">
+      <div className="col-span-9 md:col-span-1">
         <button
           onClick={handleSubmit}
           type="submit"
           className="
-                cursor-pointer
-                w-full
-                text-white
-                bg-orange-500
-                rounded-sm
-                px-2
-                py-2
-                transition
-                hover:bg-orange-700
-                uppercase
-                "
+              w-full
+              rounded-sm
+           text-white
+           bg-orange-500
+              py-3
+              px-[14px]
+              transition
+             hover:bg-orange-700
+             uppercase
+              "
         >
           Search
         </button>
       </div>
     </div>
-  
-    
   );
 };
 

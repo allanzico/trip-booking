@@ -16,9 +16,15 @@ router.post(
 );
 
 router.delete(
-  "/delete-experience",
+  "/delete-experience/:expId",
   requireSignIn,
   experience.deleteExperience
+);
+
+router.patch(
+  "/delete-ticket/:expId",
+  requireSignIn,
+  experience.deleteTicket
 );
 
 router.post(

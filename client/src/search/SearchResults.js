@@ -31,13 +31,6 @@ const SearchResults = () => {
         })
       }, [window.location.search]);
 
-    // useEffect(() => {
-    //   loadExperiences();
-    //   return () => {
-    //     source.cancel();
-    //   };
-    // }, []);
-    
     const handleExperienceEdit = () => {};
     return (
       <div className="h-screen">

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageTitle from "../components/Typography/PageTitle";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HomeOutlined } from "@ant-design/icons";
 import { createStripeAccount } from "../actions/stripe";
 import { toast } from "react-toastify";
@@ -14,13 +14,14 @@ import moment from "moment";
 import ListingsCard from "../components/cards/ListingsCard";
 import ListingsHeader from "../components/shared/ListingsHeader";
 import { PlusIcon } from "@heroicons/react/outline";
+import {fetchSellerExperiences} from '../Redux/reducers/experiences'
 
 const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
-  const [experiences, setExperiences] = useState([]);
   const source = axios.CancelToken.source();
-
+  const sellerExperiences = useSelector((state) => state.experiences.sellerExperiences);
+const dispatch = useDispatch()
   useEffect(() => {
     loadSellerExperiences();
     return () => {
@@ -30,7 +31,7 @@ const DashboardSeller = () => {
 
   const loadSellerExperiences = async () => {
     let { data } = await getSellerExperiences(auth.token, source.token);
-    setExperiences(data);
+    dispatch(fetchSellerExperiences(data))
   };
 
   const handleClick = async () => {
@@ -96,7 +97,7 @@ const DashboardSeller = () => {
     []
   );
 
-  const data = useMemo(() => [...experiences], [experiences]);
+  const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
 
   const connectedSeller = () => {
     return (
@@ -120,8 +121,8 @@ const DashboardSeller = () => {
           </Link>
         </div>
           <div className="flex flex-col">
-            {experiences &&
-              experiences.map((exp) => <ListingsCard exp={exp} />)}
+            {sellerExperiences &&
+              sellerExperiences.map((exp) => <ListingsCard exp={exp} />)}
           </div>
         </section>
       </main>

@@ -41,27 +41,30 @@ export default class Authentication {
 
   async updateUser(req: any, res: any) {
     //UPDATE
-    const { password, name, email, userId } = req.body;
+    const { password, name, email, phone, userId } = req.body;
     // const data = { name: name, password: password}
     try {
       const user = await User.findById(userId);
       if (user) {
         user.password = password || user.password;
         user.name = name || user.name;
+        user.phone = phone || user.phone
         if (!password || password == null) {
           user.password = user.password;
         }
         await user.save();
+        res.status(201).json({
+          success: true,
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone
+          },
+          message: "Profile updated!",
+        });
       }
-      res.status(201).json({
-        success: true,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        },
-        message: "Profile updated!",
-      });
+
     } catch (error) {
       console.log(error);
     }
@@ -121,6 +124,7 @@ export default class Authentication {
           name: user.name,
           email: user.email,
           authyId: user.authyId,
+          phone: user.phone,
           stripe_account_id: user.stripe_account_id,
           stripe_seller: user.stripe_seller,
           stripeSession: user.stripeSession,
@@ -218,7 +222,9 @@ export default class Authentication {
 
   async enableTwofactorAuth(req: any, res: any) {
     try {
-      const { email, countryCode, phone } = req.body;
+      const email = req.body.email
+      const countryCode = Number(req.body.internationalNumber.countryCallingCode)
+      const phone = Number(req.body.internationalNumber.nationalNumber)
       const user = await User.findOne({ email });
       if (!user) {
         return res.json({ message: "User account does not exist" });
@@ -230,24 +236,29 @@ export default class Authentication {
         countryCode,
         (err: any, regRes: any) => {
           if (err) {
+            console.log(err)
             return res.json({
-              message: "An error occurred while registering user",
+             success: false, message: err.message,
             });
           }
           user.authyId = regRes.user.id;
           user.save((err: any, user: any) => {
             if (err) {
+              console.log(err)
               return res.json({
-                message: "An error occurred while saving authyId into db",
+                success: false, message: err.message,
+                
               });
+            } else {
+              res.status(200).json({success: true, message: "2FA enabled" });
             }
           });
         }
       );
-      res.status(200).json({ message: "2FA enabled" });
+      
     } catch (error: any) {
       console.log(error);
-      res.status(500).json({ message: error.message });
+      res.status(500).json({success: false,  message: error.message });
     }
   }
 

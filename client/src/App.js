@@ -22,7 +22,6 @@ import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainDashboard from "./dashboard/MainDashboard";
 import { Toaster } from "react-hot-toast";
-import EditProfile from "./user/EditProfile";
 import Chat from "./components/Chat";
 
 function App() {
@@ -50,7 +49,6 @@ function App() {
           path="/booking/:bookingId"
           component={ViewBooking}
         /> */}
-        <PrivateRoute exact path="/edit-profile" component={EditProfile} />
         {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
         <PrivateRoute exact path="/dashboard" component={MainDashboard} />
         <PrivateRoute exact path="/messaging" component={Messaging} />

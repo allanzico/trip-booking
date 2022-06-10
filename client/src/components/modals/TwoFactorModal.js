@@ -1,13 +1,29 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
-import PhoneInput, {getCountryCallingCode,getCountries } from 'react-phone-number-input'
-
-
+import PhoneInput, {getCountryCallingCode,getCountries,  formatPhoneNumberIntl, isPossiblePhoneNumber, parsePhoneNumber } from 'react-phone-number-input'
+import { useDispatch } from "react-redux";
+import { enableTwofactorAuth } from "../../actions/auth";
 const TwoFactorModal = ({ auth, showModal, setShowModal }) => {
-    const [value, setValue] = useState()
+    const {user, token} = auth
+    const [phoneNumber, setPhoneNumber] = useState("")
+    const [localNumber, setLocalNumber]= useState("")
+    const [countryCode, setCountryCode]= useState("")
+    const dispatch = useDispatch()
+
   const handleEnableTwofactorAuth = async () => {
-    console.log(value)
-    console.log(getCountries())
+    const internationalNumber = parsePhoneNumber(phoneNumber)
+    const data = {
+      internationalNumber,
+      email: user.email
+    }
+    try {
+      const res = await enableTwofactorAuth(data, token)
+      console.log(res.data)
+      // dispatch(setTwoFactorAuth(res.data))
+    } catch (error) {
+      
+    }
+    // {value && isPossiblePhoneNumber(value) ? 'true' : 'false'}
   };
 
 
@@ -60,21 +76,8 @@ const TwoFactorModal = ({ auth, showModal, setShowModal }) => {
         international
         countryCallingCodeEditable={false}
         defaultCountry="UG"
-        value={value}
-        onChange={setValue}
-        className="
-        w-full
-        rounded-sm
-        py-2
-        px-[14px]
-        border border-gray
-        outline-none
-        hover:outline-orange-500
-        hover:outline-1
-        focus-visible:shadow-none
-        focus:border-primary
-        
-        "
+        value={phoneNumber}
+        onChange={setPhoneNumber}
       />
     </Modal>
   );

@@ -28,6 +28,7 @@ const UserType = new Schema(
       min: 8,
       max: 64,
     },
+    phone: {},
     authyId: {
       type: String,
       default: null

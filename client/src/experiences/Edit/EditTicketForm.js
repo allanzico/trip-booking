@@ -75,7 +75,7 @@ const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
         )}
       </div>
       <div className="col-span-6">
-        {ticketArray.length >= 1
+        {ticketArray && ticketArray.length >= 1
           ? ticketArray.map((ticket) => (
               <div
                 key={ticket.ticketId}

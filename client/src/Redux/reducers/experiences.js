@@ -118,7 +118,7 @@ export const experiencesReducer = (state = initialState, { type, payload }) => {
         case "DELETE_EXPERIENCE":
           return { ...state, experiences: state.experiences.filter(exp => exp._id !== payload) }
           case "DELETE_TICKET":
-            return { ...state, experiences: state.experiences.tickets.filter(ticket => ticket._id !== payload) }
+            return { ...state, experiences: state.singleExperience.tickets.filter(ticket => ticket._id !== payload) }
     default:
       return state;
   }

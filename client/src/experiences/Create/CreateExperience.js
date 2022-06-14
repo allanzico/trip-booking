@@ -58,13 +58,12 @@ const CreateExperience = () => {
       experienceData.append(`tickets`, JSON.stringify(ticketArray))
       const res = await createExperience(token, experienceData);
       // dispatch(createExperience(res.data))
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
       toast.success("Added new experience", {
         id: refreshToast,
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.log(error);
       toast.error("Error adding", {

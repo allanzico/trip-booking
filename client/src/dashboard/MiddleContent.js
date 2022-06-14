@@ -13,6 +13,7 @@ import Tickets from "../components/tickets/Tickets";
 import ViewBookings from "../components/bookings/ViewBookings";
 import CreateExperience from "../experiences/Create/CreateExperience";
 import Settings from "../settings/Settings";
+import SellerRoute from "../components/SellerRoute";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -53,11 +54,9 @@ const MiddleContent = () => {
 
       <section className="px-1 md:px-2 pb-0 ">
         <Switch>
-          <PrivateRoute
-            exact
+          <SellerRoute  exact
             path="/dashboard/seller"
-            component={DashboardSeller}
-          />
+            component={DashboardSeller} />
           <PrivateRoute
             exact
             path="/user-experience-bookings"

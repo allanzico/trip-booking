@@ -75,6 +75,7 @@ const InfoCard = ({ exp }) => {
     console.log(ids)
     
   };
+
   //Create favorites
   const addFavorite = async (e) => {
     e.stopPropagation();
@@ -121,7 +122,7 @@ const InfoCard = ({ exp }) => {
         </div>
         <h4 className="text-xl">{exp.title}</h4>
         <div className="border-b w-10 pt-2" />
-        <p className="pt-2 text-sm text-gray-500 flex-grow">{`${exp.description.substring(
+        <p className="pt-2 text-sm text-gray-500 flex-grow">{`${ exp.description && exp.description.substring(
           0,
           150
         )}...`}</p>

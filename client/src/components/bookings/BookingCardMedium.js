@@ -10,12 +10,15 @@ const BookingCardMedium = ({ experience,bookingId }) => {
     experience.image && experience.image.contentType
       ? `${process.env.REACT_APP_API}/experience/image/${experience._id}`
       : "https://via.placeholder.com/900x500.png?text=PREVIEW";
+
   return (
- <div
+    <>
+     <div
      onClick={() => history.push(`/booking/${bookingId}`)}
       className="cursor-pointer hover:scale-105 transform transition duration-300 ease-out"
     >
-      <div className="relative h-42 w-42 flex-shrink-0">
+     
+        <div className="relative h-42 w-42 flex-shrink-0">
         <ImageComponent src={img} alt="image" />
       </div>
       <div className="my-2">
@@ -26,7 +29,11 @@ const BookingCardMedium = ({ experience,bookingId }) => {
         </h3>
         <h3 className="text-gray-500">Your Host: {experience.postedBy.name}</h3>
       </div>
+
     </div>
+    
+    </>
+
     
   );
 };

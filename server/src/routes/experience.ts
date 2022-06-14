@@ -1,7 +1,7 @@
 
 import express from "express";
 import { ExperienceSetup } from "../controllers/experience";
-import {  expOwner, requireSignIn } from "../middlewares/middlewares";
+import {  authSeller, expOwner, requireSignIn } from "../middlewares/middlewares";
 import formidable from "express-formidable"
 
 const experience = new ExperienceSetup()
@@ -11,6 +11,7 @@ const router = express.Router();
 router.post(
   "/create-experience",
   requireSignIn,
+  authSeller,
   formidable(),
   experience.createExperience
 );
@@ -18,12 +19,14 @@ router.post(
 router.delete(
   "/delete-experience/:expId",
   requireSignIn,
+  authSeller,
   experience.deleteExperience
 );
 
 router.patch(
   "/delete-ticket/:expId",
   requireSignIn,
+  authSeller,
   experience.deleteTicket
 );
 
@@ -49,6 +52,7 @@ router.put(
   "/update-experience/:expId",
   requireSignIn,
   expOwner,
+  authSeller,
   formidable(),
   experience.updateExperience
 );
@@ -66,6 +70,7 @@ router.get(
 router.get(
   "/seller-experiences",
   requireSignIn,
+  authSeller,
   experience.getSellerExperiences
 );
 

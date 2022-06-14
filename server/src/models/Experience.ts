@@ -98,10 +98,14 @@ const ExperienceType = new Schema(
           trim: true,
           required: [true, "Max tickets field is required"],
         },
-      }
+      },
+      
     ]
   },
   { timestamps: true }
 );
-
+// Validations for array size
+ExperienceType.path('tickets')
+    .validate((val: any) => val.length > 0, 'Must have minimum one option');
+    
 export default mongoose.model("Experience", ExperienceType);

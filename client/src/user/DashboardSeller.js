@@ -20,7 +20,7 @@ const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
   const source = axios.CancelToken.source();
-  const sellerExperiences = useSelector((state) => state.experiences.sellerExperiences);
+  const [sellerExperiences, setSellerExperiences] = useState([])
 const dispatch = useDispatch()
   useEffect(() => {
     loadSellerExperiences();
@@ -31,7 +31,7 @@ const dispatch = useDispatch()
 
   const loadSellerExperiences = async () => {
     let { data } = await getSellerExperiences(auth.token, source.token);
-    dispatch(fetchSellerExperiences(data))
+    setSellerExperiences(data)
   };
 
   const handleClick = async () => {
@@ -96,6 +96,7 @@ const dispatch = useDispatch()
     ],
     []
   );
+
 
   // const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
 
@@ -163,8 +164,7 @@ const dispatch = useDispatch()
     <>
       {auth &&
       auth.user &&
-      auth.user.stripe_seller &&
-      auth.user.stripe_seller.charges_enabled
+      auth.user.role === "seller"
         ? connectedSeller()
         : notConnectedSeller()}
     </>

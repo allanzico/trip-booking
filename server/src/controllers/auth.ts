@@ -5,9 +5,11 @@ import crypto from "crypto";
 const authy = require("authy")(<string>process.env.AUTHY_API_KEY);
 
 export default class Authentication {
+
   //register users
   async registerUser(req: any, res: any, next: any): Promise<void> {
-    const { name, email, password } = req.body;
+    const { name, email, password, role} = req.body;
+
     try {
       const user = await User.create({
         name,
@@ -18,6 +20,8 @@ export default class Authentication {
     } catch (error) {
       next(error);
     }
+
+
     // try {
     //   const { name, email, password } = req.body;
     //   let userExists = await User.findOne({ email: { $eq: email } }).exec();
@@ -38,6 +42,12 @@ export default class Authentication {
     //   return res.sendStatus(400);
     // }
   }
+
+    //Register Seller
+    async registerSeller (req: any, res: any, next: any) {
+      
+    }
+
 
   async updateUser(req: any, res: any) {
     //UPDATE
@@ -125,6 +135,7 @@ export default class Authentication {
           email: user.email,
           authyId: user.authyId,
           phone: user.phone,
+          role: user.role,
           stripe_account_id: user.stripe_account_id,
           stripe_seller: user.stripe_seller,
           stripeSession: user.stripeSession,

@@ -21,6 +21,7 @@ import ExperienceView from "./experiences/View/ExperienceView";
 import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainDashboard from "./dashboard/MainDashboard";
+import UserLikes from "./auth/UserLikes"
 import { Toaster } from "react-hot-toast";
 import Chat from "./components/Chat";
 
@@ -52,6 +53,7 @@ function App() {
         {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
         <PrivateRoute exact path="/dashboard" component={MainDashboard} />
         <PrivateRoute exact path="/messaging" component={Messaging} />
+        <PrivateRoute exact path="/user-likes" component={UserLikes} />
         
         <PrivateRoute
           exact

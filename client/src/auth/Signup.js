@@ -27,6 +27,7 @@ const Signup = ({ history }) => {
         email,
         name,
         password,
+        role: "buyer"
       });
       toast.success("Signup successful");
       history.push("/login");

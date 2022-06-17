@@ -150,39 +150,6 @@ const NewExperiences = () => {
               handleStepControl={handleStepControl}
             />
       )}
-
-
-
-      {/* <div className="container flex-1 text-center">
-        <PageTitle>
-        Add experience
-        </PageTitle>
-      </div>
-      <div className="container pl-5 overflow-hidden flex flex-col-reverse lg:flex-row items-center gap-12">
-      <div class="flex flex-1 flex-col items-center lg:items-start">
-          <div class="flex justify-center flex-wrap gap-6">
-            <ExperienceForm
-              values={values}
-              setValues={setValues}
-              setAddress={setAddress}
-              handleChange={handleChange}
-              handleImageChange={handleImageChange}
-              handleSelect={handleSelect}
-              handleSubmit={handleSubmit}
-              address={address}
-              location={address}
-              setLocation={setLocation}
-            />
-            
-          </div>
-          <div className="grid grid-cols-3 ">
-            <img src={preview} alt="preview" className="img img-fluid m-2" />
-            <pre>{JSON.stringify(values, null, 4)}</pre>
-            {JSON.stringify(coordinates)}
-        </div>
-
-        </div>
-      </div> */}
     </>
   );
 };

@@ -42,6 +42,13 @@ export const getUserById = async (userId, token, cancelToken) => {
   });
 };
 
+export const getUserInterests = async (cancelToken) => {
+  return await axios.get(`${process.env.REACT_APP_API}/user-interests`, {
+    cancelToken: cancelToken,
+});
+};
+
+
 //update local storage
 export const updateLocalStorage = async (user, next) => {
   if (window.localStorage.getItem('auth')) {

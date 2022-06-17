@@ -2,19 +2,17 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import EmailSender from "../lib/sendEmail";
 import crypto from "crypto";
+import UserInterests from "../models/UserInterests";
 const authy = require("authy")(<string>process.env.AUTHY_API_KEY);
 
 export default class Authentication {
 
   //register users
   async registerUser(req: any, res: any, next: any): Promise<void> {
-    const { name, email, password, role} = req.body;
-
+    const { firstName, lastName, email, password, confirmPassword, userInterests, role} = req.body;
     try {
       const user = await User.create({
-        name,
-        email,
-        password,
+        firstName, lastName, email, password, confirmPassword, userInterests, role
       });
       res.status(201).json({ success: true, user });
     } catch (error) {
@@ -136,6 +134,7 @@ export default class Authentication {
           authyId: user.authyId,
           phone: user.phone,
           role: user.role,
+          userInterest: user.userInterests,
           stripe_account_id: user.stripe_account_id,
           stripe_seller: user.stripe_seller,
           stripeSession: user.stripeSession,
@@ -291,4 +290,28 @@ export default class Authentication {
           res.status(500).json({ message: error.message});
         }
   }
+
+  async createUserInterests (req: any, res: any, next:any) {
+    const {title } = req.body;
+    try {
+      const userInterests = await UserInterests.create({
+        title
+      });
+      res.status(201).json({ success: true, userInterests });
+    } catch (error) {
+      next(error);
+    }
+
+}
+
+async getUserInterests(req: any, res: any) {
+  try {
+    let userInterests = await UserInterests.find({})
+      .select("-image.data")
+      .exec();
+    res.json(userInterests);
+  } catch (error) {
+    console.log(error);
+  }
+}
 }

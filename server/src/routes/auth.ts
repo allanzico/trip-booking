@@ -13,6 +13,7 @@ const auth = new Authentication()
  router.post('/reset-password/:resetToken', auth.resetPassword)
  router.post('/enable-2fa', requireSignIn, auth.enableTwofactorAuth)
  router.post('/verify-2fa/:twoFactorToken', auth.verifyTwofactorAuth)
+ router.post('/create-user-interests', auth.createUserInterests)
  router.put('/edit-profile', requireSignIn, auth.updateUser)
  
  router.get(
@@ -21,4 +22,8 @@ const auth = new Authentication()
     auth.getUsersById
   );
 
+  router.get(
+    "/user-interests",
+    auth.getUserInterests
+  );
 module.exports = router

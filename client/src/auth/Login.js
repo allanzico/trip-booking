@@ -27,7 +27,7 @@ const Login = ({ history }) => {
           payload: res.data,
         });
         setShowAlert(false)
-        history.push("/user-likes");
+        history.push("/dashboard");
       }
     } catch (error) {
       setError(error.response.data.error);

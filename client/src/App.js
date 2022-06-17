@@ -10,7 +10,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import StripeCallback from "./stripe/StripeCallback";
 import Experiences from "./experiences/View/Experiences";
 import ResponsiveNav from "./components/navigation/ResponsiveNav";
-import "@material-tailwind/react/tailwind.css";
 import ViewExperience from "./experiences/View/ViewExperience";
 import ViewBooking from "./components/bookings/ViewBookings";
 import StripeCancel from "./stripe/StripeCancel";
@@ -21,9 +20,12 @@ import ExperienceView from "./experiences/View/ExperienceView";
 import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainDashboard from "./dashboard/MainDashboard";
-import UserLikes from "./auth/UserLikes"
+
 import { Toaster } from "react-hot-toast";
 import Chat from "./components/Chat";
+
+import Register from "./auth/Signup/Register";
+
 
 function App() {
   return (
@@ -35,8 +37,11 @@ function App() {
         <Route exact path="/experiences" component={Experiences} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/register" component={Register} />
+        
         <Route exact path="/search-result" component={SearchResults} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
+ 
         <Route
           exact
           path="/reset-password/:resetToken"
@@ -53,8 +58,7 @@ function App() {
         {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
         <PrivateRoute exact path="/dashboard" component={MainDashboard} />
         <PrivateRoute exact path="/messaging" component={Messaging} />
-        <PrivateRoute exact path="/user-likes" component={UserLikes} />
-        
+      
         <PrivateRoute
           exact
           path="/stripe/callback"

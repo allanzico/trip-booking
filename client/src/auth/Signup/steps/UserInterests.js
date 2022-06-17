@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { getUserInterests } from "../../../actions/auth";
+import SignupSVG from "../../../images/SignupSVG";
+import InterestsSVG from "../../../images/InterestsSVG";
 
 const UserInterests = (props) => {
   const source = axios.CancelToken.source();
@@ -40,31 +42,40 @@ const UserInterests = (props) => {
 
   return (
     <>
-      <div className="container mb-5 flex flex-col text-center">
+      <div className="container mb-2 flex flex-col text-center">
         <h1 className="lg:text-4xl text-2xl"> Interests</h1>
       </div>
-      <div className="grid grid-cols-1">
+      <div className="container mb-5 flex flex-col text-center">
+        <p className="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+      </div>
+
+      <section class="relative ">
+        <div class="container pl-5 pt-2 overflow-hidden mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
+          <div class="flex flex-1 flex-col items-center lg:items-start">
+            <div class="flex justify-center items-center flex-wrap gap-6">
+              <InterestsSVG />
+              
+              <div className="grid grid-cols-1">
         <Formik
           validationSchema={stepTwoValidationSchema}
           initialValues={props.data}
           onSubmit={handleSubmit}
         >
+        
           {({ values }) => (
             <Form>
               <div className="flex flex-col">
-                <div role="group" aria-labelledby="checkbox-group">
-                <div className="grid grid-cols-1 space-x-2 md:grid-cols-4 my-2">
+                <div className="grid grid-cols-1 gap-2">
                   {userInterests &&
                     userInterests.map((interest) => (
                       <div className="flex">
-                        <div class="flex border items-center p-2 hover:scale-105 transition transform duration-200 ease-out">
+                        <div class="flex border items-center p-2">
                           <Field
                             key={interest._id}
                             type="checkbox"
                             name="userInterests"
                             value={interest._id}
                           />
-
                           <div class="ml-2 text-sm">
                             <label class="font-medium text-gray-900 dark:text-gray-300">
                               {interest.title}
@@ -78,7 +89,7 @@ const UserInterests = (props) => {
                       </div>
                     ))}
                     </div>
-                </div>
+                
                 <div className="grid grid-cols-1 mt-3 ">
                   <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <div className="flex items-center justify-end gap-2">
@@ -125,6 +136,11 @@ const UserInterests = (props) => {
           )}
         </Formik>
       </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </>
   );
 };

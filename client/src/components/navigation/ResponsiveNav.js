@@ -34,7 +34,7 @@ const ResponsiveNav = () => {
 
   const authNavigation = [
     { name: "Login", to: "/login", current: false },
-    { name: "Register", to: "/signup", current: false },
+    { name: "Register", to: "/register", current: false },
   ];
   const userNavigation = [
     { name: "Your Profile", to: "/edit-profile" },

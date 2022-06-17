@@ -6,7 +6,7 @@
     "@ant-design/icons": "^4.7.0",
     "@babel/core": "^7.17.5",
     "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.16.7",
-    "@badrap/bar-of-progress": "^0.1.2",
+    "@badrap/bar-of-progress": "^0.2.1",
     "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",

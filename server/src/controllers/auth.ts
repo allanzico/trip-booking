@@ -49,13 +49,13 @@ export default class Authentication {
 
   async updateUser(req: any, res: any) {
     //UPDATE
-    const { password, name, email, phone, userId } = req.body;
-    // const data = { name: name, password: password}
+    const { password, firstName, lastName, phone, userId } = req.body;
     try {
       const user = await User.findById(userId);
       if (user) {
         user.password = password || user.password;
-        user.name = name || user.name;
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
         user.phone = phone || user.phone
         if (!password || password == null) {
           user.password = user.password;
@@ -65,7 +65,8 @@ export default class Authentication {
           success: true,
           user: {
             _id: user._id,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             phone: user.phone
           },
@@ -129,7 +130,8 @@ export default class Authentication {
         token,
         user: {
           _id: user._id,
-          name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           authyId: user.authyId,
           phone: user.phone,

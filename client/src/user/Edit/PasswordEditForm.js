@@ -30,8 +30,6 @@ const PasswordEditForm = ({
                   px-[14px]
                   border border-gray
                   outline-none
-                  hover:outline-orange-500
-                  hover:outline-1
                   focus-visible:shadow-none
                   focus:border-primary
                   "
@@ -56,8 +54,6 @@ const PasswordEditForm = ({
                   px-[14px]
                   border border-gray
                   outline-none
-                  hover:outline-orange-500
-                  hover:outline-1
                   focus-visible:shadow-none
                   focus:border-primary
                   "

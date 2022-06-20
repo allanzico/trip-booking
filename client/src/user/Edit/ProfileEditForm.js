@@ -3,10 +3,12 @@ import PhoneInput from "react-phone-number-input";
 
 const ProfileEditForm = ({
   handleSubmit,
-  name,
+  firstName,
+  lastName,
   email,
   phoneNumber,
-  setName,
+  setFirstName,
+  setLastName,
   setPhoneNumber,
   error,
   success,
@@ -20,17 +22,17 @@ const ProfileEditForm = ({
             <p>Profile Image section with preview</p>
           </div>
 
-          {/* Name input */}
+          {/* First Name input */}
           <div className="col-span-6">
             <div className="relative mb-2 ">
               <label class="mt-2 mb-1 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-                Name
+                First Name
               </label>
               <input
-                onChange={(e) => setName(e.target.value)}
-                value={name}
+                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName}
                 type="text"
-                name="name"
+                name="firstName"
                 className="
                     w-full
                     rounded-sm
@@ -38,8 +40,31 @@ const ProfileEditForm = ({
                     px-[14px]
                     border border-gray
                     outline-none
-                    hover:outline-orange-500
-                    hover:outline-1
+                    focus-visible:shadow-none
+                    focus:border-primary
+                    "
+              />
+            </div>
+          </div>
+
+                    {/* Last Name input */}
+                    <div className="col-span-6">
+            <div className="relative mb-2 ">
+              <label class="mt-2 mb-1 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
+                Last Name
+              </label>
+              <input
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
+                type="text"
+                name="lastName"
+                className="
+                    w-full
+                    rounded-sm
+                    py-2
+                    px-[14px]
+                    border border-gray
+                    outline-none
                     focus-visible:shadow-none
                     focus:border-primary
                     "
@@ -65,8 +90,6 @@ const ProfileEditForm = ({
                         py-2
                         px-[14px]
                         outline-none
-                        hover:outline-orange-500
-                        hover:outline-1
                         focus-visible:shadow-none
                         focus:border-primary
                         rounded

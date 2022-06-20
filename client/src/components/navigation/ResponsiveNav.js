@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Avatar from '@mui/material/Avatar';
+import Avatar from "@mui/material/Avatar";
 import BackgroundLetterAvatars from "../shared/ProfileAvatar";
 
 const ResponsiveNav = () => {
@@ -14,28 +14,27 @@ const ResponsiveNav = () => {
   const user = {
     name: auth?.user.name,
     email: auth?.user.email,
-    imageUrl:
-      "",
+    imageUrl: "",
   };
 
-  const navigation = 
-  
-  [
-    ...auth ? [
-      { name: "Home", to: "/", current: false },
-      { name: "Experiences", to: "/experiences", current: false },
-      { name: "Dashboard", to: "/dashboard", current: false},
-    ] : [
-      { name: "Home", to: "/", current: false },
-      { name: "Experiences", to: "/experiences", current: false },
-    ],
-
+  const navigation = [
+    ...(auth
+      ? [
+          { name: "Home", to: "/", current: false },
+          { name: "Experiences", to: "/experiences", current: false },
+          { name: "Dashboard", to: "/dashboard", current: false },
+        ]
+      : [
+          { name: "Home", to: "/", current: false },
+          { name: "Experiences", to: "/experiences", current: false },
+        ]),
   ];
 
   const authNavigation = [
     { name: "Login", to: "/login", current: false },
     { name: "Register", to: "/register", current: false },
   ];
+
   const userNavigation = [
     { name: "Your Profile", to: "/edit-profile" },
     { name: "Messages", to: "/messaging", current: false },
@@ -67,13 +66,11 @@ const ResponsiveNav = () => {
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                   
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png"
-                          alt=""
-                        />
-                   
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png"
+                        alt=""
+                      />
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -110,6 +107,25 @@ const ResponsiveNav = () => {
                             </Link>
                           ))}
                       </div>
+                      {auth && auth.user?.role === "buyer" && (
+                        <Link to="/register-merchant">
+                          <button
+                            type="submit"
+                            className="
+                              text-white
+                              bg-orange-500
+                              rounded-sm
+                              px-2
+                              py-2
+                              transition
+                              hover:bg-orange-700
+                              mr-5
+                              "
+                          >
+                            Register Merchant Account
+                          </button>
+                        </Link>
+                      )}
                       {auth && (
                         <button
                           type="button"

@@ -4,14 +4,15 @@ import * as Yup from "yup";
 import CustomTextField from "../../../components/CustomMUI/CustomTextField";
 import RegisterSVG from "../../../images/RegisterSVG";
 import SignupSVG from "../../../images/SignupSVG";
+import { Link } from "react-router-dom";
 const PersonalInfo = (props) => {
   const stepOneValidationSchema = Yup.object().shape({
-    firstName: Yup.string().required().label("First Name"),
-    lastName: Yup.string().required().label("Last Name"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required(),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("Please enter a password"),
     confirmPassword: Yup.string()
-      .required()
+      .required("This field is required")
       .oneOf([Yup.ref("password"), null], "Passwords do not match"),
   });
 
@@ -102,6 +103,11 @@ const PersonalInfo = (props) => {
                     </div>
                   </div>
                 </div>
+                <div class="mb-2 my-2">
+            
+            Already have an account? <Link to="/login" className="text-orange-500">Login here</Link>
+            
+          </div>
               </div>
             </Form>
           )}

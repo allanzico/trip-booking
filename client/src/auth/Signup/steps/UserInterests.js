@@ -5,6 +5,7 @@ import axios from "axios";
 import { getUserInterests } from "../../../actions/auth";
 import SignupSVG from "../../../images/SignupSVG";
 import InterestsSVG from "../../../images/InterestsSVG";
+import { Link } from "react-router-dom";
 
 const UserInterests = (props) => {
   const source = axios.CancelToken.source();
@@ -51,7 +52,7 @@ const UserInterests = (props) => {
 
       <section class="relative ">
         <div class="container pl-5 pt-2 overflow-hidden mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
-          <div class="flex flex-1 flex-col items-center lg:items-start">
+          <div class="flex flex-1 flex-col items-center">
             <div class="flex justify-center items-center flex-wrap gap-6">
               <InterestsSVG />
               
@@ -131,6 +132,11 @@ const UserInterests = (props) => {
                     </div>
                   </div>
                 </div>
+                <div class="mb-2 my-2">
+            
+            Already have an account? <Link to="/login" className="text-orange-500">Login here</Link>
+            
+          </div>
               </div>
             </Form>
           )}

@@ -22,7 +22,7 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
- 
+ if (name === null) 
     return {
       sx: {
         bgcolor: stringToColor(name),

@@ -20,11 +20,10 @@ import ExperienceView from "./experiences/View/ExperienceView";
 import ResetPassword from "./auth/ResetPassword";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainDashboard from "./dashboard/MainDashboard";
-
 import { Toaster } from "react-hot-toast";
 import Chat from "./components/Chat";
-
 import Register from "./auth/Signup/Register";
+import RegisterMerchant from "./merchant/register/RegisterMerchant";
 
 
 function App() {
@@ -38,7 +37,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         {/* <Route exact path="/signup" component={Signup} /> */}
         <Route exact path="/register" component={Register} />
-        
+        <PrivateRoute exact path="/register-merchant" component={RegisterMerchant}/>
         <Route exact path="/search-result" component={SearchResults} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
  

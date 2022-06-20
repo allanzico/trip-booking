@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import PageTitle from "../../components/Typography/PageTitle";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import {
@@ -21,7 +21,8 @@ const EditProfile = () => {
   const { token, user } = auth;
   const source = axios.CancelToken.source();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState("");
@@ -35,12 +36,15 @@ const EditProfile = () => {
 
   useEffect(() => {
     setEmail(user.email);
-    setName(user.name);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
     setPhoneNumber(user.phone?.number);
     return () => {
       source.cancel();
     };
   }, []);
+
+  console.log(user)
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -56,7 +60,8 @@ const EditProfile = () => {
       
       const data = {
         userId,
-        name,
+        lastName,
+        firstName,
         email,
         phone,
       };
@@ -95,12 +100,14 @@ const EditProfile = () => {
         <div className="grid grid-cols-1">
           <ProfileEditForm
             handleSubmit={handleSubmit}
-            name={name}
+            firstName={firstName}
+            lastName={lastName}
+            setFirstName={setFirstName}
+            setLastName={setLastName}
             email={email}
             phoneNumber={phoneNumber}
             error={updateError}
             success={updateSuccess}
-            setName={setName}
             setPhoneNumber={setPhoneNumber}
           />
         </div>

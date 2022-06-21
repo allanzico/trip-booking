@@ -97,6 +97,7 @@ router.get(
   requireSignIn,
   experience.isAlreadyBooked
 );
+
 router.get(
   "/is-already-favorited/:expId",
   requireSignIn,

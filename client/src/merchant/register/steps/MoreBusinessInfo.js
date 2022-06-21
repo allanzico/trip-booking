@@ -5,6 +5,10 @@ import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
 
 const MoreBusinessInfo = (props) => {
 const {address, setAddress, handleSelect} = props
+
+
+
+
   const handleSubmit = (values) => {
     props.next(values, true);
   };
@@ -27,7 +31,8 @@ const {address, setAddress, handleSelect} = props
               <div className="flex flex-col">
               <div className="grid grid-cols-1 space-y-2"> 
               <div className="col-span-6 mb-2">
-                <p>Lorem</p>
+                <h2 className="text-xl">Location of business</h2>
+                <p>Please enter the location of your business</p>
               </div>
                     {/* Location input */}
       <div className="col-span-6 mb-2">

@@ -3,10 +3,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../../components/CustomMUI/CustomTextField";
 const BusinessInfo = (props) => {
-  const stepOneValidationSchema = Yup.object().shape({
 
+  const urlRegex = /^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i
+  const businessInfoValidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
-
+    companyName: Yup.string().required("Company name is required"),
+    companyUrl: Yup.string().matches(urlRegex, 'Enter a valid url').required("Company website is required")
   });
 
   const handleSubmit = (values) => {
@@ -21,7 +23,7 @@ const BusinessInfo = (props) => {
 
     <div className="grid grid-cols-1">
         <Formik
-          validationSchema={stepOneValidationSchema}
+          validationSchema={businessInfoValidationSchema}
           initialValues={props.data}
           onSubmit={handleSubmit}
         >
@@ -34,13 +36,10 @@ const BusinessInfo = (props) => {
                   </div>
 
                   <div className="col-span-6">
-                    Location
+                  <CustomTextField name="companyName" label="company name" size="small" />
                   </div>
                   <div className="col-span-6">
-                    Business Name
-                  </div>
-                  <div className="col-span-6">
-                    Company URL
+                  <CustomTextField name="companyUrl" label="company Website" size="small" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 mt-3 ">

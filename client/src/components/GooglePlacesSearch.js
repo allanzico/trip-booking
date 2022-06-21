@@ -1,6 +1,5 @@
 import React from "react";
-import { DatePicker, Skeleton } from "antd";
-import moment from "moment";
+import { Skeleton } from "antd";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PlacesAutocomplete from "react-places-autocomplete";
 import {

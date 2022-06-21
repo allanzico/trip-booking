@@ -37,7 +37,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         {/* <Route exact path="/signup" component={Signup} /> */}
         <Route exact path="/register" component={Register} />
-        <PrivateRoute exact path="/register-merchant" component={RegisterMerchant}/>
+        <PrivateRoute exact path="/register-company" component={RegisterMerchant}/>
         <Route exact path="/search-result" component={SearchResults} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
  

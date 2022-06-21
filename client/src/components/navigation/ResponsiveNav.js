@@ -108,7 +108,7 @@ const ResponsiveNav = () => {
                           ))}
                       </div>
                       {auth && auth.user?.role === "buyer" && (
-                        <Link to="/register-merchant">
+                        <Link to="/register-company">
                           <button
                             type="submit"
                             className="
@@ -274,6 +274,27 @@ const ResponsiveNav = () => {
                         </Link>
                       ))}
                     </div>
+                    <div className="mt-3 px-2 space-y-1">
+                    {auth && auth.user?.role === "buyer" && (
+                        <Link to="/register-company">
+                          <button
+                            type="submit"
+                            className="
+                              text-white
+                              bg-orange-500
+                              rounded-sm
+                              px-2
+                              py-2
+                              transition
+                              hover:bg-orange-700
+                              mr-5
+                              "
+                          >
+                            Register Merchant Account
+                          </button>
+                        </Link>
+                      )}
+                      </div>
                   </div>
                 )}
               </Disclosure.Panel>

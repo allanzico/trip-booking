@@ -41,12 +41,6 @@ export default class Authentication {
     // }
   }
 
-    //Register Seller
-    async registerSeller (req: any, res: any, next: any) {
-      
-    }
-
-
   async updateUser(req: any, res: any) {
     //UPDATE
     const { password, firstName, lastName, phone, userId } = req.body;

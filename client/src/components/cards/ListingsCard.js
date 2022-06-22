@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { currencyFormatter } from "../../actions/stripe";
 import moment from "moment";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { ClipboardCheckIcon, DotsVerticalIcon } from "@heroicons/react/outline";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Menu from "@mui/material/Menu";
 import PopupState, {
@@ -147,14 +147,16 @@ const ListingsCard = ({ exp }) => {
                       <p className="text-sm">Delete</p>
                     </ListItemText>
                   </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <ShareIcon className="h-4 w-4" />
-                    </ListItemIcon>
-                    <ListItemText>
-                      <p className="text-sm">Share</p>
-                    </ListItemText>
-                  </MenuItem>
+                  <Link to={`/itenerary/${exp._id}`}>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <ClipboardCheckIcon className="h-4 w-4" />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <p className="text-sm">Itenerary</p>
+                      </ListItemText>
+                    </MenuItem>
+                  </Link>
                 </MenuList>
               </Menu>
             </React.Fragment>

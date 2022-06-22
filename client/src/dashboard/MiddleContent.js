@@ -14,6 +14,8 @@ import ViewBookings from "../components/bookings/ViewBookings";
 import CreateExperience from "../experiences/Create/CreateExperience";
 import Settings from "../settings/Settings";
 import SellerRoute from "../components/SellerRoute";
+import DashboardHome from "./DashboardHome";
+import CreateItenerary from "../itenerary/CreateItenerary";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -57,7 +59,12 @@ const MiddleContent = () => {
           <SellerRoute  exact
             path="/dashboard/seller"
             component={DashboardSeller} />
-          <PrivateRoute
+          {/* <PrivateRoute
+            exact
+            path="/dashboard/home"
+            component={DashboardHome}
+          /> */}
+           <PrivateRoute
             exact
             path="/user-experience-bookings"
             component={BookingsComponent}
@@ -71,6 +78,11 @@ const MiddleContent = () => {
             exact
             path="/experience/edit/:expId"
             component={EditExperience}
+          />
+                    <PrivateRoute
+            exact
+            path="/itenerary/:expId"
+            component={CreateItenerary}
           />
           <PrivateRoute exact path="/user-tickets" component={Tickets} />
           <PrivateRoute exact path="/settings" component={Settings} />

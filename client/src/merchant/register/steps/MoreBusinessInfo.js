@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
+import CustomCheckBox from "../../../components/CustomMUI/CustomCheckBox";
 
 const MoreBusinessInfo = (props) => {
 const {address, setAddress, handleSelect} = props
 
-
+const moreInfoValidationSchema = Yup.object().shape({
+  termsOfService: Yup.boolean().oneOf([true], "To continue, please accept the terms").required('Please accept the terms')
+});
 
 
   const handleSubmit = (values) => {
@@ -23,6 +26,7 @@ const {address, setAddress, handleSelect} = props
               <div className="grid grid-cols-1">
         <Formik
           initialValues={props.data}
+          validationSchema={moreInfoValidationSchema}
           onSubmit={handleSubmit}
         >
         
@@ -41,6 +45,9 @@ const {address, setAddress, handleSelect} = props
           setAddress={setAddress}
           handleSelect={handleSelect}
         />
+      </div>
+      <div className="col-span-6 mb-2">
+        <CustomCheckBox name="termsOfService" legend="Terms Of Service" label="By submitting this information, I agree that I represent the company I intend to register" />
       </div>
               </div>
 

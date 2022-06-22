@@ -14,6 +14,7 @@ const RegisterMerchant = ({ history }) => {
   const { token, user } = auth;
   const [data, setData] = useState({
     email: "",
+    termsOfService: false
   });
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(0);

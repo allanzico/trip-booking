@@ -2,7 +2,7 @@ import Company from "../models/Company";
 
 export class CompanyClass {
   async registerCompany(req: any, res: any) {
-    const { email, companyName, companyUrl, address, coordinates } = req.body;
+    const { email, companyName, companyUrl, address, coordinates, position } = req.body;
     const registeredBy = req.user._id;
     const location = address
     try {
@@ -12,6 +12,7 @@ export class CompanyClass {
         companyUrl,
         location,
         coordinates,
+        position,
         registeredBy,
       });
       res.status(201).json({ success: true, company });

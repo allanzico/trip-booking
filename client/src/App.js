@@ -24,6 +24,7 @@ import { Toaster } from "react-hot-toast";
 import Chat from "./components/Chat";
 import Register from "./auth/Signup/Register";
 import RegisterMerchant from "./merchant/register/RegisterMerchant";
+import DashboardHome from "./dashboard/DashboardHome";
 
 
 function App() {

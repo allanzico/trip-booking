@@ -8,11 +8,11 @@ const BusinessInfo = (props) => {
   const businessInfoValidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     companyName: Yup.string().required("Company name is required"),
+    position: Yup.string().required("Position is required"),
     companyUrl: Yup.string().matches(urlRegex, 'Enter a valid url').required("Company website is required")
   });
 
   const handleSubmit = (values) => {
-    console.log("CLICKED")
     props.next(values);
   };
   return (
@@ -40,6 +40,9 @@ const BusinessInfo = (props) => {
                   </div>
                   <div className="col-span-6">
                   <CustomTextField name="companyUrl" label="company Website" size="small" />
+                  </div>
+                  <div className="col-span-6">
+                  <CustomTextField name="position" label="Your position" size="small" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 mt-3 ">

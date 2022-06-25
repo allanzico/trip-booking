@@ -1,71 +1,45 @@
-
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { XCircleIcon, XIcon } from "@heroicons/react/outline";
 
 const Tasks = ({ checklist }) => {
-  const [taskName, setTaskName] = useState("");
   const [newTaskName, setNewTaskName] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    setTasks(checklist.tasks);
+  }, []);
 
   const addNewTask = () => {
-    if (!newTaskName) return
+    if (!newTaskName) return;
     let newTask = {
       id: uuidv4(),
       taskName: newTaskName,
       editing: false,
       completed: false,
     };
-    checklist.tasks.push(newTask);
-    setNewTaskName("")
-    console.log(checklist);
+    setTasks([...tasks, newTask]);
+    setNewTaskName("");
   };
 
-  // useEffect(() => {
-  // setTaskName({...checklist.tasks.taskName})
-  // }, [])
-  
-  const handleChange = (evt) => {
-    // setValues({
-    //   ...values,
-    //   [evt.target.name]: evt.target.value,
-    // });
+  const handleUpdateTask = (e, taskId) => {
+    updateTaskName(e.target.value, taskId);
   };
 
-  // const addNewTask = (sectionId, taskName) => {
-  //     let newTask = {
-  //       id: keyRandomizer(),
-  //       desc: taskName,
-  //       editting: false
-  //     };
+  const updateTaskName = (taskName, taskId) => {
+    let taskIndex = checklist.tasks.findIndex((task) => task.id === taskId);
+    let taskToUpdate = checklist.tasks[taskIndex];
+    taskToUpdate.taskName = taskName;
+  };
 
-  //     let allSectionsCopy = JSON.parse(JSON.stringify(sections));
-  //     let sectionIndex = allSectionsCopy.findIndex(
-  //       section => section.id === sectionId
-  //     );
-  //     let sectionToUpdate = allSectionsCopy[sectionIndex];
-
-  //     sectionToUpdate.tasks = [...sectionToUpdate.tasks, newTask];
-
-  //     setSections([...allSectionsCopy]);
-  //   };
-  // const handleSubmit = e => {
-  //   e.preventDefault();
-
-  //   addNewTask(checkList.id, newTaskName);
-
-  //   setTaskName("");
-  // };
-
-  // const handleUpdateTaskDesc = (e, sectionId, taskId) => {
-  //   updateTaskDesc(e.target.value, sectionId, taskId);
-  // };
-
-  // const handleToggle = (sectionId, taskId) => {
-  //   toggleTaskEditMode(sectionId, taskId);
-  // };
-
-  // const handleNewTaskChange = e => {
-  //   setTaskName(e.target.value);
-  // };
+  const deleteTask = (e, taskId) => {
+    e.preventDefault();
+    setTasks((current) =>
+      current.filter((task) => {
+        return task.id !== taskId;
+      })
+    );
+  };
 
   return (
     <>
@@ -98,22 +72,25 @@ const Tasks = ({ checklist }) => {
           </div>
         </div>
       </form>
-      {checklist.tasks &&
-        checklist.tasks.map((task) => (
-          <div className="flex flex-row items-center gap-2">
+      {tasks &&
+        tasks.map((task) => (
+          <div key={task.id} className="flex flex-row items-center gap-2">
             <input
-            key={task.id}
-              value={task.taskName}
-              onChange={(e) => setTaskName(e.target.value)}
+              defaultValue={task.taskName}
+              onChange={(e) => handleUpdateTask(e, task.id)}
               class="appearance-none block w-full bg-gray-100 text-gray-700 rounded-sm mb-2 py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border focus:border-gray-100"
               type="text"
               placeholder="Add Task"
-            />{" "}
+            />
+            <button
+              onClick={(e) => deleteTask(e, task.id)}
+              className="p-2 text-lg text-gray-900 hover:bg-gray-300 hover:scale-105 transition transform duration-200 ease-out"
+            >
+              <XIcon className="h-4 w-4 " />
+            </button>
           </div>
         ))}
     </>
-
-  
   );
 };
 

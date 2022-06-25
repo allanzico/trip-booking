@@ -4,14 +4,19 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getDatesInRange } from "../components/shared/Utils";
 import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/outline";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import ItenerarySections from "./ItenerarySections";
 
 const CreateItenerary = ({ match }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
   const experience = useSelector((state) => state.experiences.singleExperience);
   const [dateArray, setDateArray] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("")
+  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [isTitleFocused, setIsTitleFocused] = useState(false);
   const formatStartDate = new Date(
     moment(experience.startDate).format("YYYY-MM-DD")
   );
@@ -24,9 +29,9 @@ const CreateItenerary = ({ match }) => {
     setDateArray(dates);
   }, []);
 
-  const objIndex = dateArray.findIndex((obj => obj.date == formatStartDate.toString()));
-//   dateArray[objIndex].people = [{name: "2", age: 3}]
-  console.log(dateArray[objIndex]);
+  const objIndex = dateArray.findIndex(
+    (obj) => obj.date == formatStartDate.toString()
+  );
 
   return (
     <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
@@ -44,32 +49,10 @@ const CreateItenerary = ({ match }) => {
       </div>
 
       <div className="grid grid-cols-1">
-
-      <div className="w-full rounded-md bg-white">
-          {dateArray && dateArray.map((d) => (
-        <Disclosure key={d.date}>
-        {({ open }) => (
-          <>
-            <Disclosure.Button className="flex w-full justify-between rounded-sm text-left text-sm font-medium text-gray-900 ">
-              <span>{d.date.toString()}</span>
-              <ChevronUpIcon
-                className={`${
-                  open ? 'rotate-180 transform' : ''
-                } h-5 w-5 text-gray-900`}
-              />
-            </Disclosure.Button>
-            <Disclosure.Panel className="pt-2 pb-2 text-sm text-gray-500">
-              If you're unhappy with your purchase for any reason, email us
-              within 90 days and we'll refund you in full, no questions asked.
-            </Disclosure.Panel>
-            <hr />
-          </>
-        )}
-      </Disclosure>
-          ))}
-
+        <div className="w-full rounded-md bg-white">
+          <ItenerarySections sections={dateArray} setSections={setDateArray} />
+        </div>
       </div>
-    </div>
 
       {/* SAVE BUTTON */}
       <div className="grid grid-cols-1 mt-3 ">

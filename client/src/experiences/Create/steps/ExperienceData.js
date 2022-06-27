@@ -20,8 +20,10 @@ const ExperienceData = ({ formData, setFormData }) => {
     lng: null,
     place: "",
   });
-console.log(address)
-console.log(formData)
+  const customStyle = {
+    styles:
+      "w-full rounded-sm py-2 pl-10 px-[14px] border border-gray outline-none",
+  };
   //select place
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
@@ -80,6 +82,7 @@ console.log(formData)
       address={address}
       setAddress={setAddress}
       handleSelect={handleSelect}
+      customStyle={customStyle}
       />
       <div className="flex flex-col md:flex-row justify-between">
         <div className="mx-2 w-full md:w-1/2 flex-1">

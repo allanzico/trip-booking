@@ -86,7 +86,7 @@ const Tasks = ({ checklist }) => {
               onClick={(e) => deleteTask(e, task.id)}
               className="p-2 text-lg text-gray-900 hover:bg-gray-300 hover:scale-105 transition transform duration-200 ease-out"
             >
-              <XIcon className="h-4 w-4 " />
+              <XIcon className="h-4 w-4"/>
             </button>
           </div>
         ))}

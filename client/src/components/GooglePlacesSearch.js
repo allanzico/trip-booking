@@ -14,7 +14,7 @@ import {
   MdTrain,
 } from "react-icons/md";
 
-const GooglePlacesSearch = ({ address, setAddress, handleSelect }) => {
+const GooglePlacesSearch = ({ address, setAddress, handleSelect, customStyle }) => {
   return (
     <Wrapper
       apiKey={process.env.REACT_APP_GOOGLE_PLACES_API_KEY}
@@ -40,19 +40,7 @@ const GooglePlacesSearch = ({ address, setAddress, handleSelect }) => {
                   className: "location-search-input",
                 })}
                 type="text"
-                className="
-              w-full
-              rounded-sm
-              py-3
-              pl-10
-              px-[14px]
-              border border-gray
-              outline-none
-              hover:outline-orange-500
-              hover:outline-1
-              focus-visible:shadow-none
-              focus:border-primary
-              "
+                className={customStyle.styles}
               />
             </div>
 

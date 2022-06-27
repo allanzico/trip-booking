@@ -14,9 +14,7 @@ const CreateItenerary = ({ match }) => {
   const { token } = auth;
   const experience = useSelector((state) => state.experiences.singleExperience);
   const [dateArray, setDateArray] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [title, setTitle] = useState("");
-  const [isTitleFocused, setIsTitleFocused] = useState(false);
+
   const formatStartDate = new Date(
     moment(experience.startDate).format("YYYY-MM-DD")
   );
@@ -28,10 +26,6 @@ const CreateItenerary = ({ match }) => {
   useEffect(() => {
     setDateArray(dates);
   }, []);
-
-  const objIndex = dateArray.findIndex(
-    (obj) => obj.date == formatStartDate.toString()
-  );
 
   return (
     <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
@@ -50,7 +44,7 @@ const CreateItenerary = ({ match }) => {
 
       <div className="grid grid-cols-1">
         <div className="w-full rounded-md bg-white">
-          <ItenerarySections sections={dateArray} setSections={setDateArray} />
+          <ItenerarySections sections={dateArray} setSections={setDateArray}  />
         </div>
       </div>
 

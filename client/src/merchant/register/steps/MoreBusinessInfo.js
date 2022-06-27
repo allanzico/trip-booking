@@ -16,6 +16,10 @@ const moreInfoValidationSchema = Yup.object().shape({
     props.next(values, true);
   };
 
+  const customStyle = {
+    styles: "w-full rounded-sm py-3 pl-10 px-[14px] border border-gray outline-none hover:outline-orange-500 hover:outline-1 focus-visible:shadow-none focus:border-primary"
+}
+
   return (
     <>
       <div className="container mb-2 flex flex-col text-center">
@@ -44,6 +48,7 @@ const moreInfoValidationSchema = Yup.object().shape({
           address={address}
           setAddress={setAddress}
           handleSelect={handleSelect}
+          customStyle={customStyle}
         />
       </div>
       <div className="col-span-6 mb-2">

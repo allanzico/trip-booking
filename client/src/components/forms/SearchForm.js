@@ -36,6 +36,10 @@ const SearchForm = () => {
     history.push(`/search-result?location=${address}&date=${date}`);
   };
 
+  const customStyle = {
+    styles: "w-full rounded-sm py-3 pl-10 px-[14px] border border-gray outline-none hover:outline-orange-500 hover:outline-1 focus-visible:shadow-none focus:border-primary"
+}
+
   return (
     <div className="grid grid-cols-9 gap-1 flex grow">
       <div className="col-span-9 md:col-span-5">
@@ -43,6 +47,7 @@ const SearchForm = () => {
           address={address}
           setAddress={setAddress}
           handleSelect={handleSelect}
+          customStyle={customStyle}
         />
       </div>
       <div className="col-span-9 md:col-span-3 ">

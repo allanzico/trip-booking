@@ -15,7 +15,10 @@ const ExperienceForm = (props) => {
   } = props;
   const { title, description, image, price, startDate, endDate, available } =
     values;
-
+    const customStyle = {
+      styles:
+        "w-full rounded-sm py-2 pl-10 px-[14px] border border-gray outline-none",
+    };
   return (
     <div className="flex flex-col">
       {/* Image Preview */}
@@ -107,6 +110,7 @@ const ExperienceForm = (props) => {
           address={address}
           setAddress={setAddress}
           handleSelect={handleSelect}
+          customStyle={customStyle}
         />
       </div>
 

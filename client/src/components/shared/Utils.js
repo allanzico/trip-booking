@@ -9,7 +9,11 @@ export function getDatesInRange(startDate, endDate) {
     dates.push({
       date: new Date(date),
       title: "",
-      checkLists: [],
+      data: {
+        checkLists: [],
+        locations: []
+      },
+      test: new Map()
     });
     date.setDate(date.getDate() + 1);
   }

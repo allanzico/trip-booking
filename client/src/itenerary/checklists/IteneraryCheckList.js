@@ -2,11 +2,11 @@ import { TrashIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import Tasks from "./Tasks";
 
-const IteneraryCheckList = ({ section }) => {
+const IteneraryCheckList = ({ section, removeChecklist }) => {
   return (
     <>
-      {section.checkLists &&
-        section.checkLists.map((checklist) => (
+      {section.data.checkLists &&
+        section.data.checkLists.map((checklist) => (
           <div className="grid grid-cols-6">
             <div className="col-span-5">
               <div className="flex flex-col mb-2 px-2 py-4 h-45 w-full bg-gray-100 rounded-md">
@@ -20,7 +20,7 @@ const IteneraryCheckList = ({ section }) => {
               </div>
             </div>
             <div className="col-span-1 px-2">
-              <button>
+              <button onClick={(e) => removeChecklist(e,checklist.id)}>
                 <TrashIcon className="h-6 w-6" />
               </button>
             </div>

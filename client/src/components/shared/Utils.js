@@ -8,7 +8,7 @@ export function getDatesInRange(startDate, endDate) {
   while (date <= endDate) {
     dates.push({
       date: new Date(date),
-      title: "",
+      title: "new itenerary",
       data: new Map(),
     });
     date.setDate(date.getDate() + 1);

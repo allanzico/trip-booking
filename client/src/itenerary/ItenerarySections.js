@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon, XIcon } from "@heroicons/react/outline";
+import {
+  ChevronDownIcon,
+  ClipboardListIcon,
+  DocumentIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 import moment from "moment";
 import IteneraryCheckList from "./checklists/IteneraryCheckList";
 import { v4 as uuidv4 } from "uuid";
@@ -25,7 +30,6 @@ const ItenerarySections = ({ sections, setSections }) => {
     lng: null,
     place: "",
   });
-  const [map, setMap] = useState([]);
 
   const addNewChecklist = (sectionId) => {
     let newCheckList = {
@@ -42,6 +46,7 @@ const ItenerarySections = ({ sections, setSections }) => {
     let sectionToUpdate = sections[sectionIndex];
 
     sectionToUpdate.data.set(newCheckList.id, newCheckList);
+    // sectionToUpdate.data[newCheckList.id] = newCheckList;
     setSections([...sections]);
   };
 
@@ -57,7 +62,6 @@ const ItenerarySections = ({ sections, setSections }) => {
   };
 
   //Add place
-
   const addNewLocation = (sectionId) => {
     if (address) {
       let newLocation = {
@@ -76,40 +80,61 @@ const ItenerarySections = ({ sections, setSections }) => {
     }
   };
 
+  //Add Notes
+  const addNotes = (sectionId) => {
+    let newNotes = {
+      id: uuidv4(),
+      description: "add a note....",
+      type: "notes",
+    };
+    setData(sectionId, newNotes.id, newNotes);
+  };
+
+  function setData(sectionId, dataId, data) {
+    let sectionIndex = sections.findIndex(
+      (section) => section.date === sectionId
+    );
+    let sectionToUpdate = sections[sectionIndex];
+    sectionToUpdate.data.set(dataId, data);
+    setSections([...sections]);
+  }
+
+  function deleteData(e, section, dataId) {
+    e.preventDefault();
+    section.data.delete(dataId);
+    setSections([...sections]);
+  }
   function getComponents(myHashMap, section) {
-    const comps = [];
-    myHashMap.forEach((value, key) =>
-      comps.push(
-        value.type === "location" ? (
+    let comps = [];
+    myHashMap.forEach((value, key) => {
+      if (value.type === "location") {
+        comps.push(
           <Places
             key={key}
             location={value}
-            removeLocation={removeLocation}
+            deleteData={deleteData}
             section={section}
           />
-        ) : (
+        );
+      }
+      if (value.type === "notes") {
+        comps.push(
+          <Notes section={section} notes={value} deleteData={deleteData} />
+        );
+      }
+      if (value.type === "checklist") {
+        comps.push(
           <IteneraryCheckList
             checkList={value}
             section={section}
-            removeChecklist={removeChecklist}
+            deleteData={deleteData}
           />
-        )
-      )
-    );
+        );
+      }
+    });
     return comps;
   }
 
-  const removeChecklist = (e, section, checklistId) => {
-    e.preventDefault();
-    section.data.delete(checklistId);
-    setSections([...sections]);
-  };
-
-  const removeLocation = (e, section, locationId) => {
-    e.preventDefault();
-    section.data.delete(locationId);
-    setSections([...sections]);
-  };
 
   return (
     <>
@@ -129,32 +154,24 @@ const ItenerarySections = ({ sections, setSections }) => {
 
                 <Disclosure.Panel className="pb-2 text-sm text-gray-500">
                   <div className="flex flex-col">
-                    <button
-                      onClick={() => addNewChecklist(section.date)}
-                      className="bg-gray-900 text-white mb-4"
-                    >
-                      Add checklist
-                    </button>
-
-                    <div className="flex flex-col mb-4 gap-2">
-                      {getComponents(section.data, section)}
-                      <Notes />
-                    </div>
-
-                    <div className="flex flex-row gap-2 ">
-                      <div className="w-full">
-                        <GooglePlacesSearch
-                          customStyle={customStyle}
-                          address={address}
-                          setAddress={setAddress}
-                          handleSelect={handleSelect}
-                        />
-                      </div>
-                      <div className="cursor-pointer">
-                        <button
-                          onClick={() => addNewLocation(section.date)}
-                          type="submit"
-                          className="
+                    <div class="grid grid-cols-6 mb-4">
+                      <div className="col-span-5">
+                        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 ">
+                          <div className="md:col-span-4">
+                            <div className="flex flex-row items-center justify-end gap-2 ">
+                              <div className="w-full">
+                                <GooglePlacesSearch
+                                  customStyle={customStyle}
+                                  address={address}
+                                  setAddress={setAddress}
+                                  handleSelect={handleSelect}
+                                />
+                              </div>
+                              <div className="cursor-pointer">
+                                <button
+                                  onClick={() => addNewLocation(section.date)}
+                                  type="submit"
+                                  className="
                               text-white
                               
                               bg-orange-500
@@ -165,10 +182,45 @@ const ItenerarySections = ({ sections, setSections }) => {
                               hover:bg-orange-700
                               uppercase
                               "
-                        >
-                          Add
-                        </button>
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="md:col-span-2">
+                            <div class="w-full">
+                              <div className="flex items-center justify-end gap-2">
+                                <div className="cursor-pointer">
+                                  <button
+                                    onClick={() =>
+                                      addNewChecklist(section.date)
+                                    }
+                                    type="submit"
+                                    class="text-gray-900 uppercase gap-1 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-sm text-xs px-3 py-2 text-center inline-flex items-center"
+                                  >
+                                    <ClipboardListIcon className="h-4 w-4 text-orange-500" />
+                                    Checklist
+                                  </button>
+                                </div>
+                                <div className="cursor-pointer">
+                                  <button
+                                    onClick={() => addNotes(section.date)}
+                                    type="submit"
+                                    class="text-gray-900 uppercase gap-1 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-semibold rounded-sm text-xs px-3 py-2 text-center inline-flex items-center"
+                                  >
+                                    <DocumentIcon className="h-4 w-4 text-orange-500" />
+                                    Note
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
+                    </div>
+                    <div className="flex flex-col mb-4 gap-2">
+                      {getComponents(section.data, section)}
                     </div>
                   </div>
                 </Disclosure.Panel>

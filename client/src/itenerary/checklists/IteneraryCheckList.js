@@ -2,7 +2,7 @@ import { TrashIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import Tasks from "./Tasks";
 
-const IteneraryCheckList = ({ section, checkList, removeChecklist }) => {
+const IteneraryCheckList = ({ section, checkList, deleteData }) => {
   return (
     <>
       {checkList && (
@@ -19,7 +19,7 @@ const IteneraryCheckList = ({ section, checkList, removeChecklist }) => {
             </div>
           </div>
           <div className="col-span-1 px-2">
-              <button onClick={(e) => removeChecklist(e,section, checkList.id)}>
+              <button onClick={(e) => deleteData(e,section, checkList.id)}>
                 <TrashIcon className="h-6 w-6" />
               </button>
             </div>

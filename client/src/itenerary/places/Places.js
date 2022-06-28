@@ -1,7 +1,7 @@
 import React from "react";
 import {  LocationMarkerIcon, XIcon } from "@heroicons/react/solid";
 
-const Places = ({ location, section, removeLocation }) => {
+const Places = ({ location, section, deleteData }) => {
  
   return (
     <>
@@ -20,7 +20,7 @@ const Places = ({ location, section, removeLocation }) => {
           </div>
           <div className="col-span-1 px-2">
             <button
-              onClick={(e) => removeLocation(e, section, location.id)}
+              onClick={(e) => deleteData(e, section, location.id)}
               className="p-2 rounded-md text-sm text-gray-900 hover:bg-gray-100 hover:scale-105 transition transform duration-200 ease-out"
             >
               <XIcon className="h-4 w-4" />

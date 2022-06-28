@@ -12,7 +12,7 @@ export class ExperienceSetup {
       let experience = new Experience(fields);
       experience.postedBy = req.user._id;
       experience.tickets = ticketFields;
-      
+
       //read Image data
       if (files.image) {
         experience.image.data = fs.readFileSync(files.image.path);
@@ -23,7 +23,7 @@ export class ExperienceSetup {
           console.log(error);
           res.status(400).send("Error saving");
         }
-      res.json(result);
+        res.json(result);
       });
     } catch (error) {
       console.log(error);
@@ -68,8 +68,6 @@ export class ExperienceSetup {
       .select("-image.data")
       .populate("postedBy", "_id name")
       .exec();
-
-      console.log(all)
     res.send(all);
   }
 
@@ -109,7 +107,6 @@ export class ExperienceSetup {
         data.image = image;
       }
 
-
       let updated = await Experience.findByIdAndUpdate(req.params.expId, data, {
         new: true,
       }).select("-image.data");
@@ -128,14 +125,14 @@ export class ExperienceSetup {
     const { ticketId } = req.body;
     const expId = req.params.expId;
     try {
-        await Experience.updateOne(
-          { _id: expId },
-          { $pull: { tickets: { _id: ticketId } } }
-        );
-        const newTickets = await Experience.findById(expId)
+      await Experience.updateOne(
+        { _id: expId },
+        { $pull: { tickets: { _id: ticketId } } }
+      );
+      const newTickets = await Experience.findById(expId)
         .select("tickets -_id")
         .exec();
-        res.status(200).send({success:true, tickets:newTickets});
+      res.status(200).send({ success: true, tickets: newTickets });
     } catch (error) {
       console.log(error);
       res.status(400).send(" failed");
@@ -208,7 +205,7 @@ export class ExperienceSetup {
     //   .exec();
 
     let result = await Experience.find({
-      startDate: { $gte: date},
+      startDate: { $gte: date },
       location: new RegExp(location, "i"),
     })
       .select("-image.data")
@@ -303,6 +300,21 @@ export class ExperienceSetup {
       res.json({ success: true, favoriteNumber: favorites.length });
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async createItenerary(req: any, res: any) {
+    const itenerary = req.body;
+    try {
+      const updatedExperience = await Experience.findByIdAndUpdate(req.params.expId, {itenerary: itenerary}, {
+        new: true,
+      })
+      res.status(201).json({ success: true, updatedExperience });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        error,
+      });
     }
   }
 }

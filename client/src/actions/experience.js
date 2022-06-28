@@ -151,3 +151,11 @@ export const favoriteNumber = async (data, cancelToken) => {
     cancelToken: cancelToken
   });
 };
+
+export const createItenerary = async (data,expId, token) => {
+  return await axios.post(`${process.env.REACT_APP_API}/create-itenerary/${expId}`, data,     {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+};

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IteneraryForm from "./IteneraryForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { getDatesInRange } from "../components/shared/Utils";
 import { Disclosure } from "@headlessui/react";
@@ -8,12 +8,18 @@ import { ChevronDownIcon } from "@heroicons/react/outline";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ItenerarySections from "./ItenerarySections";
+import { createItenerary, getSingleExperience } from "../actions/experience";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { fetchSingleExperience } from "../Redux/reducers/experiences";
 
 const CreateItenerary = ({ match }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
   const experience = useSelector((state) => state.experiences.singleExperience);
-  const [dateArray, setDateArray] = useState([]);
+  const [sections, setsections] = useState([]);
+  const source = axios.CancelToken.source();
+  const dispatch = useDispatch()
 
   const formatStartDate = new Date(
     moment(experience.startDate).format("YYYY-MM-DD")
@@ -24,9 +30,50 @@ const CreateItenerary = ({ match }) => {
   const dates = getDatesInRange(formatStartDate, formatEndDate);
 
   useEffect(() => {
-    setDateArray(dates);
+    loadSingleExperience()
+    if (!experience.itenerary) {
+     setsections(dates);
+    }
+    const convertedData = experience.itenerary.map((obj, i) => {
+      return { ...obj, data: new Map(Object.entries(obj.data))};
+    });
+    setsections(convertedData)
+    return () => {
+      source.cancel();
+    };
   }, []);
 
+
+  const loadSingleExperience = async () => {
+    try {
+      let res = await getSingleExperience(match.params.expId, source.token);
+      dispatch(fetchSingleExperience(res.data))
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateItenerary = async() => {
+    const convertedData = sections.map((obj, i) => {
+      return { ...obj, data: Object.fromEntries(obj.data) };
+    });
+
+    const refreshToast = toast.loading("Adding...");
+    try {
+      await createItenerary(convertedData, match.params.expId, token)
+      toast.success("Itenerary saved", {
+        id: refreshToast,
+      });
+    } catch (error) {
+      console.log(error)
+      toast.error("Error saving..", {
+        id: refreshToast,
+      });
+    }
+  }
+
+  console.log(experience.itenerary)
+  
   return (
     <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
       <div className="grid grid-cols-1 mb-5">
@@ -44,7 +91,7 @@ const CreateItenerary = ({ match }) => {
 
       <div className="grid grid-cols-1">
         <div className="w-full rounded-md bg-white">
-          <ItenerarySections sections={dateArray} setSections={setDateArray}  />
+          <ItenerarySections sections={sections} setSections={setsections}  />
         </div>
       </div>
 
@@ -53,6 +100,7 @@ const CreateItenerary = ({ match }) => {
         <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <div className="cursor-pointer">
             <button
+            onClick={handleCreateItenerary}
               type="submit"
               className="
                 text-white

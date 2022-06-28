@@ -22,7 +22,12 @@ router.delete(
   authSeller,
   experience.deleteExperience
 );
-
+router.post(
+  "/create-itenerary/:expId",
+  requireSignIn,
+  authSeller,
+  experience.createItenerary
+);
 router.patch(
   "/delete-ticket/:expId",
   requireSignIn,

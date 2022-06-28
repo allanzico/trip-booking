@@ -9,12 +9,10 @@ const CompanyType = new Schema (
 
     companyName: {
       type: String,
-      trim: true,
       required: [true, "please provide a company name"],
     },
     position: {
       type: String,
-      trim: true,
       required: [true, "please provide a position at the company"],
     },
     companyUrl: {

@@ -6,11 +6,10 @@ import IteneraryCheckList from "./checklists/IteneraryCheckList";
 import { v4 as uuidv4 } from "uuid";
 import GooglePlacesSearch from "../components/GooglePlacesSearch";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
+import Places from "./places/Places";
+import Notes from "./notes/Notes";
 
-const ItenerarySections = ({
-  sections,
-  setSections,
-}) => {
+const ItenerarySections = ({ sections, setSections }) => {
   const customStyle = {
     styles:
       "w-full rounded-sm py-2 pl-10 px-[14px] border border-gray outline-none",
@@ -26,13 +25,15 @@ const ItenerarySections = ({
     lng: null,
     place: "",
   });
+  const [map, setMap] = useState([]);
+
   const addNewChecklist = (sectionId) => {
     let newCheckList = {
       id: uuidv4(),
-      desc: "new Task",
+      desc: "new task...",
       editting: false,
       tasks: [],
-      type:"checklist"
+      type: "checklist",
     };
 
     let sectionIndex = sections.findIndex(
@@ -40,11 +41,7 @@ const ItenerarySections = ({
     );
     let sectionToUpdate = sections[sectionIndex];
 
-    sectionToUpdate.data.checkLists = [
-      ...sectionToUpdate.data.checkLists,
-      newCheckList,
-    ];
-    sectionToUpdate.test.set(new Date(), newCheckList)
+    sectionToUpdate.data.set(newCheckList.id, newCheckList);
     setSections([...sections]);
   };
 
@@ -66,65 +63,53 @@ const ItenerarySections = ({
       let newLocation = {
         id: uuidv4(),
         locationName: address,
-        type: "location"
+        type: "location",
       };
       let sectionIndex = sections.findIndex(
         (section) => section.date === sectionId
       );
       let sectionToUpdate = sections[sectionIndex];
 
-      sectionToUpdate.data.locations = [
-        ...sectionToUpdate.data.locations,
-        newLocation,
-      ];
-
-      sectionToUpdate.test.set(new Date(), newLocation)
+      sectionToUpdate.data.set(newLocation.id, newLocation);
       setSections([...sections]);
       setAddress("");
-
-      const data = sections.map(section => (section.test))
-      for(var i = 0; i++ < data[0].size; data[0].next())
-    console.log( data[0].value())
     }
-
-    
   };
 
-  // useEffect(() => {
-  //   if (address) {
-  //     let newLocation = {
-  //       id: uuidv4(),
-  //       locationName: address,
-  //     };
-  //     setData({ ...data, locations: [...data.locations, newLocation] });
-  //   }
-  // }, [location]);
-
-  const removeChecklist = (e, checklistId) => {
-    e.preventDefault();
-    // setSections((current) =>
-    // current.filter((checklist) => {
-    //   return checklist.id !== checklistId
-    // }))
-  };
-
-  const removeLocation = (e, locationId, sectionId) => {
-    e.preventDefault();
-    let sectionIndex = sections.findIndex(
-      (section) => section.date === sectionId
+  function getComponents(myHashMap, section) {
+    const comps = [];
+    myHashMap.forEach((value, key) =>
+      comps.push(
+        value.type === "location" ? (
+          <Places
+            key={key}
+            location={value}
+            removeLocation={removeLocation}
+            section={section}
+          />
+        ) : (
+          <IteneraryCheckList
+            checkList={value}
+            section={section}
+            removeChecklist={removeChecklist}
+          />
+        )
+      )
     );
-    let sectionToUpdate = sections[sectionIndex];
-    var lists = sectionToUpdate.data.locations.filter((x) => {
-      return x.id !== locationId;
-    });
-    sectionToUpdate.data.locations = sectionToUpdate.data.locations.filter(
-      (x) => {
-        return x.id !== locationId;
-      }
-    );
+    return comps;
+  }
+
+  const removeChecklist = (e, section, checklistId) => {
+    e.preventDefault();
+    section.data.delete(checklistId);
     setSections([...sections]);
   };
 
+  const removeLocation = (e, section, locationId) => {
+    e.preventDefault();
+    section.data.delete(locationId);
+    setSections([...sections]);
+  };
 
   return (
     <>
@@ -150,40 +135,10 @@ const ItenerarySections = ({
                     >
                       Add checklist
                     </button>
-                    <IteneraryCheckList
-                      section={section}
-                      removeChecklist={removeChecklist}
-                    />
+
                     <div className="flex flex-col mb-4 gap-2">
-                      {section.data.locations &&
-                        Object.entries(section.data.locations).map(
-                          ([key, value]) => (
-                            <div className="grid grid-cols-6">
-                              <div className="col-span-5">
-                                <div class="w-full pl-4">
-                                  <div class="relative flex flex-col justify-center py-3 px-2 bg-gray-100 text-gray-700 rounded-md leading-tight rounded-sm">
-                                    <h3 class="absolute -left-5 w-8 py-2 bg-gray-900 text-white rounded-full text-md text-center">
-                                      {key}
-                                    </h3>
-                                    <p className="text-md px-2 text-gray-700">
-                                      {value.locationName.toString()}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-span-1 px-2">
-                                <button
-                                  onClick={(e) =>
-                                    removeLocation(e, value.id, section.date)
-                                  }
-                                  className="p-2 rounded-md text-sm text-gray-900 hover:bg-gray-100 hover:scale-105 transition transform duration-200 ease-out"
-                                >
-                                  <XIcon className="h-4 w-4" />
-                                </button>
-                              </div>
-                            </div>
-                          )
-                        )}
+                      {getComponents(section.data, section)}
+                      <Notes />
                     </div>
 
                     <div className="flex flex-row gap-2 ">
@@ -216,9 +171,6 @@ const ItenerarySections = ({
                       </div>
                     </div>
                   </div>
-                  If you're unhappy with your purchase for any reason, email us
-                  within 90 days and we'll refund you in full, no questions
-                  asked.
                 </Disclosure.Panel>
                 <hr />
               </>

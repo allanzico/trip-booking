@@ -31,13 +31,7 @@ const CreateItenerary = ({ match }) => {
 
   useEffect(() => {
     loadSingleExperience()
-    if (!experience.itenerary) {
-     setsections(dates);
-    }
-    const convertedData = experience.itenerary.map((obj, i) => {
-      return { ...obj, data: new Map(Object.entries(obj.data))};
-    });
-    setsections(convertedData)
+    // setsections(dates);
     return () => {
       source.cancel();
     };
@@ -48,6 +42,13 @@ const CreateItenerary = ({ match }) => {
     try {
       let res = await getSingleExperience(match.params.expId, source.token);
       dispatch(fetchSingleExperience(res.data))
+      if (!res.data.itenerary) {
+        setsections(dates);
+       }
+       const convertedData = res.data.itenerary.map((obj, i) => {
+         return { ...obj, data: new Map(Object.entries(obj.data))};
+       });
+       setsections(convertedData)
     } catch (error) {
       console.log(error);
     }

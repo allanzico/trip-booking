@@ -34,7 +34,7 @@ const ItenerarySections = ({ sections, setSections }) => {
   const addNewChecklist = (sectionId) => {
     let newCheckList = {
       id: uuidv4(),
-      desc: "new task...",
+      desc: "",
       editting: false,
       tasks: [],
       type: "checklist",
@@ -84,7 +84,7 @@ const ItenerarySections = ({ sections, setSections }) => {
   const addNotes = (sectionId) => {
     let newNotes = {
       id: uuidv4(),
-      description: "add a note....",
+      description: "",
       type: "notes",
     };
     setData(sectionId, newNotes.id, newNotes);
@@ -104,6 +104,7 @@ const ItenerarySections = ({ sections, setSections }) => {
     section.data.delete(dataId);
     setSections([...sections]);
   }
+  
   function getComponents(myHashMap, section) {
     let comps = [];
     myHashMap.forEach((value, key) => {

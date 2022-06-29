@@ -2,6 +2,15 @@ import React from "react";
 import { TrashIcon, DocumentTextIcon } from "@heroicons/react/outline";
 
 const Notes = ({ section, notes, deleteData }) => {
+  const handleUpdateNotes = (e, notesId) => {
+    updateNotes(e.target.value, notesId);
+  };
+
+  const updateNotes = (notesDesc, notesId) => {
+    if (notesId === notes.id) {
+      notes.description = notesDesc;
+    }
+  };
   return (
     <div className="grid grid-cols-6">
       <div className="col-span-5">
@@ -11,6 +20,8 @@ const Notes = ({ section, notes, deleteData }) => {
             <p className="text-md px-3 text-gray-700">
               <textarea
                 defaultValue={notes.description}
+                onChange={(e) => handleUpdateNotes(e, notes.id)}
+                placeholder="add a note...."
                 rows="3"
                 class="appearance-none block w-full bg-gray-100 text-gray-900 rounded-sm mb-2 py-2 px-2 leading-tight focus:outline-none focus:bg-gray-100 focus:border focus:border-gray-100"
               ></textarea>

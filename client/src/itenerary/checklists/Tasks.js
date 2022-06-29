@@ -18,7 +18,8 @@ const Tasks = ({ checklist }) => {
       editing: false,
       completed: false,
     };
-    setTasks([...tasks, newTask]);
+    checklist.tasks.push(newTask);
+    // setTasks([...tasks, newTask])
     setNewTaskName("");
   };
 
@@ -32,13 +33,19 @@ const Tasks = ({ checklist }) => {
     taskToUpdate.taskName = taskName;
   };
 
-  const deleteTask = (e, taskId) => {
-    e.preventDefault();
+  const deleteTask = (e,taskId) => {
+  e.preventDefault()
+//     var myArr = [{id:'a'},{id:'myid'},{id:'c'}];
+// var index = tasks.findIndex(function(o){
+//   return o.id === taskId;
+// })
+// if (index !== -1) tasks.splice(index, 1);
     setTasks((current) =>
       current.filter((task) => {
         return task.id !== taskId;
       })
     );
+    checklist.tasks = tasks
   };
 
   return (
@@ -83,10 +90,10 @@ const Tasks = ({ checklist }) => {
               placeholder="Add Task"
             />
             <button
-              onClick={(e) => deleteTask(e, task.id)}
+              onClick={(e) => deleteTask(e,task.id)}
               className="p-2 text-lg text-gray-900 hover:bg-gray-300 hover:scale-105 transition transform duration-200 ease-out"
             >
-              <XIcon className="h-4 w-4"/>
+              <XIcon className="h-4 w-4" />
             </button>
           </div>
         ))}

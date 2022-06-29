@@ -5,7 +5,6 @@ import Tasks from "./Tasks";
 const IteneraryCheckList = ({ section, checkList, deleteData }) => {
   const handleUpdateChecklist = (e, checklistId) => {
     updateChecklist(e.target.value, checklistId);
-    console.log(checkList)
   };
 
   const updateChecklist = (checklistDesc, checklistId) => {

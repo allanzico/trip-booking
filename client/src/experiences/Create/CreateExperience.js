@@ -3,10 +3,11 @@ import PageTitle from "../../components/Typography/PageTitle";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import { createExperience } from "../../actions/experience";
 import { useDispatch, useSelector } from "react-redux";
-import ExperienceForm from "../../components/forms/ExperienceForm";
 import toast from "react-hot-toast";
 import CreateTicketModal from "./CreateTicketModal";
 import CreateTicketForm from "./CreateTicketForm";
+import ExperienceData from "./steps/ExperienceData";
+import TicketData from "./steps/TicketData";
 
 const CreateExperience = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -21,6 +22,16 @@ const CreateExperience = () => {
     available: "",
   });
 
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+    image: "",
+    price: "",
+    startDate: "",
+    endDate: "",
+    available: "",
+    test: "",
+  });
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({
     lat: null,
@@ -31,45 +42,48 @@ const CreateExperience = () => {
     lng: null,
     place: "",
   });
-  const { title, description, image, price, startDate, endDate, available } =
-    values;
+
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/300x150.png?text=PREVIEW"
   );
 
-  const [ticketArray, setTicketArray] = useState([])
-  
+  const [ticketArray, setTicketArray] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+
   const dispatch = useDispatch();
-  const handleSubmit = async (evt) => {
+  const handleSubmit = async (evt, newData) => {
     evt.preventDefault();
-    const refreshToast = toast.loading("Adding...");
-    try {
-      let experienceData = new FormData();
-      experienceData.append("title", title);
-      experienceData.append("description", description);
-      image && experienceData.append("image", image);
-      experienceData.append("price", price);
-      experienceData.append("startDate", startDate);
-      experienceData.append("endDate", endDate);
-      experienceData.append("available", available);
-      experienceData.append("location", address);
-      experienceData.append("lat", coordinates.lat);
-      experienceData.append("lng", coordinates.lng);
-      experienceData.append(`tickets`, JSON.stringify(ticketArray))
-      const res = await createExperience(token, experienceData);
-      // dispatch(createExperience(res.data))
-      toast.success("Added new experience", {
-        id: refreshToast,
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error adding", {
-        id: refreshToast,
-      });
-    }
+    // const mergeData = { ...formData, address, coordinates };
+    setData((prev) => ({ ...prev, ...newData }));
+    console.log(data);
+    // const refreshToast = toast.loading("Adding...");
+    // try {
+    //   // let experienceData = new FormData();
+    //   // experienceData.append("title", title);
+    //   // experienceData.append("description", description);
+    //   // image && experienceData.append("image", image);
+    //   // experienceData.append("price", price);
+    //   // experienceData.append("startDate", startDate);
+    //   // experienceData.append("endDate", endDate);
+    //   // experienceData.append("available", available);
+    //   // experienceData.append("location", address);
+    //   // experienceData.append("lat", coordinates.lat);
+    //   // experienceData.append("lng", coordinates.lng);
+    //   // experienceData.append(`tickets`, JSON.stringify(ticketArray))
+    //   const res = await createExperience(token, data);
+    //   // dispatch(createExperience(res.data))
+    //   toast.success("Added new experience", {
+    //     id: refreshToast,
+    //   });
+    //   setTimeout(() => {
+    //     window.location.reload();
+    //   }, 500);
+    // } catch (error) {
+    //   console.log(error);
+    //   toast.error("Error adding", {
+    //     id: refreshToast,
+    //   });
+    // }
   };
 
   const handleImageChange = (evt) => {
@@ -93,53 +107,60 @@ const CreateExperience = () => {
     setLocation({ lat: coordinates.lat, lng: coordinates.lng, place: value });
   };
 
-  
+  const makeRequest = async (formData) => {
+    const mergeData = { ...formData, address, coordinates };
+    console.log(mergeData);
+    // try {
+    //   const res = await createExperience(token, mergeData);
+    //   dispatch(createExperience(res.data))
+    //   toast.success("Added new experience", {
+    //     id: refreshToast,
+    //   });
+    //   setTimeout(() => {
+    //     window.location.reload();
+    //   }, 500);
+    // } catch (error) {
+    //   console.log(error);
+    //   setError(error.response.data.error);
+    // }
+  };
+
+  const handleNextStep = (newData, final = false) => {
+    setData((prev) => ({ ...prev, ...newData }));
+    if (final) {
+      makeRequest(newData);
+      setCurrentStep((prev) => prev + 1);
+      return;
+    }
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const handlePrevStep = (newData) => {
+    setData((prev) => ({ ...prev, ...newData }));
+    setCurrentStep((prev) => prev - 1);
+  };
+
+  const steps = [
+    <ExperienceData
+      next={handleNextStep}
+      data={data}
+      address={address}
+      setAddress={setAddress}
+      handleSelect={handleSelect}
+    />,
+    <TicketData
+      next={handleNextStep}
+      prev={handlePrevStep}
+      data={data}
+      ticketArray={ticketArray}
+      setTicketArray={setTicketArray}
+    />,
+  ];
 
   return (
-    <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
-      <div className="grid grid-cols-1">
-
-      <ExperienceForm
-                values={values}
-                setValues={setValues}
-                setAddress={setAddress}
-                handleChange={handleChange}
-                handleImageChange={handleImageChange}
-                handleSelect={handleSelect}
-                handleSubmit={handleSubmit}
-                address={address}
-                location={address}
-                setLocation={setLocation}
-              />
-      </div>
-      <div className="grid grid-cols-1 ">
-        <CreateTicketForm  ticketArray={ticketArray} setTicketArray={setTicketArray} />
-      </div>
-      <div className="grid grid-cols-1 mt-3 ">
-      <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <div className="cursor-pointer">
-              <button
-                type="submit"
-                className="
-                text-white
-                bg-orange-500
-                rounded-sm
-                px-5
-                py-2
-                transition
-                hover:bg-orange-700
-                uppercase
-                "
-                onClick={handleSubmit}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-      </div>
-
-    </main>
-
+    <div className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
+      <main className="w-full mx-auto ">{steps[currentStep]}</main>
+    </div>
   );
 };
 

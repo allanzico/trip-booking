@@ -4,7 +4,6 @@ import ConnectNav from "../components/navigation/ConnectNav";
 import {HashRouter, Link,  Switch } from "react-router-dom";
 import PrivateRoute from "../components/PrivateRoute";
 import DashboardSeller from "./DashboardSeller";
-import NewExperiences from "../experiences/Create/NewExperience";
 import { UserOutlined } from "@ant-design/icons";
 import {RiSuitcase3Line} from 'react-icons/ri'
 import { MdOutlineSettings } from "react-icons/md";
@@ -91,7 +90,6 @@ const Dashboard = () => {
       <Switch>
         <PrivateRoute exact path="/dashboard/seller" component={DashboardSeller} />
         <PrivateRoute exact path="/user-experience-bookings" component={BookingsComponent} />
-        <PrivateRoute exact path="/experiences/new" component={NewExperiences} />
         <PrivateRoute exact path="/experience/edit/:expId" component={EditExperience} />
         
       </Switch>

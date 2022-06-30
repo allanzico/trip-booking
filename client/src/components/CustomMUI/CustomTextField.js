@@ -13,7 +13,7 @@ const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: '#D1D5DB',
-      borderRadius: 3,
+      borderRadius: 1,
     },
     '&:hover fieldset': {
       borderColor: '#CBD5E1',

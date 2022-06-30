@@ -5,7 +5,6 @@ import { Switch, useLocation, Link } from "react-router-dom";
 import BookingsComponent from "../components/bookings/BookingsComponent";
 import PrivateRoute from "../components/PrivateRoute";
 import EditExperience from "../experiences/Edit/EditExperience";
-import NewExperiences from "../experiences/Create/NewExperience";
 import DashboardSeller from "../user/DashboardSeller";
 import Messaging from "../messaging/Messaging";
 import PaymentComponent from "../components/payment/PaymentComponent";

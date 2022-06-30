@@ -1,181 +1,120 @@
+import React, { useState } from "react";
 import { DatePicker } from "antd";
-import React, { useContext, useState } from "react";
-import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
-import { StepperContext } from "../../../contexts/StepperContext";
-import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import moment from "moment";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import CustomTextField from "../../../components/CustomMUI/CustomTextField";
+import CustomDatePicker from "../../../components/CustomMUI/CustomDatePicker";
+import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
 
-const ExperienceData = ({ formData, setFormData }) => {
-  const { userData, setUserData } = useContext(StepperContext);
-  const [preview, setPreview] = useState(
-    "https://via.placeholder.com/300x150.png?text=PREVIEW"
-  );
-  const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
-  const [location, setLocation] = useState({
-    lat: null,
-    lng: null,
-    place: "",
-  });
+const ExperienceData = (props) => {
+  const {address, handleSelect, setAddress} = props
+  const handleSubmit = (values) => {
+    props.next(values);
+  };
   const customStyle = {
     styles:
       "w-full rounded-sm py-2 pl-10 px-[14px] border border-gray outline-none",
   };
-  //select place
-  const handleSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    setAddress(value);
-    setCoordinates(latLng);
-    setLocation({ lat: coordinates.lat, lng: coordinates.lng, place: value });
-  };
+  const experienceValidationSchema = Yup.object().shape({
+    title: Yup.string().required("title is required"),
+    startDate: Yup.date().required("start is required"),
+    endDate: Yup.date().required("end date is required"),
+    description: Yup.string().required("description is required"),
+    available: Yup.number("ticket availability must be a number").required(
+      "ticket availability is required"
+    ),
+    price: Yup.number("price must be a number").required("price is required"),
+  });
 
-  const handleChange = (evt) => {
-    setFormData({
-      ...formData,
-      [evt.target.name]: evt.target.value,
-    });
-  };
-
-  const handleImageChange = (evt) => {
-    setPreview(URL.createObjectURL(evt.target.files[0]));
-    setFormData({ ...formData, image: evt.target.files[0] });
-  };
-
- 
   return (
-    <div className="flex flex-col ">
-      <div className="mx-2 w-full flex-1">
-        <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-          Title
-        </div>
-        <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-          <input
-            type="text"
-            onChange={handleChange}
-            value={formData.title}
-            name="title"
-            placeholder="Title"
-            className="w-full appearance-none p-1 px-2 text-gray-800 outline-none"
-          />
-        </div>
-      </div>
-      <div className="mx-2 w-full flex-1">
-        <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-          Description
-        </div>
-        <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-          <textarea
-            type="text"
-            onChange={handleChange}
-            value={formData.description}
-            name="description"
-            placeholder="description"
-            className="w-full appearance-none p-1 px-2 text-gray-800 outline-none"
-          />
-        </div>
-      </div>
-      <GooglePlacesSearch
-      address={address}
-      setAddress={setAddress}
-      handleSelect={handleSelect}
-      customStyle={customStyle}
-      />
-      <div className="flex flex-col md:flex-row justify-between">
-        <div className="mx-2 w-full md:w-1/2 flex-1">
-          <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-            Price
-          </div>
-          <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-            <input
-              onChange={handleChange}
-              value={formData.price}
-              name="price"
-              placeholder="price"
-              type="number"
-              className="w-full appearance-none p-1 px-2 text-gray-800 outline-none"
-            />
-          </div>
-        </div>
-        <div className="mx-2 w-full md:w-1/2 flex-1">
-          <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-            Available tickets
-          </div>
-          <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-            <input
-              onChange={handleChange}
-              value={formData.available}
-              name="available"
-              placeholder="Available"
-              type="number"
-              className="w-full appearance-none p-1 px-2 text-gray-800 outline-none"
-            />
-          </div>
-        </div>
-      </div>
+    <div className="grid grid-cols-1">
+      <Formik
+        validationSchema={experienceValidationSchema}
+        initialValues={props.data}
+        onSubmit={handleSubmit}
+      >
+        {() => (
+          <Form autoComplete="off">
+            <div className="flex flex-col mb-4 ">
+              <div className="grid grid-cols-1 space-y-2">
+                <div className="col-span-6">
+                  <CustomTextField name="title" label="title" size="small" />
+                </div>
 
-      <div className="flex flex-col md:flex-row justify-between">
-        <div className="mx-2 w-full md:w-1/2 flex-1">
-          <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-            From
-          </div>
-          <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-            <DatePicker
-              className="w-full appearance-none p-1 px-2 border-0 text-gray-800 outline-none"
-              onChange={(dateString) =>
-                setFormData({ ...formData, startDate: dateString })
-              }
-              disabledDate={(current) =>
-                current && current.valueOf() < moment().subtract(1, "days")
-              }
-              value={formData.startDate}
-            />
-          </div>
-        </div>
-        <div className="mx-2 w-full md:w-1/2 flex-1">
-          <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-            To
-          </div>
-          <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-            <DatePicker
-              className="w-full appearance-none p-1 px-2 border-0 text-gray-800 outline-none"
-              onChange={(dateString) =>
-                setFormData({ ...formData, endDate: dateString })
-              }
-              disabledDate={(current) =>
-                current && current.valueOf() < moment().subtract(1, "days")
-              }
-              value={formData.endDate}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="mx-2 w-full flex-1">
-        <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-          Add tickets
-        </div>
-
-      </div>
-      <div className="flex flex-col md:flex-row justify-between">
-        <div className="mx-2 w-full md:w-1/2 flex-1">
-          <div className="mt-3 h-6 text-xs font-bold uppercase leading-8 text-gray-500">
-            Upload Images
-          </div>
-          <div className="my-2 flex rounded border border-gray-200 bg-white p-1">
-            <input
-              className="w-full appearance-none p-1 px-2 text-gray-800 outline-none"
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleImageChange}
-              
-            />
-          </div>
-        </div>
-      </div>
+                <div className="col-span-6">
+                  <CustomTextField
+                    name="description"
+                    label="description"
+                    size="small"
+                    multiline={true}
+                    rows={4}
+                  />
+                </div>
+                <div className="col-span-6 mb-2">
+                  <GooglePlacesSearch
+                    address={address}
+                    setAddress={setAddress}
+                    handleSelect={handleSelect}
+                    customStyle={customStyle}
+                  />
+                </div>
+                <div className="col-span-6">
+                  <div className="flex flex-col md:flex-row gap-2">
+                    <CustomTextField
+                      type="number"
+                      name="available"
+                      label="available"
+                      size="small"
+                    />
+                    <CustomTextField
+                      type="number"
+                      name="price"
+                      label="price"
+                      size="small"
+                    />
+                  </div>
+                </div>
+                <div className="col-span-6">
+                  <div className="flex flex-col md:flex-row gap-2">
+                    <CustomDatePicker
+                      name="startDate"
+                      label="start date"
+                      size="small"
+                    />
+                    <CustomDatePicker
+                      name="endDate"
+                      label="start date"
+                      size="small"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 mt-3 ">
+                  <div class="mb2 px-4 py-3 bg-gray-50 text-right sm:px-6">
+                    <div className="cursor-pointer">
+                      <button
+                        type="submit"
+                        className="
+                          text-white
+                          bg-orange-500
+                          rounded-sm
+                          px-3
+                          py-2
+                          transition
+                          hover:bg-orange-700
+                          uppercase
+                          "
+                      >
+                        Create Tickets
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

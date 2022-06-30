@@ -14,14 +14,14 @@ import moment from "moment";
 import ListingsCard from "../components/cards/ListingsCard";
 import ListingsHeader from "../components/shared/ListingsHeader";
 import { PlusIcon } from "@heroicons/react/outline";
-import {fetchSellerExperiences} from '../Redux/reducers/experiences'
+import { fetchSellerExperiences } from "../Redux/reducers/experiences";
 
 const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
   const source = axios.CancelToken.source();
-  const [sellerExperiences, setSellerExperiences] = useState([])
-const dispatch = useDispatch()
+  const [sellerExperiences, setSellerExperiences] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     loadSellerExperiences();
     return () => {
@@ -31,7 +31,7 @@ const dispatch = useDispatch()
 
   const loadSellerExperiences = async () => {
     let { data } = await getSellerExperiences(auth.token, source.token);
-    setSellerExperiences(data)
+    setSellerExperiences(data);
   };
 
   const handleClick = async () => {
@@ -97,7 +97,6 @@ const dispatch = useDispatch()
     []
   );
 
-
   // const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
 
   const connectedSeller = () => {
@@ -111,16 +110,32 @@ const dispatch = useDispatch()
             <p className="filter-component-button">More Button</p>
             <p className="filter-component-button">Cool Button</p>
           </div>
-          
-        <div className="flex mb-3 max-w-fit cursor-pointer items-center space-x-2 px-4 py-2 rounded-md hover:bg-orange-700 bg-orange-500 text-white transition-all duration-200 group ">
-          <PlusIcon className="w-5 h-5" />
-          <Link
-            to="/experiences/new"
-            className="hidden md:inline-flex text-base font-light lg:text-xl hover:text-white"
-          >
-            Add New
-          </Link>
-        </div>
+
+          <div className="flex flex-col">
+            <div className="grid grid-cols-1 mb-3">
+              <div class="mb2 px-4 py-3 bg-gray-50 text-left sm:px-6">
+                <div className="cursor-pointer">
+                  <Link to="/experiences/new">
+                    <button
+                      type="submit"
+                      className="
+                          text-white
+                          bg-orange-500
+                          rounded-sm
+                          px-4
+                          py-2
+                          transition
+                          hover:bg-orange-700
+                          uppercase
+                          "
+                    >
+                      Add new
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="flex flex-col">
             {sellerExperiences &&
               sellerExperiences.map((exp) => <ListingsCard exp={exp} />)}
@@ -162,9 +177,7 @@ const dispatch = useDispatch()
 
   return (
     <>
-      {auth &&
-      auth.user &&
-      auth.user.role === "seller"
+      {auth && auth.user && auth.user.role === "seller"
         ? connectedSeller()
         : notConnectedSeller()}
     </>

@@ -5,7 +5,6 @@ import { Switch, useLocation, Link } from "react-router-dom";
 import BookingsComponent from "../components/bookings/BookingsComponent";
 import PrivateRoute from "../components/PrivateRoute";
 import EditExperience from "../experiences/Edit/EditExperience";
-import NewExperiences from "../experiences/Create/NewExperience";
 import DashboardSeller from "../user/DashboardSeller";
 import Messaging from "../messaging/Messaging";
 import PaymentComponent from "../components/payment/PaymentComponent";
@@ -13,6 +12,9 @@ import Tickets from "../components/tickets/Tickets";
 import ViewBookings from "../components/bookings/ViewBookings";
 import CreateExperience from "../experiences/Create/CreateExperience";
 import Settings from "../settings/Settings";
+import SellerRoute from "../components/SellerRoute";
+import DashboardHome from "./DashboardHome";
+import CreateItenerary from "../itenerary/CreateItenerary";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -53,12 +55,15 @@ const MiddleContent = () => {
 
       <section className="px-1 md:px-2 pb-0 ">
         <Switch>
-          <PrivateRoute
-            exact
+          <SellerRoute  exact
             path="/dashboard/seller"
-            component={DashboardSeller}
-          />
-          <PrivateRoute
+            component={DashboardSeller} />
+          {/* <PrivateRoute
+            exact
+            path="/dashboard/home"
+            component={DashboardHome}
+          /> */}
+           <PrivateRoute
             exact
             path="/user-experience-bookings"
             component={BookingsComponent}
@@ -72,6 +77,11 @@ const MiddleContent = () => {
             exact
             path="/experience/edit/:expId"
             component={EditExperience}
+          />
+                    <PrivateRoute
+            exact
+            path="/itenerary/:expId"
+            component={CreateItenerary}
           />
           <PrivateRoute exact path="/user-tickets" component={Tickets} />
           <PrivateRoute exact path="/settings" component={Settings} />

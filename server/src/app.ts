@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
+import helmet from "helmet";
 
 dotenv.config()
 const app = express()
@@ -16,6 +17,9 @@ const errorHandler = require('./middlewares/error')
 app.use(cors({}))
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+  }));
 
 //route middleware
 fs.readdirSync(dirPath).map((r) => 

@@ -84,7 +84,7 @@ const ExperienceView = ({ match, history }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     loadSingleExperience();
     

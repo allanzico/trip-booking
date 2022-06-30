@@ -91,7 +91,14 @@ export class ExperienceSetup {
       let files = req.files;
       const ticketFields = JSON.parse(fields.tickets);
       let data = { ...fields };
-      data.tickets = ticketFields;
+      if (ticketFields.length < 1) {
+        return res.status(400).json({
+          success: false,
+          error: "Please add a ticket type",
+        });
+      } else {
+        data.tickets = ticketFields;
+      }
 
       if (files.image) {
         let image: any = { data: "", contentType: "" };
@@ -99,6 +106,7 @@ export class ExperienceSetup {
         image.contentType = files.image.type;
         data.image = image;
       }
+
       let updated = await Experience.findByIdAndUpdate(req.params.expId, data, {
         new: true,
       }).select("-image.data");
@@ -121,7 +129,10 @@ export class ExperienceSetup {
         { _id: expId },
         { $pull: { tickets: { _id: ticketId } } }
       );
-      res.status(200).send("success");
+      const newTickets = await Experience.findById(expId)
+        .select("tickets -_id")
+        .exec();
+      res.status(200).send({ success: true, tickets: newTickets });
     } catch (error) {
       console.log(error);
       res.status(400).send(" failed");
@@ -194,7 +205,7 @@ export class ExperienceSetup {
     //   .exec();
 
     let result = await Experience.find({
-      startDate: { $gte: date},
+      startDate: { $gte: date },
       location: new RegExp(location, "i"),
     })
       .select("-image.data")
@@ -289,6 +300,21 @@ export class ExperienceSetup {
       res.json({ success: true, favoriteNumber: favorites.length });
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async createItenerary(req: any, res: any) {
+    const itenerary = req.body;
+    try {
+      const updatedExperience = await Experience.findByIdAndUpdate(req.params.expId, {itenerary: itenerary}, {
+        new: true,
+      })
+      res.status(201).json({ success: true, updatedExperience });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        error,
+      });
     }
   }
 }

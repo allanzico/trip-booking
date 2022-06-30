@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema.Types;
+
 const reviewType = new Schema(
   {
     rating: {
@@ -45,7 +46,7 @@ const ExperienceType = new Schema(
     booked: {
       type: Number,
       trim: true,
-      default: 0
+      default: 0,
     },
     image: {
       data: Buffer,
@@ -61,13 +62,25 @@ const ExperienceType = new Schema(
       type: ObjectId,
       ref: "User",
     },
+    itenerary: [
+      {
+        date: {
+          type: Date,
+          required: [true, "please provide a date"],
+        },
+        title: {
+          type: String,
+        },
+        data: Map,
+      },
+    ],
     lat: {
       type: String,
     },
     lng: {
       type: String,
     },
-    reviews:[reviewType],
+    reviews: [reviewType],
     numReviews: {
       type: Number,
       default: 0,
@@ -98,10 +111,15 @@ const ExperienceType = new Schema(
           trim: true,
           required: [true, "Max tickets field is required"],
         },
-      }
-    ]
+      },
+    ],
   },
   { timestamps: true }
+);
+// Validations for array size
+ExperienceType.path("tickets").validate(
+  (val: any) => val.length > 0,
+  "Must have minimum one option"
 );
 
 export default mongoose.model("Experience", ExperienceType);

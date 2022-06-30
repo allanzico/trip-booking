@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Modal } from "antd";
 import { deleteTicket } from '../../actions/experience';
 import { useDispatch, useSelector } from 'react-redux';
+import { removeTicket } from '../../Redux/reducers/experiences';
 
-const DeleteModal = ({setShowDeleteModal, showDeleteModal, ticketArray, setTicketArray, ticket, match }) => {
+const DeleteModal = ({setShowDeleteModal, showDeleteModal, ticketArray, setTicketArray, ticket, match, setDeleteError,setShowAlert }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const experience = useSelector((state) => state.experiences.singleExperience);
   const { token } = auth;
@@ -16,17 +17,25 @@ const DeleteModal = ({setShowDeleteModal, showDeleteModal, ticketArray, setTicke
         const data = {
           ticketId: ticket._id
         }
+        
         try {
-          await deleteTicket(match.params.expId, data, token)
-          setTicketArray(experience.tickets)
-          setShowDeleteModal(!showDeleteModal)
+          if(ticketArray.length > 1) {
+            const res = await deleteTicket(match.params.expId, data, token)
+            setTicketArray(res.data.tickets.tickets)
+            setShowDeleteModal(!showDeleteModal)
+          } else {
+            setDeleteError(true)
+            setShowDeleteModal(!showDeleteModal)
+            setShowAlert(true)
+          }
+
         } catch (error) {
           
         }
-        // const newTicketArray = ticketArray.filter(t => t.ticketId != ticket.ticketId);
-        // setTicketArray(newTicketArray)
-        // setShowDeleteModal(!showDeleteModal)
       }
+
+      console.log(ticketArray)
+
   return (
     <Modal
     visible={showDeleteModal}

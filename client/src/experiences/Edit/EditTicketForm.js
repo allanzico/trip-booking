@@ -17,11 +17,14 @@ import { DotsVerticalIcon } from "@heroicons/react/outline";
 import DeleteModal from "./DeleteModal";
 import EditTicketModal from "./EditTicketModal";
 import CreateTicketModal from "../Create/CreateTicketModal";
+import ErrorAlert from "../../components/shared/ErrorAlert";
 
-const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
+const EditTicketForm = ({ setTicketArray, ticketArray, match }) => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [ticketData, setTicketData] = useState({
     ticketId: "",
     title: "",
@@ -63,6 +66,7 @@ const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
             Create New Ticket
           </button>
         </div>
+
         {showModal && (
           <CreateTicketModal
             showModal={showModal}
@@ -74,6 +78,15 @@ const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
           />
         )}
       </div>
+      {deleteError && (
+        <ErrorAlert
+          error={
+            "You can not delete the last ticket, at least 1 ticket type is required"
+          }
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        />
+      )}
       <div className="col-span-6">
         {ticketArray && ticketArray.length >= 1
           ? ticketArray.map((ticket) => (
@@ -158,6 +171,9 @@ const EditTicketForm = ({ setTicketArray, ticketArray, match, }) => {
                         setTicketArray={setTicketArray}
                         ticket={ticket}
                         match={match}
+                        setDeleteError={setDeleteError}
+                        showAlert={showAlert}
+                        setShowAlert={setShowAlert}
                       />
                     )}
                     {showEditModal && (

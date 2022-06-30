@@ -1,15 +1,24 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import UserInterests from "./UserInterests";
 
 const { Schema } = mongoose;
 
+const { ObjectId } = mongoose.Schema.Types;
+
 const UserType = new Schema(
   {
-    name: {
+
+    firstName: {
       type: String,
       trim: true,
-      required: [true, "please provide a name"],
+      required: [true, "please provide a first name"],
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: [true, "please provide a last name"],
     },
     email: {
       type: String,
@@ -28,6 +37,15 @@ const UserType = new Schema(
       min: 8,
       max: 64,
     },
+    role: {
+        type: String,
+        default: "buyer",
+        enum: ["buyer", "seller", "superadmin"],
+        required: [true]
+    },
+    userInterests: [
+      { type: ObjectId, ref: 'UserInterests' }
+    ],
     phone: {},
     authyId: {
       type: String,
@@ -74,3 +92,4 @@ UserType.methods.getResetPasswordToken = function () {
 };
 
 export default mongoose.model("User", UserType);
+

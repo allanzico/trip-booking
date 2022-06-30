@@ -112,7 +112,7 @@ const LoginForm = ({
           </div>
           <div class="mb-2 my-2">
             
-            Don't have an account yet? <Link to="/signup" className="text-orange-500">Signup here</Link>
+            Don't have an account yet? <Link to="/register" className="text-orange-500">Signup here</Link>
             
           </div>
         </form>

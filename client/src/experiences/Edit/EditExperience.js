@@ -55,14 +55,14 @@ const EditExperience = ({ match }) => {
     let res = await getSingleExperience(match.params.expId, source.token);
     dispatch(fetchSingleExperience(res.data))
     setValues({ ...values, ...res.data });
-    setTicketArray(experience.tickets)
+    setTicketArray(res.data.tickets)
     setAddress(res.data.location);
     setPreview(`${process.env.REACT_APP_API}/experience/image/${res.data._id}`);
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const refreshToast = toast.loading("Adding...");
+    const refreshToast = toast.loading("Editing...");
     try {
       let experienceData = new FormData();
       experienceData.append("title", title);
@@ -158,31 +158,6 @@ const EditExperience = ({ match }) => {
     </div>
 
   </main>
-    // <>
-    //   <div className="container flex-1 text-center">
-    //     <PageTitle>Edit experience</PageTitle>
-    //   </div>
-    //   <div className="container overflow-hidden flex flex-col-reverse lg:flex-row items-center gap-6">
-    //     <div class="flex flex-1 flex-col items-center lg:items-start">
-    //       <div class="flex justify-center flex-wrap gap-6">
-    //         <ExperienceEditForm
-    //           values={values}
-    //           setValues={setValues}
-    //           setAddress={setAddress}
-    //           handleChange={handleChange}
-    //           handleImageChange={handleImageChange}
-    //           handleSelect={handleSelect}
-    //           handleSubmit={handleSubmit}
-    //           address={address}
-    //           setLocation={setLocation}
-    //         />
-    //       </div>
-    //       <div className="grid grid-cols-3 ">
-    //         <img src={preview} alt="preview" className="img img-fluid m-2" />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </>
   );
 };
 

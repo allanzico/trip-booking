@@ -44,7 +44,6 @@ const EditTicketModal = ({
     // value={this.state.objects[`${item.id}`]?.value || ''}
   }
 
-  console.log(ticket)
 
   return (
     <Modal

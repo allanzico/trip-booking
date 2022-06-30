@@ -12,6 +12,7 @@ const Signup = ({ history }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(true)
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -27,6 +28,7 @@ const Signup = ({ history }) => {
         email,
         name,
         password,
+        role: "buyer"
       });
       toast.success("Signup successful");
       history.push("/login");

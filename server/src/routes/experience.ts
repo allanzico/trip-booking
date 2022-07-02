@@ -12,7 +12,6 @@ router.post(
   "/create-experience",
   requireSignIn,
   authSeller,
-  formidable(),
   experience.createExperience
 );
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createExperience = async (token, data) => {
+export const addExperience = async (token, data) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/create-experience`,
     data,

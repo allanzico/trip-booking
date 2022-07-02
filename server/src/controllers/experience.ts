@@ -5,18 +5,17 @@ import Favorites from "../models/Favorites";
 
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
+    const data = req.body;
+    console.log(req.body);
     try {
-      let fields = req.fields;
-      const ticketFields = JSON.parse(fields.tickets);
-      let files = req.files;
-      let experience = new Experience(fields);
+      let experience = await new Experience(data);
       experience.postedBy = req.user._id;
-      experience.tickets = ticketFields;
+      experience.location = data.address;
 
       //read Image data
-      if (files.image) {
-        experience.image.data = fs.readFileSync(files.image.path);
-        experience.image.contentType = files.image.type;
+      if (data.image) {
+        experience.image.data = fs.readFileSync(data.image.path);
+        experience.image.contentType = data.image.type;
       }
       experience.save((error: any, result: any) => {
         if (error) {

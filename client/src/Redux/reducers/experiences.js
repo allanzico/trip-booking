@@ -43,7 +43,7 @@ export function fetchSellerExperiences(sellerExperiences) {
   };
 }
 
-export function createExperience(experiences) {
+export function experienceCreate(experiences) {
   return {
     type: CREATE_EXPERIENCES,
     payload: experiences,

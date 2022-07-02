@@ -8,7 +8,7 @@ import CustomDatePicker from "../../../components/CustomMUI/CustomDatePicker";
 import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
 
 const ExperienceData = (props) => {
-  const {address, handleSelect, setAddress} = props
+  const { address, handleSelect, setAddress } = props;
   const handleSubmit = (values) => {
     props.next(values);
   };
@@ -89,6 +89,7 @@ const ExperienceData = (props) => {
                     />
                   </div>
                 </div>
+
                 <div className="grid grid-cols-1 mt-3 ">
                   <div class="mb2 px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <div className="cursor-pointer">

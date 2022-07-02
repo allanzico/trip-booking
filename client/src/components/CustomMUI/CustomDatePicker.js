@@ -1,9 +1,10 @@
 import { TextField } from '@mui/material'
 import { alpha, styled } from '@mui/material/styles';
-import React from 'react'
+import React, { useState } from 'react'
 import { useField } from 'formik'
 
 const CustomDatePicker = ({name, ...otherProps}) => {
+ const [selectedDate, setSelectedDate] = useState(null)
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
       color: '#F97316',
@@ -43,6 +44,7 @@ const CustomDatePicker = ({name, ...otherProps}) => {
    }
 
   return (
+
     <CssTextField fullWidth={true} {...configDateTimePicker} sx={{border: 0}}  />
   )
 }

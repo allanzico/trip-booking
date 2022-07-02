@@ -18,7 +18,7 @@ const ExperienceData = (props) => {
   };
   const experienceValidationSchema = Yup.object().shape({
     title: Yup.string().required("title is required"),
-    startDate: Yup.date().required("start is required"),
+    startDate: Yup.date().required("start date is required"),
     endDate: Yup.date().required("end date is required"),
     description: Yup.string().required("description is required"),
     available: Yup.number("ticket availability must be a number").required(
@@ -84,7 +84,7 @@ const ExperienceData = (props) => {
                     />
                     <CustomDatePicker
                       name="endDate"
-                      label="start date"
+                      label="end date"
                       size="small"
                     />
                   </div>

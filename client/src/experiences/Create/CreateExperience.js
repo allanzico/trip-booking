@@ -8,6 +8,7 @@ import CreateTicketModal from "./CreateTicketModal";
 import CreateTicketForm from "./CreateTicketForm";
 import ExperienceData from "./steps/ExperienceData";
 import TicketData from "./steps/TicketData";
+import { getDatesInRange } from "../../components/shared/Utils";
 
 const CreateExperience = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -30,7 +31,8 @@ const CreateExperience = () => {
     startDate: "",
     endDate: "",
     available: "",
-    test: "",
+    tickets: [],
+    itenerary: [],
   });
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({
@@ -47,7 +49,6 @@ const CreateExperience = () => {
     "https://via.placeholder.com/300x150.png?text=PREVIEW"
   );
 
-  const [ticketArray, setTicketArray] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const dispatch = useDispatch();
@@ -55,7 +56,6 @@ const CreateExperience = () => {
     evt.preventDefault();
     // const mergeData = { ...formData, address, coordinates };
     setData((prev) => ({ ...prev, ...newData }));
-    console.log(data);
     // const refreshToast = toast.loading("Adding...");
     // try {
     //   // let experienceData = new FormData();
@@ -109,20 +109,26 @@ const CreateExperience = () => {
 
   const makeRequest = async (formData) => {
     const mergeData = { ...formData, address, coordinates };
-    console.log(mergeData);
-    // try {
-    //   const res = await createExperience(token, mergeData);
-    //   dispatch(createExperience(res.data))
-    //   toast.success("Added new experience", {
-    //     id: refreshToast,
-    //   });
-    //   setTimeout(() => {
-    //     window.location.reload();
-    //   }, 500);
-    // } catch (error) {
-    //   console.log(error);
-    //   setError(error.response.data.error);
-    // }
+    const dates = getDatesInRange(new Date(formData.startDate.toString()), new Date(formData.endDate.toString()));
+    mergeData.itenerary = dates
+    const refreshToast = toast.loading("Adding...");
+    try {
+   
+      const res = await createExperience(token, mergeData);
+      dispatch(createExperience(res.data))
+      toast.success("Added new experience", {
+        id: refreshToast,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.log(error);
+      // setError(error.response.data.error);
+            toast.error("Error adding", {
+        id: refreshToast,
+      });
+    }
   };
 
   const handleNextStep = (newData, final = false) => {
@@ -148,13 +154,7 @@ const CreateExperience = () => {
       setAddress={setAddress}
       handleSelect={handleSelect}
     />,
-    <TicketData
-      next={handleNextStep}
-      prev={handlePrevStep}
-      data={data}
-      ticketArray={ticketArray}
-      setTicketArray={setTicketArray}
-    />,
+    <TicketData next={handleNextStep} prev={handlePrevStep} data={data} />,
   ];
 
   return (

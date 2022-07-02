@@ -29,6 +29,8 @@ const CreateItenerary = ({ match }) => {
   );
   const dates = getDatesInRange(formatStartDate, formatEndDate);
 
+  console.log("EXP", experience.startDate)
+  console.log("DT", formatStartDate)
   useEffect(() => {
     loadSingleExperience()
     // setsections(dates);
@@ -42,9 +44,9 @@ const CreateItenerary = ({ match }) => {
     try {
       let res = await getSingleExperience(match.params.expId, source.token);
       dispatch(fetchSingleExperience(res.data))
-      if (!res.data.itenerary) {
-        setsections(dates);
-       }
+      // if (!res.data.itenerary) {
+      //   setsections(dates);
+      //  }
        const convertedData = res.data.itenerary.map((obj, i) => {
          return { ...obj, data: new Map(Object.entries(obj.data))};
        });

@@ -6,7 +6,6 @@ import Favorites from "../models/Favorites";
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     const data = req.body;
-    console.log(req.body);
     try {
       let experience = await new Experience(data);
       experience.postedBy = req.user._id;
@@ -85,24 +84,20 @@ export class ExperienceSetup {
   }
 
   async updateExperience(req: any, res: any) {
+    const data = req.body;
     try {
-      let fields = req.fields;
-      let files = req.files;
-      const ticketFields = JSON.parse(fields.tickets);
-      let data = { ...fields };
-      if (ticketFields.length < 1) {
+
+      if (data.tickets.length < 1) {
         return res.status(400).json({
           success: false,
           error: "Please add a ticket type",
         });
-      } else {
-        data.tickets = ticketFields;
-      }
+      } 
 
-      if (files.image) {
+      if (data.image) {
         let image: any = { data: "", contentType: "" };
-        image.data = fs.readFileSync(files.image.path);
-        image.contentType = files.image.type;
+        image.data = fs.readFileSync(data.image.path);
+        image.contentType = data.image.type;
         data.image = image;
       }
 

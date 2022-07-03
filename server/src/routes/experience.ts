@@ -57,7 +57,6 @@ router.put(
   requireSignIn,
   expOwner,
   authSeller,
-  formidable(),
   experience.updateExperience
 );
 

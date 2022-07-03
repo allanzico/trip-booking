@@ -5,7 +5,7 @@ import CustomTextField from "../components/CustomMUI/CustomTextField";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 
-const TicketCreateModal = ({ closeModal, data, handleTicket, isOpen }) => {
+const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {
   const ticketDataValidationSchema = Yup.object().shape({
     tickets: Yup.array()
       .min(1, "Please add at least one ticket")

@@ -3,10 +3,11 @@ import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import { addExperience} from "../../actions/experience";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import ExperienceData from "./steps/ExperienceData";
-import TicketData from "./steps/TicketData";
+import ExperienceData from "../steps/ExperienceData";
+import TicketData from "../steps/TicketData";
 import { getDatesInRange } from "../../components/shared/Utils";
 import { experienceCreate } from "../../Redux/reducers/experiences";
+
 
 const CreateExperience = () => {
   const { auth } = useSelector((state) => ({ ...state }));

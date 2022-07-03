@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import CustomTextField from "../../../components/CustomMUI/CustomTextField";
-import CustomDatePicker from "../../../components/CustomMUI/CustomDatePicker";
-import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
-import TicketCard from "../../TicketCard";
+import TicketCard from "../TicketCard";
 import { PlusIcon } from "@heroicons/react/outline";
-import TicketCreateModal from "../../TicketCreateModal";
-
+import { v4 as uuidv4 } from "uuid";
+import TicketCreateModal from "../TicketCreateModal";
+import TicketEditModal from "../TicketEditModal";
 const TicketData = (props) => {
   let [isOpen, setIsOpen] = useState(false);
-  const [newData, setNewData] = useState({});
-
+  
   function closeModal() {
     setIsOpen(false);
   }
@@ -25,14 +20,27 @@ const TicketData = (props) => {
   };
 
   const handleTicket = (values) => {
+    values.id = uuidv4();
     props.data.tickets = [...props.data.tickets, values];
-    closeModal()
+    closeModal();
   };
+
+  const handleDelete = (e, ticketId) => {
+    e.preventDefault();
+    if (props.data.tickets.length > 1) {
+      var removeIndex = props.data.tickets
+        .map((ticket) => ticket._id)
+        .indexOf(ticketId);
+      ~removeIndex && props.data.tickets.splice(removeIndex, 1);
+      props.setData({ ...props.data, tickets: props.data.tickets });
+    }
+  };
+
 
   return (
     <>
       <div className="container mb-2 flex flex-col text-center">
-        <h1 className="lg:text-4xl text-2xl">Create Tickets</h1>
+        <h1 className="lg:text-4xl text-2xl">Tickets</h1>
       </div>
       <div className="grid grid-cols-1">
         <div className="flex flex-col">
@@ -45,7 +53,7 @@ const TicketData = (props) => {
                   class="text-gray-900 bg-transparent border-1 border-orange-500 font-medium rounded-sm text-sm px-3 py-2.5 text-center inline-flex items-center mr-2 mb-2"
                 >
                   <PlusIcon className="w-4 h-4 mx-2" />
-                  Create New Ticket
+                  Add New Ticket
                 </button>
               </div>
             </div>
@@ -64,7 +72,15 @@ const TicketData = (props) => {
       <div className="grid grid-cols-1 ">
         {props.data.tickets &&
           props.data.tickets.length > 0 &&
-          props.data.tickets.map((ticket) => <TicketCard key={ticket.id} ticket={ticket} />)}
+          props.data.tickets.map((ticket) => (
+            <TicketCard
+              key={ticket._id}
+              ticket={ticket}
+              handleDelete={handleDelete}
+              data={props.data}
+              setData={props.setData}
+            />
+          ))}
       </div>
       <div className="grid grid-cols-1 mt-3 ">
         <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

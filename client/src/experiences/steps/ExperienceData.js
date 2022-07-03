@@ -3,12 +3,14 @@ import { DatePicker } from "antd";
 import moment from "moment";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import CustomTextField from "../../../components/CustomMUI/CustomTextField";
-import CustomDatePicker from "../../../components/CustomMUI/CustomDatePicker";
-import GooglePlacesSearch from "../../../components/GooglePlacesSearch";
+import CustomTextField from "../../components/CustomMUI/CustomTextField";
+import CustomDatePicker from "../../components/CustomMUI/CustomDatePicker";
+import GooglePlacesSearch from "../../components/GooglePlacesSearch";
 
 const ExperienceData = (props) => {
   const { address, handleSelect, setAddress } = props;
+
+  console.log(props.data)
   const handleSubmit = (values) => {
     props.next(values);
   };
@@ -33,6 +35,7 @@ const ExperienceData = (props) => {
         validationSchema={experienceValidationSchema}
         initialValues={props.data}
         onSubmit={handleSubmit}
+        enableReinitialize
       >
         {() => (
           <Form autoComplete="off">
@@ -106,7 +109,7 @@ const ExperienceData = (props) => {
                           uppercase
                           "
                       >
-                        Create Tickets
+                       Tickets
                       </button>
                     </div>
                   </div>

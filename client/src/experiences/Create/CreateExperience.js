@@ -23,6 +23,7 @@ const CreateExperience = () => {
     available: "",
     tickets: [],
     itenerary: [],
+    files: []
   });
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({
@@ -65,8 +66,7 @@ const CreateExperience = () => {
     const refreshToast = toast.loading("Adding...");
     try {
    
-      const res = await addExperience(token, mergeData);
-      dispatch(experienceCreate(res.data))
+     await addExperience(token, mergeData);
       toast.success("Added new experience", {
         id: refreshToast,
       });

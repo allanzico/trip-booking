@@ -114,6 +114,14 @@ const ProfileEditForm = ({
                 defaultCountry="UG"
                 value={phoneNumber}
                 onChange={setPhoneNumber}
+                className="w-full
+                rounded-sm
+                py-2
+                px-[14px]
+                border border-gray
+                outline-none
+                focus-visible:shadow-none
+                focus:border-primary"
               />
             </div>
           </div>

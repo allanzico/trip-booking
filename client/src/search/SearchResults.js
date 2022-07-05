@@ -15,9 +15,7 @@ import { Link } from "react-router-dom";
 import SearchForm from "../components/forms/SearchForm";
 
 const SearchResults = () => {
-  // const experiences = useSelector((state) => state.experiences.experiences);
-  // const dispatch = useDispatch()
-  // const source = axios.CancelToken.source();
+
   const [searchLocation, setSearchLocation] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [experiences, setExperiences] = useState([]);

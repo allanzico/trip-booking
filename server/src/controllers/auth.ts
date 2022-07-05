@@ -9,10 +9,10 @@ export default class Authentication {
 
   //register users
   async registerUser(req: any, res: any, next: any): Promise<void> {
-    const { firstName, lastName, email, password, confirmPassword, userInterests, role} = req.body;
+    const { firstName, lastName, email, password, confirmPassword, userInterests, phone, role} = req.body;
     try {
       const user = await User.create({
-        firstName, lastName, email, password, confirmPassword, userInterests, role
+        firstName, lastName, email, password, confirmPassword, userInterests, role, phone
       });
       res.status(201).json({ success: true, user });
     } catch (error) {
@@ -227,11 +227,13 @@ export default class Authentication {
   //2FACTOR AUTHENTICATION
 
   async enableTwofactorAuth(req: any, res: any) {
-    try {
+
+  try {
       const email = req.body.email
       const countryCode = Number(req.body.internationalNumber.countryCallingCode)
       const phone = Number(req.body.internationalNumber.nationalNumber)
       const user = await User.findOne({ email });
+
       if (!user) {
         return res.json({ message: "User account does not exist" });
       }

@@ -7,18 +7,15 @@ import * as Yup from "yup";
 
 const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {
   const ticketDataValidationSchema = Yup.object().shape({
-    tickets: Yup.array()
+    tickets: Yup.array(Yup.object().shape({
+      ticketTitle: Yup.string().required("title is required"),
+      ticketAvailable: Yup.number().required("price is required"),
+      ticketPrice: Yup.number().required("price is required"),
+      minAvailable: Yup.number().required("min available is required"),
+      maxAvailable: Yup.number().required("max available is required"),
+    }))
       .min(1, "Please add at least one ticket")
-      .of(
-        Yup.object().shape({
-          ticketTitle: Yup.string().required("title is required"),
-          ticketAvailable: Yup.number().required("price is required"),
-          ticketPrice: Yup.number().required("price is required"),
-          minAvailable: Yup.number().required("min available is required"),
-          maxAvailable: Yup.number().required("max available is required"),
-        })
-      )
-      .required("Please add at least one ticket"),
+
   });
 
   return (

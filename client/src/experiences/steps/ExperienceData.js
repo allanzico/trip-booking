@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { DatePicker } from "antd";
-import moment from "moment";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../components/CustomMUI/CustomTextField";
 import CustomDatePicker from "../../components/CustomMUI/CustomDatePicker";
 import GooglePlacesSearch from "../../components/GooglePlacesSearch";
+import MultipleFIleUploadField from "../upload/MultipleFIleUploadField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import TextField from "@mui/material/TextField";
 
 const ExperienceData = (props) => {
   const { address, handleSelect, setAddress } = props;
 
-  console.log(props.data)
   const handleSubmit = (values) => {
+    console.log(values);
     props.next(values);
   };
   const customStyle = {
@@ -20,13 +23,27 @@ const ExperienceData = (props) => {
   };
   const experienceValidationSchema = Yup.object().shape({
     title: Yup.string().required("title is required"),
-    startDate: Yup.date().required("start date is required"),
-    endDate: Yup.date().required("end date is required"),
+    startDate: Yup
+    .date('Start Date is Required')
+    .typeError("Start date is required") 
+    .required('Start Date is required'),
+
+  endDate: Yup
+    .date('')           
+    .typeError("End date is required") 
+    .when("startDate",
+        (start, Yup) => start && Yup.min(start, "End date cannot be before start date"))
+    .required('End Date is required'),  
     description: Yup.string().required("description is required"),
     available: Yup.number("ticket availability must be a number").required(
       "ticket availability is required"
     ),
     price: Yup.number("price must be a number").required("price is required"),
+    files: Yup.array(
+      Yup.object({
+        url: Yup.string().required(),
+      })
+    ),
   });
 
   return (
@@ -37,9 +54,12 @@ const ExperienceData = (props) => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {() => (
+        {({ values, errors, touched, setFieldValue }) => (
           <Form autoComplete="off">
             <div className="flex flex-col mb-4 ">
+              <div className="grid grid-cols-1">
+                <div className="col-span-6 mb-2">ADD MAIN IMAGE</div>
+              </div>
               <div className="grid grid-cols-1 space-y-2">
                 <div className="col-span-6">
                   <CustomTextField name="title" label="title" size="small" />
@@ -84,13 +104,32 @@ const ExperienceData = (props) => {
                       name="startDate"
                       label="start date"
                       size="small"
+                      value={values.startDate}
+                      onChange={(value) =>
+                        setFieldValue("startDate", value, true)
+                      }
                     />
                     <CustomDatePicker
                       name="endDate"
                       label="end date"
                       size="small"
+                      error={Boolean(touched.endDate && errors.endDate)}
+                      helperText={touched.endDate && errors.endDate}
+                      value={values.endDate}
+                      onChange={(value) =>
+                        setFieldValue("endDate", value, true)
+                      }
                     />
                   </div>
+                </div>
+                <div className="col-span-6 mb-2">
+                  <p className="text-sm py-2 ">
+                    Add more Images to this experience
+                  </p>
+                  {values.files && values.files.length > 0 && (
+                    <>{JSON.stringify(values.files)}</>
+                  )}
+                  <MultipleFIleUploadField name="files" />
                 </div>
 
                 <div className="grid grid-cols-1 mt-3 ">
@@ -109,7 +148,7 @@ const ExperienceData = (props) => {
                           uppercase
                           "
                       >
-                       Tickets
+                        Next
                       </button>
                     </div>
                   </div>

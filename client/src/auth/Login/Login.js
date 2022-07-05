@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { login } from "../actions/auth";
-import LoginForm from "../components/forms/LoginForm";
+import { login } from "../../actions/auth";
+import LoginForm from "../../components/forms/LoginForm";
 import { useDispatch } from "react-redux";
-import LoginSVG from "../images/LoginSvg";
-import PageTitle from "../components/Typography/PageTitle";
+import LoginSVG from "../../images/LoginSvg";
+import PageTitle from "../../components/Typography/PageTitle";
+import LoginDetails from "./LoginDetails";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -36,13 +37,16 @@ const Login = ({ history }) => {
   };
   return (
    <>
-    <div className="container mt-5 flex flex-col text-center">
+       <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
+      <LoginDetails />
+    </main>
+    {/* <div className="container mt-5 flex flex-col text-center">
     <PageTitle>
     Login
     </PageTitle>
       </div>
     <section class="relative ">
-      <div class="container pl-5 pt-2 overflow-hidden shadow-sm mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
+      <div class="container pl-5 pt-2 overflow-hidden mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
         <div class="flex flex-1 flex-col items-center lg:items-start">
           <div class="flex justify-center flex-wrap gap-6">
             <LoginSVG />
@@ -59,7 +63,7 @@ const Login = ({ history }) => {
           </div>
         </div>
       </div>
-    </section>
+    </section> */}
    </>
   );
 };

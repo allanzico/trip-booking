@@ -1,10 +1,13 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState } from "react";
+import { Formik, Form,} from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../../components/CustomMUI/CustomTextField";
 import RegisterSVG from "../../../images/RegisterSVG";
 import SignupSVG from "../../../images/SignupSVG";
 import { Link } from "react-router-dom";
+import PhoneInput from "react-phone-number-input";
+
+
 const PersonalInfo = (props) => {
   const stepOneValidationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -14,7 +17,8 @@ const PersonalInfo = (props) => {
     confirmPassword: Yup.string()
       .required("This field is required")
       .oneOf([Yup.ref("password"), null], "Passwords do not match"),
-  });
+    phone: Yup.string().required("Phone number is required"),
+    });
 
   const handleSubmit = (values) => {
     props.next(values);
@@ -26,7 +30,7 @@ const PersonalInfo = (props) => {
       </div>
       <section class="relative ">
         <div class="container pl-5 pt-2 overflow-hidden mt-5 flex flex-col-reverse lg:flex-row items-center gap-12">
-          <div class="flex flex-1 flex-col items-center lg:items-start">
+          <div class="flex flex-1 flex-col items-center">
             <div class="flex justify-center items-center flex-wrap gap-6">
               <SignupSVG />
               <div className="grid grid-cols-1">
@@ -35,12 +39,12 @@ const PersonalInfo = (props) => {
           initialValues={props.data}
           onSubmit={handleSubmit}
         >
-          {() => (
+          {({values, setFieldValue} ) => (
             <Form autoComplete="off">
               <div className="flex flex-col  ">
-                <div className="grid grid-cols-1 space-y-2">
+                <div className="grid grid-cols-1 gap-2">
                 <div className="col-span-6">
-                <div className="grid grid-cols-6  md:space-x-4">
+                <div className="grid grid-cols-6 gap-2">
                 <div className="col-span-6 sm:col-span-6 md:col-span-3">
                 <CustomTextField
                       name="firstName"
@@ -50,7 +54,7 @@ const PersonalInfo = (props) => {
                     />
                     
                 </div>
-                <div className="mb-4 col-span-6 sm:col-span-6 md:col-span-3">
+                <div className="col-span-6 sm:col-span-6 md:col-span-3">
                     
                 <CustomTextField
                       name="lastName"
@@ -64,6 +68,26 @@ const PersonalInfo = (props) => {
                 </div>
                   <div className="col-span-6">
                     <CustomTextField name="email" label="email" size="small" />
+                  </div>
+                  <div className="col-span-6">
+                  <PhoneInput
+                international
+                countryCallingCodeEditable={false}
+                defaultCountry="UG"
+                name="phone"
+                value={values.phone}
+                onChange={(value) =>
+                  setFieldValue("phone", value, true)
+                }
+                className="w-full
+                rounded-sm
+                py-2
+                px-[14px]
+                border border-gray
+                outline-none
+                focus-visible:shadow-none
+                focus:border-primary"
+              />
                   </div>
                   <div className="col-span-6">
                     <CustomTextField

@@ -3,7 +3,7 @@ import TicketCard from "../TicketCard";
 import { PlusIcon } from "@heroicons/react/outline";
 import { v4 as uuidv4 } from "uuid";
 import TicketCreateModal from "../TicketCreateModal";
-import TicketEditModal from "../TicketEditModal";
+
 const TicketData = (props) => {
   let [isOpen, setIsOpen] = useState(false);
   

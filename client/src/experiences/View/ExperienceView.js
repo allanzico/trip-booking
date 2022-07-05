@@ -149,7 +149,7 @@ const ExperienceView = ({ match, history }) => {
     }
   };
 
-
+console.log(experience)
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -167,22 +167,21 @@ const ExperienceView = ({ match, history }) => {
               <div className="mt-6 max-w-2xl mx-auto px-4 sm:px-4 lg:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-2">
                 <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                   <img
-                    src={image}
-                    alt="experience-image"
+                    src={experience.files[0] ? experience.files[0].url : "https://via.placeholder.com/1000x1000"}
                     className="w-full h-full object-center object-cover"
                   />
                 </div>
                 <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={image}
+                      src={experience.files[1] ? experience.files[1].url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
                   </div>
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={image}
+                      src={experience.files[2] ? experience.files[2].url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
@@ -190,7 +189,7 @@ const ExperienceView = ({ match, history }) => {
                 </div>
                 <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                   <img
-                    src={image}
+                    src={experience.files[3] ? experience.files[3].url : "https://via.placeholder.com/1000x1000"}
                     alt="experience-image"
                     className="w-full h-full object-center object-cover"
                   />

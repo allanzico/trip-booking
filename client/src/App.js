@@ -1,5 +1,5 @@
 import { Switch, BrowserRouter, Route, Router } from "react-router-dom";
-import Login from "./auth/Login";
+import Login from "./auth/Login/Login";
 import Signup from "./auth/Signup";
 import Home from "./booking/Home";
 import "./App.less";

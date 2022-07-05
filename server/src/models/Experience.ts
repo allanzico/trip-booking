@@ -113,6 +113,7 @@ const ExperienceType = new Schema(
         },
       },
     ],
+    files: []
   },
   { timestamps: true }
 );

@@ -18,9 +18,17 @@ const Experiences = () => {
   const dispatch = useDispatch()
   const source = axios.CancelToken.source();
 
+  useEffect(() => {
+    loadExperiences();
+    return () => {
+      source.cancel();
+    };
+  }, []);
+
   const loadExperiences = async () => {
     try {
       let res = await getExperiences(source.token);
+      
       dispatch(fetchExperiences(res.data))
     } catch (error) {
       if (axios.isCancel(error)) {
@@ -31,16 +39,11 @@ const Experiences = () => {
     }
   };
 
-  useEffect(() => {
-    loadExperiences();
-    return () => {
-      source.cancel();
-    };
-  }, []);
+ 
 
   const handleExperienceEdit = () => {};
   return (
-    <div className="h-screen">
+    <div className="h-screen ">
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
           <p className="text-xs">20+ experiences</p>

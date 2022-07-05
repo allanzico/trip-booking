@@ -44,8 +44,6 @@ const EditProfile = () => {
     };
   }, []);
 
-  console.log(user)
-
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     const refreshToast = toast.loading("Adding...");

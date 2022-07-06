@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useFetch = (url, token) => {
+const useFetch = (endPoint) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -11,33 +11,28 @@ const useFetch = (url, token) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const res = await axios.get(`${process.env.REACT_APP_API}/${endPoint}`, {
           cancelToken: source.token,
         });
         setData(res.data);
       } catch (error) {
         setError(error);
       }
-      fetchData();
-      setLoading(false);
-      return () => {
-        source.cancel();
-      };
+
+    };
+
+    fetchData();
+    setLoading(false);
+    return () => {
+      source.cancel();
     };
     
-  }, [url]);
+  }, [endPoint]);
 
   const refetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(url, token, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(`${process.env.REACT_APP_API}/${endPoint}`);
       setData(res.data);
     } catch (error) {
       setError(error);

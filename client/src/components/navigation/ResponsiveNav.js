@@ -11,10 +11,10 @@ const ResponsiveNav = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const userName = auth?.user.firstName + " " + auth?.user.lastName
+  const userName = auth?.user?.firstName + " " + auth?.user?.lastName
   const user = {
     name: userName,
-    email: auth?.user.email,
+    email: auth?.user?.email,
     imageUrl: "",
   };
 

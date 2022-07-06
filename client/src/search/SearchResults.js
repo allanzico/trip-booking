@@ -13,38 +13,62 @@ import { fetchExperiences } from "../Redux/reducers/experiences";
 import queryString from "query-string";
 import { Link } from "react-router-dom";
 import SearchForm from "../components/forms/SearchForm";
+import FilterComponent from "../components/shared/FilterComponent";
+import useFetch from "../hooks/useFetch";
 
 const SearchResults = () => {
 
   const [searchLocation, setSearchLocation] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [experiences, setExperiences] = useState([]);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+
+  
   useEffect(() => {
     const { location, date } = queryString.parse(window.location.search);
     setSearchLocation(location);
     searchListings({ location, date }).then((res) => {
+      console.log(res.data)
       setExperiences(res.data);
     });
   }, [window.location.search]);
 
+
+  useEffect(() => {
+    handleFilterByPrice(minPrice, maxPrice)
+  }, [minPrice, maxPrice])
+  
+
+  const handleFilterByPrice = (min, max) => { 
+    const filteredData = experiences.filter(experience => {
+      return experience.price >= min && experience.price <= max;
+    })
+
+    
+  }
+
+ 
   const handleExperienceEdit = () => {};
   return (
+    <>
     <div className="h-screen">
       <main className="flex">
         <section className="flex-grow px-6">
-          <div className="w-full pt-5">
+
+
+          <div className="w-full pt-3 mb-3 ">
             <SearchForm />
           </div>
-          <p className="text-xs pt-5">20+ experiences</p>
+          <p className="text-xs pt-1">20+ experiences</p>
           <h1 className="text-3xl font-semibold mb-5 text-orange-500">
             {" "}
             experiences in {searchLocation}
           </h1>
-          <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
-            <p className="filter-component-button">Button</p>
-            <p className="filter-component-button">Another Button</p>
-            <p className="filter-component-button">More Button</p>
-            <p className="filter-component-button">Cool Button</p>
+          <div className="inline-flex mb-5 space-x-2 text-gray-800 whitespace-nowrap">
+
+          <FilterComponent minPrice={minPrice} setMinPrice={setMinPrice} maxPrice={maxPrice} setMaxPrice={setMaxPrice} />
+          
           </div>
           <div className="flex flex-col">
             {experiences.map((exp) => {
@@ -64,8 +88,10 @@ const SearchResults = () => {
           </section>
         )}
       </main>
-      <MainFooter />
+     
     </div>
+     <MainFooter />
+     </>
   );
 };
 

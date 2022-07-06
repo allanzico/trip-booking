@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { login } from "../../actions/auth";
-import LoginForm from "../../components/forms/LoginForm";
 import { useDispatch } from "react-redux";
 import LoginSVG from "../../images/LoginSvg";
 import PageTitle from "../../components/Typography/PageTitle";
@@ -31,16 +30,14 @@ const Login = ({ history }) => {
         history.push("/dashboard");
       }
     } catch (error) {
-      setError(error.response.data.error);
+      // setError(error.response.data.error);
+      console.log(error);
       setShowAlert(true)
     }
   };
   return (
    <>
-       <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
-      <LoginDetails />
-    </main>
-    {/* <div className="container mt-5 flex flex-col text-center">
+    <div className="container mt-5 flex flex-col text-center">
     <PageTitle>
     Login
     </PageTitle>
@@ -50,7 +47,7 @@ const Login = ({ history }) => {
         <div class="flex flex-1 flex-col items-center lg:items-start">
           <div class="flex justify-center flex-wrap gap-6">
             <LoginSVG />
-            <LoginForm
+            <LoginDetails
               handleSubmit={handleSubmit}
               email={email}
               password={password}
@@ -63,7 +60,7 @@ const Login = ({ history }) => {
           </div>
         </div>
       </div>
-    </section> */}
+    </section>
    </>
   );
 };

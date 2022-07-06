@@ -30,7 +30,7 @@ const InfoCard = ({ exp }) => {
   useEffect(() => {
     loadFavorites();
     if (auth == null) return
-    if (exp.postedBy._id === user._id) {
+    if (exp.postedBy?._id === user?._id) {
       setIsOwner(true)
     }
     return () => {

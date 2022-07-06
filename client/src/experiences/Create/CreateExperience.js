@@ -19,8 +19,11 @@ const CreateExperience = () => {
     image: "",
     price: "",
     startDate: "",
+    location: "",
     endDate: "",
     available: "",
+    lat: "",
+    lng: "",
     tickets: [],
     itenerary: [],
     files: []
@@ -60,9 +63,14 @@ const CreateExperience = () => {
   };
 
   const makeRequest = async (formData) => {
-    const mergeData = { ...formData, address, coordinates };
-    const dates = getDatesInRange(new Date(formData.startDate.toString()), new Date(formData.endDate.toString()));
+    const mergeData = { ...formData, location:address, lat:coordinates.lat, lng:coordinates.lng };
+    const formatStartDate = new Date(formData.startDate.toString());
+    const formatEndDate = new Date(formData.endDate.toString());
+
+    const dates = getDatesInRange(formatStartDate, formatEndDate);
     mergeData.itenerary = dates
+    mergeData.startDate = formatStartDate.toLocaleString()
+    mergeData.endDate = formatEndDate.toLocaleString()
     const refreshToast = toast.loading("Adding...");
     try {
    

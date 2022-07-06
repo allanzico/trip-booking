@@ -1,5 +1,6 @@
 import React from 'react'
 import { HashRouter, Switch } from 'react-router-dom'
+import MainFooter from '../components/footers/MainFooter'
 import SideBar from '../components/navigation/SideBar/SideBar'
 import DashboardHome from './DashboardHome'
 import  MiddleContent  from './MiddleContent'
@@ -15,6 +16,7 @@ const MainDashboard = () => {
     </HashRouter>
     <Widgets />
     </main>
+    <MainFooter />
 
 </div>
 

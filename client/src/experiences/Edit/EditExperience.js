@@ -21,6 +21,9 @@ const EditExperience = ({ match }) => {
     description: "",
     image: "",
     price: "",
+    location: "",
+    lat: "",
+    lng: "",
     startDate: "",
     endDate: "",
     available: "",
@@ -80,7 +83,7 @@ const EditExperience = ({ match }) => {
   };
 
   const makeRequest = async (formData) => {
-    const mergeData = { ...formData, address, coordinates };
+    const mergeData = { ...formData, location:address, lat:coordinates.lat, lng:coordinates.lng };
     const refreshToast = toast.loading("Adding...");
     try {
       let res = await updateExperience(token, mergeData, match.params.expId);

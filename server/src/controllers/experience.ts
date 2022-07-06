@@ -6,29 +6,29 @@ import Favorites from "../models/Favorites";
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     const data = req.body;
-    try {
-      let experience = await new Experience(data);
-      experience.postedBy = req.user._id;
-      experience.location = data.address;
+    console.log(data);
+    // try {
+    //   let experience = await new Experience(data);
+    //   experience.postedBy = req.user._id;
 
-      //read Image data
-      if (data.image) {
-        experience.image.data = fs.readFileSync(data.image.path);
-        experience.image.contentType = data.image.type;
-      }
-      experience.save((error: any, result: any) => {
-        if (error) {
-          console.log(error);
-          res.status(400).send("Error saving");
-        }
-        res.json(result);
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        error,
-      });
-    }
+    //   //read Image data
+    //   if (data.image) {
+    //     experience.image.data = fs.readFileSync(data.image.path);
+    //     experience.image.contentType = data.image.type;
+    //   }
+    //   experience.save((error: any, result: any) => {
+    //     if (error) {
+    //       console.log(error);
+    //       res.status(400).send("Error saving");
+    //     }
+    //     res.json(result);
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    //   res.status(400).json({
+    //     error,
+    //   });
+    // }
   }
 
   async getExperiences(req: any, res: any) {
@@ -85,6 +85,7 @@ export class ExperienceSetup {
 
   async updateExperience(req: any, res: any) {
     const data = req.body;
+    console.log(data);
     try {
 
       if (data.tickets.length < 1) {

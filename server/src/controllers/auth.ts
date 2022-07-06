@@ -110,13 +110,13 @@ export default class Authentication {
           { force: true },
           function (err: any, smsRes: any) {
             if (err) {
-              return res.json({
+              res.json({
                 message: "An error occurred while sending OTP to user",
               });
             }
           }
         );
-        return res.status(200).json({ message: "OTP sent to user" });
+        res.status(200).json({ message: "OTP sent to user" });
       }
 
       res.status(201).json({

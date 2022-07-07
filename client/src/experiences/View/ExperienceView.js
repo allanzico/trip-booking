@@ -149,7 +149,6 @@ const ExperienceView = ({ match, history }) => {
     }
   };
 
-console.log(experience)
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -259,7 +258,7 @@ console.log(experience)
                     <div>
                       <h3 className="text-sm text-gray-900 font-medium">
                         <span class="hover:bg-gray-300 delay-100 duration-100 bg-gray-200 rounded-sm py-2 px-2 text-xs">
-                          Available for{" "}
+                          Experience lasts{" "}
                           {diffDays(experience.startDate, experience.endDate)}{" "}
                           {diffDays(experience.startDate, experience.endDate) ==
                           1

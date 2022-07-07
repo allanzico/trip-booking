@@ -7,6 +7,7 @@ import ExperienceData from "../steps/ExperienceData";
 import TicketData from "../steps/TicketData";
 import { getDatesInRange } from "../../components/shared/Utils";
 import { experienceCreate } from "../../Redux/reducers/experiences";
+import moment from "moment";
 
 
 const CreateExperience = () => {
@@ -66,9 +67,15 @@ const CreateExperience = () => {
     const mergeData = { ...formData, location:address, lat:coordinates.lat, lng:coordinates.lng };
     const formatStartDate = new Date(formData.startDate.toString());
     const formatEndDate = new Date(formData.endDate.toString());
-
     const dates = getDatesInRange(formatStartDate, formatEndDate);
-    mergeData.itenerary = dates
+    mergeData.itenerary = dates.map((date) => {
+      return {
+        date: (date.date).toLocaleDateString(),
+        title: "new itenerary",
+        data: new Map(),
+      };
+    })
+    console.log("Dates", mergeData.itenerary);
     mergeData.startDate = formatStartDate.toLocaleString()
     mergeData.endDate = formatEndDate.toLocaleString()
     const refreshToast = toast.loading("Adding...");

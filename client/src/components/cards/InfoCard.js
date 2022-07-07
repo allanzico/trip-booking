@@ -128,8 +128,8 @@ const InfoCard = ({ exp }) => {
         )}...`}</p>
         <p className="pt-2 text-sm text-gray-500 flex-grow">
           <span class="hover:bg-gray-300 delay-100 duration-100 bg-gray-200 rounded-sm py-1 px-2 text-xs">
-            {diffDays(exp.startDate, exp.endDate)}{" "}
-            {diffDays(exp.startDate, exp.endDate) == 1 ? " day" : " days"} left
+            {diffDays(new Date(), exp.startDate)}{" "}
+            {diffDays(new Date(), exp.startDate) == 1 ? " day" : " days"} left
           </span>
         </p>
         <div className="flex justify-between items-end pt-5">

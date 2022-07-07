@@ -1,7 +1,8 @@
 import React from "react";
+import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/outline'
 
 const FilterComponent = ({
-  setMinPrice, setMaxPrice
+  setMinPrice, setMaxPrice, handleFilterByHighestDate, handleFilterByLowestDate
 }) => {
   return (
     <>
@@ -20,8 +21,8 @@ const FilterComponent = ({
         </div>
 
       </p>
-      <p className="filter-component-button">Earliest</p>
-      <p className="filter-component-button">Latest</p>
+      <button className="filter-component-button text-center inline-flex items-center px-3 gap-1" onClick={handleFilterByLowestDate}> <ChevronDownIcon className="h-4 w-4"/>Earliest </button>
+      <button className="filter-component-button text-center inline-flex items-center px-3 gap-1" onClick={handleFilterByHighestDate}><ChevronUpIcon className="h-4 w-4"/>Latest</button>
     </>
   );
 };

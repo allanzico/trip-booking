@@ -25,7 +25,7 @@ import Chat from "./components/Chat";
 import Register from "./auth/Signup/Register";
 import RegisterMerchant from "./merchant/register/RegisterMerchant";
 import DashboardHome from "./dashboard/DashboardHome";
-
+import CheckoutComponent from "./checkout/CheckoutComponent";
 
 function App() {
   return (
@@ -58,6 +58,7 @@ function App() {
         {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
         <PrivateRoute exact path="/dashboard" component={MainDashboard} />
         <PrivateRoute exact path="/messaging" component={Messaging} />
+        <PrivateRoute exact path="/checkout" component={CheckoutComponent} />
       
         <PrivateRoute
           exact

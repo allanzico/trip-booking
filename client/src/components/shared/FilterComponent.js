@@ -6,7 +6,7 @@ const FilterComponent = ({
 }) => {
   return (
     <>
-      <p className="">
+  
         <div className="flex flex-row items-center gap-2">
         <div class="relative">
               <input onChange={e=>setMinPrice(e.target.value)} id="priceMin" name="priceMin" type="text" className="peer h-10 px-1 w-full border border-gray-300 text-gray-900 placeholder-transparent focus:outline-none" placeholder="min price" />
@@ -20,7 +20,6 @@ const FilterComponent = ({
 
         </div>
 
-      </p>
       <button className="filter-component-button text-center inline-flex items-center px-3 gap-1" onClick={handleFilterByLowestDate}> <ChevronDownIcon className="h-4 w-4"/>Earliest </button>
       <button className="filter-component-button text-center inline-flex items-center px-3 gap-1" onClick={handleFilterByHighestDate}><ChevronUpIcon className="h-4 w-4"/>Latest</button>
     </>

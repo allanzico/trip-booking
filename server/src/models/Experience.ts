@@ -33,21 +33,6 @@ const ExperienceType = new Schema(
       type: String,
       required: [true, "location is required"],
     },
-    price: {
-      type: Number,
-      trim: true,
-      required: [true, "price is required"],
-    },
-    available: {
-      type: Number,
-      trim: true,
-      required: [true, "availability is required"],
-    },
-    booked: {
-      type: Number,
-      trim: true,
-      default: 0,
-    },
     image: {
       data: Buffer,
       contentType: String,
@@ -110,6 +95,11 @@ const ExperienceType = new Schema(
           type: Number,
           trim: true,
           required: [true, "Max tickets field is required"],
+        },
+        booked: {
+          type: Number,
+          trim: true,
+          default: 0,
         },
       },
     ],

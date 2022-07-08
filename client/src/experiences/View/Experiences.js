@@ -12,10 +12,11 @@ import { useIsMounted } from "../../hooks/useIsMounted";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExperiences } from "../../Redux/reducers/experiences";
 import useFetch from "../../hooks/useFetch";
+import { getLowestPrice } from "../../components/shared/Utils";
 
 const Experiences = () => {
   const experiences = useSelector((state) => state.experiences.experiences);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const source = axios.CancelToken.source();
 
   useEffect(() => {
@@ -28,8 +29,8 @@ const Experiences = () => {
   const loadExperiences = async () => {
     try {
       let res = await getExperiences(source.token);
-      
-      dispatch(fetchExperiences(res.data))
+
+      dispatch(fetchExperiences(res.data));
     } catch (error) {
       if (axios.isCancel(error)) {
       } else {
@@ -39,7 +40,6 @@ const Experiences = () => {
     }
   };
 
- 
 
   const handleExperienceEdit = () => {};
   return (
@@ -58,22 +58,24 @@ const Experiences = () => {
             <p className="filter-component-button">Cool Button</p>
           </div>
           <div className="flex flex-col">
-            {experiences && experiences.map((exp) => {
-              return (
-                <InfoCard
-                  key={exp._id}
-                  exp={exp}
-                  handleExperienceEdit={handleExperienceEdit}
-                />
-              );
-            })}
+            {experiences &&
+              experiences.map((exp) => {
+                return (
+                  <InfoCard
+                    key={exp._id}
+                    exp={exp}
+                    handleExperienceEdit={handleExperienceEdit}
+                    lowestPrice={getLowestPrice(exp.tickets)}
+                  />
+                );
+              })}
           </div>
         </section>
         {/* <section className="hidden xl:inline-flex xl:min-w-[800px]">
           <Mapbox experiences={experiences} />
         </section> */}
       </main>
-      <MainFooter/>
+      <MainFooter />
     </div>
   );
 };

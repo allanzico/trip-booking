@@ -11,8 +11,8 @@ const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {
       ticketTitle: Yup.string().required("title is required"),
       ticketAvailable: Yup.number().required("price is required"),
       ticketPrice: Yup.number().required("price is required"),
-      minAvailable: Yup.number().required("min available is required"),
-      maxAvailable: Yup.number().required("max available is required"),
+      minAvailable: Yup.number().required("min tickets is required"),
+      maxAvailable: Yup.number().required("max tickets is required"),
     }))
       .min(1, "Please add at least one ticket")
 

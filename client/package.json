@@ -20,7 +20,7 @@
     "@mui/x-date-pickers": "^5.0.0-alpha.5",
     "@stripe/react-stripe-js": "^1.7.0",
     "@stripe/stripe-js": "^1.23.0",
-    "@tailwindcss/forms": "^0.5.1",
+    "@tailwindcss/forms": "^0.5.2",
     "@turf/bbox": "^6.5.0",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",

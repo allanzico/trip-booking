@@ -14,6 +14,7 @@ import ReviewsView from "../../reviews/ReviewsView";
 import ReviewsCreate from "../../reviews/ReviewsCreate";
 import axios from "axios";
 import { fetchSingleExperience } from "../../Redux/reducers/experiences";
+import { getHighestPrice, getLowestPrice } from "../../components/shared/Utils";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -117,6 +118,7 @@ const ExperienceView = ({ match, history }) => {
     };
   }, []);
 
+
   const loadSingleExperience = async () => {
     try {
       let res = await getSingleExperience(match.params.expId, source.token);
@@ -137,13 +139,17 @@ const ExperienceView = ({ match, history }) => {
     setLoading(true);
     try {
       if (!auth) history.push("/login");
-      let res = await getSessionId(auth.token, match.params.expId);
-      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
-      stripe
-        .redirectToCheckout({
-          sessionId: res.data.sessionId,
-        })
-        .then((result) => console.log(result));
+      history.push({
+        pathname: "/checkout",
+        state: {experience: experience, user: user},
+      })
+      // let res = await getSessionId(auth.token, match.params.expId);
+      // const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+      // stripe
+      //   .redirectToCheckout({
+      //     sessionId: res.data.sessionId,
+      //   })
+      //   .then((result) => console.log(result));
     } catch (error) {
       console.log(error);
     }
@@ -205,7 +211,7 @@ const ExperienceView = ({ match, history }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {experience.postedBy && experience.postedBy.name}{" "}
+                      {experience.postedBy && experience.postedBy.firstNam}{" "}
                     </a>
                   </h2>
                 </div>
@@ -213,13 +219,20 @@ const ExperienceView = ({ match, history }) => {
                 {/* Options */}
                 <div className="mt-4 lg:mt-0 lg:row-span-3">
                   <h2 className="sr-only">More information</h2>
-                  <div className="flex justify-between items-center">
-                    <p className="text-3xl font-bold text-orange-500">
-                      {experience.price &&
+                  <div className="flex flex-col items-left">
+                    <p className="text-xl font-bold text-orange-500">
+                      <span>{experience.tickets &&
                         currencyFormatter({
-                          amount: experience.price * 100,
+                          amount: getLowestPrice(experience.tickets) * 100,
                           currency: "ugx",
-                        })}
+                        })}</span>
+                        -
+                        <span>{experience.tickets &&
+                        currencyFormatter({
+                          amount: getHighestPrice(experience.tickets) * 100,
+                          currency: "ugx",
+                        })}</span>
+
                     </p>
 
                     {/* Reviews */}

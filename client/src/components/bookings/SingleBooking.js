@@ -33,7 +33,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                   <h1 className="text-lg font-bold tracking-tight lg:text-xl">
                     <span className="text-gray-900 ">Your trip to </span>
                     <span className="text-orange-500">
-                      {booking.experience.location}
+                      {booking && booking.experience.location}
                     </span>
                   </h1>
                 </div>
@@ -59,7 +59,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {booking.experience.postedBy.name}
+                      {booking && booking.experience.postedBy.name}
                     </a>
                   </h2>
                 </div>
@@ -142,7 +142,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                     </h3>
                     <div className="space-y-4">
                       <p className="text-base text-gray-700">
-                        {booking.experience.description}
+                        {booking && booking.experience.description}
                       </p>
                     </div>
                   </div>
@@ -183,6 +183,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
         </div>
       </div>
     </main>
+
   );
 };
 

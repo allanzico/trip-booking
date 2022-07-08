@@ -23,22 +23,23 @@ const ExperienceData = (props) => {
   };
   const experienceValidationSchema = Yup.object().shape({
     title: Yup.string().required("title is required"),
-    startDate: Yup
-    .date('Start Date is Required')
-    .typeError("Start date is required") 
-    .required('Start Date is required'),
+    startDate: Yup.date("Start Date is Required")
+      .typeError("Start date is required")
+      .required("Start Date is required"),
 
-  endDate: Yup
-    .date('')           
-    .typeError("End date is required") 
-    .when("startDate",
-        (start, Yup) => start && Yup.min(start, "End date cannot be before start date"))
-    .required('End Date is required'),  
+    endDate: Yup.date("")
+      .typeError("End date is required")
+      .when(
+        "startDate",
+        (start, Yup) =>
+          start && Yup.min(start, "End date cannot be before start date")
+      )
+      .required("End Date is required"),
     description: Yup.string().required("description is required"),
-    available: Yup.number("ticket availability must be a number").required(
-      "ticket availability is required"
-    ),
-    price: Yup.number("price must be a number").required("price is required"),
+    // available: Yup.number("ticket availability must be a number").required(
+    //   "ticket availability is required"
+    // ),
+    // price: Yup.number("price must be a number").required("price is required"),
     files: Yup.array(
       Yup.object({
         url: Yup.string().required(),
@@ -58,7 +59,41 @@ const ExperienceData = (props) => {
           <Form autoComplete="off">
             <div className="flex flex-col mb-4 ">
               <div className="grid grid-cols-1">
-                <div className="col-span-6 mb-2">ADD MAIN IMAGE</div>
+                <div className="col-span-6 mb-2">
+                  <div className="flex flex-col gap-1">
+                    <h1 className="text-md uppercase text-gray-700">
+                      Add main image
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                      *This will be the main display image for the experience,
+                      please upload png or jp images only
+                    </p>
+                  </div>
+                </div>
+                {/* Image upload */}
+                <div className="grid grid-cols-6">
+                  <div className="col-span-6">
+                    <div class="mb-2 w-full">
+                      <input
+                        className="form-control
+                    block
+                    w-full
+                    rounded-sm
+                    px-2
+                    border border-gray
+                    outline-none
+                    focus-visible:shadow-none
+                    focus:border-primary
+                    transition
+                    ease-in-out
+                    m-0"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="grid grid-cols-1 space-y-2">
                 <div className="col-span-6">
@@ -82,7 +117,7 @@ const ExperienceData = (props) => {
                     customStyle={customStyle}
                   />
                 </div>
-                <div className="col-span-6">
+                {/* <div className="col-span-6">
                   <div className="flex flex-col md:flex-row gap-2">
                     <CustomTextField
                       type="number"
@@ -97,7 +132,7 @@ const ExperienceData = (props) => {
                       size="small"
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="col-span-6">
                   <div className="flex flex-col md:flex-row gap-2">
                     <CustomDatePicker

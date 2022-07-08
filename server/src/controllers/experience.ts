@@ -32,10 +32,7 @@ export class ExperienceSetup {
 
   async getExperiences(req: any, res: any) {
     try {
-      // let experiences = await Experience.find({startDate: {$gte: new Date()}})
-
       let experiences = await Experience.find({})
-        .limit(24)
         .select("-image.data")
         .populate("postedBy", "_id name")
         .exec();

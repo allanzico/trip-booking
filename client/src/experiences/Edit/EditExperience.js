@@ -20,7 +20,6 @@ const EditExperience = ({ match }) => {
     title: "",
     description: "",
     image: "",
-    price: "",
     location: "",
     lat: "",
     lng: "",
@@ -122,7 +121,6 @@ const EditExperience = ({ match }) => {
     <ExperienceData
       next={handleNextStep}
       data={data}
-      
       address={address}
       setAddress={setAddress}
       handleSelect={handleSelect}

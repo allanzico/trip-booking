@@ -16,7 +16,7 @@ import {
   fetchFavorites,
 } from "../../Redux/reducers/experiences";
 
-const InfoCard = ({ exp }) => {
+const InfoCard = ({ exp, lowestPrice}) => {
   const favorites = useSelector((state) => state.experiences.favorites);
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
@@ -97,6 +97,7 @@ const InfoCard = ({ exp }) => {
     
     history.push({pathname: `/experience/${exp._id}`, state: {isOwner}})
   }
+
   return (
     <div
       className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t"
@@ -138,12 +139,11 @@ const InfoCard = ({ exp }) => {
           </p>
           <div>
             <p className="text-lg font-semibold pb-2 lg:text-2xl text-orange-500">
-              {" "}
-              {currencyFormatter({
-                amount: exp.price * 100,
+              
+             <span class="font-normal text-gray-600 text-base">From </span> {currencyFormatter({
+                amount: lowestPrice * 100,
                 currency: "ugx",
-              })}{" "}
-              <span class="font-normal text-gray-600 text-base">/person</span>
+              })}
             </p>
           </div>
         </div>

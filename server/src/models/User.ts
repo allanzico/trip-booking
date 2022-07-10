@@ -47,9 +47,13 @@ const UserType = new Schema(
       { type: ObjectId, ref: 'UserInterests' }
     ],
     phone: {},
-    authyId: {
+    verifyToken: {
       type: String,
       default: null
+    },
+    verificationStatus: {
+      type: String,
+      default: "pending"
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,

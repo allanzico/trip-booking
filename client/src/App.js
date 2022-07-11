@@ -26,6 +26,7 @@ import Register from "./auth/Signup/Register";
 import RegisterMerchant from "./merchant/register/RegisterMerchant";
 import DashboardHome from "./dashboard/DashboardHome";
 import CheckoutComponent from "./checkout/CheckoutComponent";
+import TwoFactorAuth from "./auth/Login/TwoFactorAuth";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/experiences" component={Experiences} />
         <Route exact path="/login" component={Login} />
-        {/* <Route exact path="/signup" component={Signup} /> */}
+        <Route exact path="/verify" component={TwoFactorAuth} />
         <Route exact path="/register" component={Register} />
         <PrivateRoute exact path="/register-company" component={RegisterMerchant}/>
         <Route exact path="/search-result" component={SearchResults} />

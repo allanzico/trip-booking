@@ -5,13 +5,14 @@ import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import BackgroundLetterAvatars from "../shared/ProfileAvatar";
+import { logoutUser } from "../../actions/auth";
 
 const ResponsiveNav = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const userName = auth?.user?.firstName + " " + auth?.user?.lastName
+  const userName = auth?.user?.firstName + " " + auth?.user?.lastName;
   const user = {
     name: userName,
     email: auth?.user?.email,
@@ -41,15 +42,7 @@ const ResponsiveNav = () => {
     { name: "Messages", to: "/messaging", current: false },
     {
       name: "Sign out",
-      href: "#",
-      logout() {
-        dispatch({
-          type: "LOGOUT",
-          payload: null,
-        });
-        window.localStorage.removeItem("auth");
-        history.push("/login");
-      },
+      to: "#",
     },
   ];
 
@@ -57,6 +50,16 @@ const ResponsiveNav = () => {
     return classes.filter(Boolean).join(" ");
   }
 
+  const handleLogout = async () => {
+    dispatch({
+      type: "LOGOUT",
+      payload: null,
+    });
+    await logoutUser(auth.user, auth.token);
+    window.localStorage.removeItem("auth");
+    history.push("/login");
+  };
+  
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-1 border-gray-100">
@@ -170,8 +173,8 @@ const ResponsiveNav = () => {
                                     <Link
                                       to={item.to}
                                       onClick={
-                                        item.name == "Sign out"
-                                          ? item.logout
+                                        item.name === "Sign out"
+                                          ? handleLogout
                                           : null
                                       }
                                       className={classNames(
@@ -262,8 +265,8 @@ const ResponsiveNav = () => {
                           key={item.name}
                           to={item.to}
                           onClick={
-                            item.name == "Sign out" ? (
-                              item.logout
+                            item.name === "Sign out" ? (
+                              handleLogout
                             ) : (
                               <Link to={item.to} />
                             )
@@ -276,7 +279,7 @@ const ResponsiveNav = () => {
                       ))}
                     </div>
                     <div className="mt-3 px-2 space-y-1">
-                    {auth && auth.user?.role === "buyer" && (
+                      {auth && auth.user?.role === "buyer" && (
                         <Link to="/register-company">
                           <button
                             type="submit"
@@ -295,7 +298,7 @@ const ResponsiveNav = () => {
                           </button>
                         </Link>
                       )}
-                      </div>
+                    </div>
                   </div>
                 )}
               </Disclosure.Panel>

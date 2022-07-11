@@ -160,6 +160,17 @@ export default class Authentication {
     }
   }
 
+  async logoutUser(req: any, res: any) {
+    const userId = req.body._id;
+    try {
+      const user = await User.findById(userId).select("-password");
+      user.verificationStatus = "pending";
+      await user.save();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getUsersById(req: any, res: any) {
     try {
       let user = await User.findById(req.params.userId)
@@ -257,9 +268,9 @@ export default class Authentication {
   // }
 
   async verifyTwofactorAuth(req: any, res: any) {
-    const { code } = req.body;
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
+      const {code} = req.body;
+    const userId = req.user._id;
+    const user = await User.findById(userId).select("-password");
     const phoneNumber = user.phone.number;
     const service = user.verifyToken
     try {
@@ -283,6 +294,7 @@ export default class Authentication {
       }
     } catch (error) {
       console.log(error);
+      res.status(400).json({ success: false, data: error });
     }
   }
 

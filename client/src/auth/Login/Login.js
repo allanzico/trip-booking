@@ -27,7 +27,7 @@ const Login = ({ history }) => {
           payload: res.data,
         });
         setShowAlert(false)
-        history.push("/dashboard");
+        history.push({pathname: `/verify`, state: res.data});
       }
     } catch (error) {
       // setError(error.response.data.error);

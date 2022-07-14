@@ -56,7 +56,7 @@ const Home = () => {
                   <SmallCard
                     key={exp._id}
                     exp={exp}
-                    img={`${process.env.REACT_APP_API}/experience/image/${exp._id}`}
+                    img={`${exp.files.length > 0 ? exp.files[0].url : "https://via.placeholder.com/900x500.png?text=PREVIEW"}`}
                   />
                 )
               );

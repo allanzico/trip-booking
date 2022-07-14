@@ -25,7 +25,8 @@ const CreateExperience = () => {
     lng: "",
     tickets: [],
     itenerary: [],
-    files: []
+    files: [],
+    extraPerks: [],
   });
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({

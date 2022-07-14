@@ -70,6 +70,9 @@ const ExperienceType = new Schema(
       type: Number,
       default: 0,
     },
+    extraPerks: [
+     
+    ],
     tickets: [
       {
         ticketTitle: {

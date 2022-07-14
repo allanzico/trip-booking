@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../components/CustomMUI/CustomTextField";
 import CustomDatePicker from "../../components/CustomMUI/CustomDatePicker";
@@ -9,6 +9,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
+import FilePreview from "../upload/FilePreview";
+import { PlusIcon, XIcon } from "@heroicons/react/outline";
 
 const ExperienceData = (props) => {
   const { address, handleSelect, setAddress } = props;
@@ -45,6 +47,10 @@ const ExperienceData = (props) => {
         url: Yup.string().required(),
       })
     ),
+   extraPerks: Yup.array(
+      Yup.object({
+        perkName: Yup.string(),
+      }) ).max(10, "You can only add 10 perks")
   });
 
   return (
@@ -55,46 +61,9 @@ const ExperienceData = (props) => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ values, errors, touched, setFieldValue }) => (
+        {({ values, errors, touched, isSubmitting, setFieldValue }) => (
           <Form autoComplete="off">
             <div className="flex flex-col mb-4 ">
-              <div className="grid grid-cols-1">
-                <div className="col-span-6 mb-2">
-                  <div className="flex flex-col gap-1">
-                    <h1 className="text-md uppercase text-gray-700">
-                      Add main image
-                    </h1>
-                    <p className="text-sm text-gray-500">
-                      *This will be the main display image for the experience,
-                      please upload png or jp images only
-                    </p>
-                  </div>
-                </div>
-                {/* Image upload */}
-                <div className="grid grid-cols-6">
-                  <div className="col-span-6">
-                    <div class="mb-2 w-full">
-                      <input
-                        className="form-control
-                    block
-                    w-full
-                    rounded-sm
-                    px-2
-                    border border-gray
-                    outline-none
-                    focus-visible:shadow-none
-                    focus:border-primary
-                    transition
-                    ease-in-out
-                    m-0"
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className="grid grid-cols-1 space-y-2">
                 <div className="col-span-6">
                   <CustomTextField name="title" label="title" size="small" />
@@ -117,22 +86,7 @@ const ExperienceData = (props) => {
                     customStyle={customStyle}
                   />
                 </div>
-                {/* <div className="col-span-6">
-                  <div className="flex flex-col md:flex-row gap-2">
-                    <CustomTextField
-                      type="number"
-                      name="available"
-                      label="available"
-                      size="small"
-                    />
-                    <CustomTextField
-                      type="number"
-                      name="price"
-                      label="price"
-                      size="small"
-                    />
-                  </div>
-                </div> */}
+
                 <div className="col-span-6">
                   <div className="flex flex-col md:flex-row gap-2">
                     <CustomDatePicker
@@ -158,13 +112,65 @@ const ExperienceData = (props) => {
                   </div>
                 </div>
                 <div className="col-span-6 mb-2">
-                  <p className="text-sm py-2 ">
-                    Add more Images to this experience
-                  </p>
-                  {values.files && values.files.length > 0 && (
-                    <>{JSON.stringify(values.files)}</>
-                  )}
-                  <MultipleFIleUploadField name="files" />
+                  <div className="flex flex-col gap-2">
+                    <p className="text-xs font-semibold text-gray-500">
+                      Add some extra perks: e.g Free wifi, free packing, free
+                      drinks
+                    </p>
+                    <FieldArray name="extraPerks">
+                      {({ push, remove }) => (
+                        <>
+                          {values.extraPerks && values.extraPerks.map((_, index) => (
+                            <div className="flex flex-row gap-2">
+                            
+                              <input
+                                type="text"
+                                name={`extraPerks[${index}].perkName`}
+                                onChange={(value) =>
+                                  setFieldValue(`extraPerks[${index}].perkName`, value.target.value, true)
+                                }
+                                value={values.extraPerks[index].perkName}
+                                className="
+                                  w-full
+                                  rounded-sm
+                                  py-2
+                                  px-[14px]
+                                  bg-gray-100
+                                  outline-none
+                                  focus-visible:shadow-none
+                                  focus:border-primary
+                                  "
+                                placeholder="e.g Free wifi, free packing, free drinks"
+                              />
+                              <button disabled={isSubmitting} onClick={() => remove(index)} className="p-2 text-lxs text-gray-900 hover:bg-gray-100 hover:scale-100 transition transform duration-200 ease-out">
+                                <XIcon className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ))}
+                                  <div className="grid grid-cols-1">
+                  <div class="mb2 py-3 text-left">
+                    <div className="cursor-pointer">
+                    <p disabled={isSubmitting} onClick={() => push({perkName:''})} className="px-4 py-2 w-28 text-lxs text-gray-600 uppercase text-xs font-semibold bg-gray-200">
+                      Add perk
+                    </p>
+                    </div>
+                  </div>
+                </div>
+                        </>
+                      )}
+                    </FieldArray>
+                  </div>
+                </div>
+                <div className="col-span-6 mb-2">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-xs font-semibold text-gray-500">
+                      Add Images to this experience
+                    </p>
+                    {values.files && values.files.length > 0 && (
+                      <>{JSON.stringify(values.files)}</>
+                    )}
+                    <MultipleFIleUploadField name="files" />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 mt-3 ">

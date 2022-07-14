@@ -1,20 +1,19 @@
-import { MinusIcon, PlusIcon } from '@heroicons/react/outline'
-import React, { useState } from 'react'
-import ListboxComponent from './ListboxComponent'
+import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
+import React, { useState } from "react";
 
-const TicketComponent = ({ticket}) => {
-const [quantity, setQuantity] = useState(0)
+const TicketComponent = ({ ticket }) => {
+  const [quantity, setQuantity] = useState(0);
 
-const handleDecreament = () => {
+  const handleDecreament = (ticketId) => {
     if (quantity > 0) {
-        setQuantity(quantity - 1)
+      ticket._id === ticketId && setQuantity(quantity - 1);
     }
-}
+  };
 
-const handleIncrement = () => {
-    setQuantity(quantity + 1)
-}
- 
+  const handleIncrement = (ticketId) => {
+    ticket._id === ticketId && setQuantity(quantity + 1);
+  };
+
   return (
     <div class="flow-root">
       <li class="flex items-center justify-between py-4">
@@ -29,30 +28,34 @@ const handleIncrement = () => {
             <p class="text-sm uppercase font-medium">{ticket.ticketTitle}</p>
 
             <dl class="mt-1 space-y-1 text-sm font-bold text-gray-900">
-            <p>UGX {ticket.ticketPrice}</p>
+              <p>UGX {ticket.ticketPrice}</p>
             </dl>
           </div>
         </div>
 
         <div>
           <p class="text-sm">
-            <p className='text-xs mb-1'>QTY</p>
-          <div className='flex flex-row justify-between items-center gap-4'>
-            <button onClick={handleDecreament} className='border content-center text-center w-10 px-2 py-2 border-gray-800 rounded-sm'>
-                <MinusIcon className='h-4 w-4' />
-            </button>
-            <lable>
-                {quantity}
-            </lable>
-            <button onClick={handleIncrement} className='border content-center text-center w-10 px-2 py-2 border-gray-800 rounded-sm'>
-               <PlusIcon className='h-4 w-4'/>
-            </button>
-          </div>
+            <p className="text-xs mb-1">QTY</p>
+            <div className="flex flex-row justify-between items-center gap-4">
+              <button
+                onClick={() => handleDecreament(ticket._id)}
+                className="border content-center text-center w-10 px-2 py-2 border-gray-800 rounded-sm"
+              >
+                <MinusIcon className="h-4 w-4" />
+              </button>
+              <lable>{quantity}</lable>
+              <button
+                onClick={() => handleIncrement(ticket._id)}
+                className="border content-center text-center w-10 px-2 py-2 border-gray-800 rounded-sm"
+              >
+                <PlusIcon className="h-4 w-4" />
+              </button>
+            </div>
           </p>
         </div>
       </li>
-  </div>
-  )
-}
+    </div>
+  );
+};
 
-export default TicketComponent
+export default TicketComponent;

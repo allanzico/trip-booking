@@ -1,7 +1,6 @@
 import Experience from "../models/Experience";
 import fs from "fs";
 import Order from "../models/Order";
-import Favorites from "../models/Favorites";
 
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
@@ -243,56 +242,12 @@ export class ExperienceSetup {
   }
 
   async favoriteExperience(req: any, res: any) {
-    const { experience, favoritedBy } = req.body;
-    const favorites = new Favorites({
-      experience,
-      favoritedBy,
-    });
 
-    //Save favorite
-    await favorites.save();
+    console.log(req.body);
 
-    res.json({ success: true, favorites });
+    res.json({ success: true, });
   }
 
-  async isAlreadyFavorited(req: any, res: any) {
-    const { expId } = req.body;
-    const favorites = await Favorites.find({ favoritedBy: req.user._id })
-      .select("experience")
-      .exec();
-
-    //check if ID exists in orders array
-    let ids = [];
-    for (let i = 0; i < favorites.length; i++) {
-      ids.push(favorites[i].experience.toString());
-    }
-    res.json({
-      ok: ids.includes(expId),
-    });
-  }
-
-  async getUserFavorites(req: any, res: any) {
-    try {
-      const favorites = await Favorites.find({ favoritedBy: req.user._id })
-        .populate("experience", "-image.data")
-        .populate("favoritedBy", "_id name")
-        .exec();
-      res.json(favorites);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getFavoriteNumber(req: any, res: any) {
-    try {
-      const favorites = await Favorites.find({
-        experience: req.body.experience,
-      }).exec();
-      res.json({ success: true, favoriteNumber: favorites.length });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   async createItenerary(req: any, res: any) {
     const itenerary = req.body;

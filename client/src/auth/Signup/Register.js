@@ -31,7 +31,7 @@ const Register = ({ history }) => {
         }, 5000);
         return setError("Passwords don't match");
       }
-      if(data.phone != null) {
+      if(data.phone) {
         formData.phone = parsePhoneNumber(data.phone);
       }else {
         formData.phone = {}

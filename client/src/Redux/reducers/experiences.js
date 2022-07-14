@@ -6,9 +6,9 @@ export const FETCH_SINGLE_BOOKING = "FETCH_SINGLE_BOOKING";
 export const CREATE_EXPERIENCES = "CREATE_EXPERIENCES";
 export const FETCH_SINGLE_EXPERIENCE = "FETCH_SINGLE_EXPERIENCE";
 export const FAVORITE_EXPERIENCE = "FAVORITE_EXPERIENCE";
-export const FETCH_FAVORITES = "FETCH_FAVORITES"
-export const  DELETE_EXPERIENCE = ' DELETE_EXPERIENCE'
-export const  DELETE_TICKET = 'DELETE_TICKET'
+export const FETCH_FAVORITES = "FETCH_FAVORITES";
+export const DELETE_EXPERIENCE = " DELETE_EXPERIENCE";
+export const DELETE_TICKET = "DELETE_TICKET";
 
 const initialState = {
   experiences: [],
@@ -101,24 +101,32 @@ export const experiencesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case "FETCH_EXPERIENCES":
       return { ...state, experiences: payload };
-      case "FETCH_SELLER_EXPERIENCES":
-        return { ...state, sellerExperiences: payload };
+    case "FETCH_SELLER_EXPERIENCES":
+      return { ...state, sellerExperiences: payload };
     case "CREATE_EXPERIENCES":
       return { ...state, experiences: payload };
     case "FETCH_SINGLE_EXPERIENCE":
       return { ...state, singleExperience: payload };
     case "FAVORITE_EXPERIENCE":
       return { ...state, favorites: payload };
-      case "FETCH_FAVORITES":
-        return { ...state, favorites: payload };
+    case "FETCH_FAVORITES":
+      return { ...state, favorites: payload };
     case "FETCH_USER_BOOKINGS":
       return { ...state, bookings: payload };
-      case "FETCH_SINGLE_BOOKING":
-        return { ...state, singleBooking: payload };
-        case "DELETE_EXPERIENCE":
-          return { ...state, experiences: state.experiences.filter(exp => exp._id !== payload) }
-          case "DELETE_TICKET":
-            return { ...state, experiences: state.singleExperience.tickets.filter(ticket => ticket._id !== payload) }
+    case "FETCH_SINGLE_BOOKING":
+      return { ...state, singleBooking: payload };
+    case "DELETE_EXPERIENCE":
+      return {
+        ...state,
+        experiences: state.experiences.filter((exp) => exp._id !== payload),
+      };
+    case "DELETE_TICKET":
+      return {
+        ...state,
+        experiences: state.singleExperience.tickets.filter(
+          (ticket) => ticket._id !== payload
+        ),
+      };
     default:
       return state;
   }

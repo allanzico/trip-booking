@@ -17,18 +17,18 @@ import {
 } from "../../Redux/reducers/experiences";
 
 const InfoCard = ({ exp, lowestPrice}) => {
-  const favorites = useSelector((state) => state.experiences.favorites);
+  
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
   const token = auth === undefined ? null : auth?.token;
   const history = useHistory();
   const source = axios.CancelToken.source();
   const [alreadyFavorited, setAlreadyFavorited] = useState(false);
+  const [favorites, setFavorites] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
-  const dispatch = useDispatch();
-  let location = useLocation();
+
+
   useEffect(() => {
-    loadFavorites();
     if (auth == null) return
     if (exp.postedBy?._id === user?._id) {
       setIsOwner(true)
@@ -38,65 +38,25 @@ const InfoCard = ({ exp, lowestPrice}) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (auth && token) {
-  //     isAlreadyFavorited(token, selectedId, source.token).then(
-  //       (res) => {
-  //         if (res.data.ok) setAlreadyFavorited(true);
-  //       }
-  //     );
-  //   }
-
-  //   return () => {
-  //     source.cancel();
-  //   };
-  // }, [])
-
-  const loadFavorites = async () => {
-    try {
-      let res = await getUserFavorites(token, source.token);
-      dispatch(fetchFavorites(res.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const isAlreadyFavorited = (expId) => {
-    let ids = [];
-    for (let i = 0; i < favorites.length; i++) {
-      ids.push(favorites[i].experience._id.toString());
-    }
-    // console.log(ids.includes(expId))
-    // if (ids.includes(exp._id)) {
-    //   setAlreadyFavorited(true);
-      
-    // }
-    const found = ids.some(el => el === expId);
-    console.log(ids)
-    
-  };
-
   //Create favorites
   const addFavorite = async (e) => {
     e.stopPropagation();
-    const data = {
-      experience: exp._id,
-      favoritedBy: user._id,
-    };
-    isAlreadyFavorited(data.experience);
-    try {
-      let res = await favoriteExperience(token, data);
-      dispatch(createFavoriteExperience(res.data));
-    } catch (error) {
-      console.log(error)
-    }
-  };
 
+    setFavorites(prevState => ([...prevState, exp._id]))
+    // try {
+    //   await favoriteExperience(token, data);
+    // } catch (error) {
+      
+    // }
+  };
+  console.log(favorites);
   const handleNavigate =(e)=> {
     e.preventDefault()
     
     history.push({pathname: `/experience/${exp._id}`, state: {isOwner}})
   }
+
+console.log(favorites)
 
   return (
     <div
@@ -104,10 +64,10 @@ const InfoCard = ({ exp, lowestPrice}) => {
       onClick={handleNavigate}
     >
       <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0">
-        {exp.image && exp.image.contentType ? (
+        {exp.files.length > 0 ? (
           <ImageComponent
-            src={`${process.env.REACT_APP_API}/experience/image/${exp._id}`}
-            alt={exp.title}
+          src={exp.files[0].url}
+          alt={exp.title}
           />
         ) : (
           <ImageComponent

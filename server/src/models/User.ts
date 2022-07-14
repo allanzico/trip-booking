@@ -46,6 +46,9 @@ const UserType = new Schema(
     userInterests: [
       { type: ObjectId, ref: 'UserInterests' }
     ],
+    favorites: [
+      { type: ObjectId, ref: 'Experience' }
+    ],
     phone: {},
     verifyToken: {
       type: String,

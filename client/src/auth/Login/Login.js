@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import { login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import LoginSVG from "../../images/LoginSvg";
@@ -11,23 +10,25 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(true)
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       let res = await login({ email, password });
       if (res.data) {
-        //save to local storage
-        window.localStorage.setItem("auth", JSON.stringify(res.data));
 
-        //save to redux
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: res.data,
-        });
+          //  //Update Local storage
+          //  window.localStorage.setItem("auth", JSON.stringify(res.data));
+         
+          //  //save to redux
+          //  dispatch({
+          //    type: "LOGGED_IN_USER",
+          //    payload: res.data,
+          //  });
+
         setShowAlert(false)
         history.push({pathname: `/verify`, state: res.data});
+      
       }
     } catch (error) {
       // setError(error.response.data.error);
@@ -35,6 +36,7 @@ const Login = ({ history }) => {
       setShowAlert(true)
     }
   };
+
   return (
    <>
     <div className="container mt-5 flex flex-col text-center">

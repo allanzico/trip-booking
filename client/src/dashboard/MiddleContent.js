@@ -15,7 +15,7 @@ import Settings from "../settings/Settings";
 import SellerRoute from "../components/SellerRoute";
 import DashboardHome from "./DashboardHome";
 import CreateItenerary from "../itenerary/CreateItenerary";
-
+import FavoritesComponent from "../components/favorites/FavoritesComponent";
 const MiddleContent = () => {
   const { pathname } = useLocation();
   let heading;
@@ -35,6 +35,9 @@ const MiddleContent = () => {
       case "/settings":
         heading = "Settings";
         break;
+        case "/user-favorites":
+          heading = "Favorites";
+          break;
   }
 
   return (
@@ -72,6 +75,11 @@ const MiddleContent = () => {
             exact
             path="/experiences/new"
             component={CreateExperience}
+          />
+           <PrivateRoute
+            exact
+            path="/user-favorites"
+            component={FavoritesComponent}
           />
           <PrivateRoute
             exact

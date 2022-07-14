@@ -101,21 +101,10 @@ router.get(
   experience.isAlreadyBooked
 );
 
-router.get(
-  "/is-already-favorited/:expId",
-  requireSignIn,
-  experience.isAlreadyFavorited
-);
-
-router.get(
-  "/user-favorites",
-  requireSignIn,
-  experience.getUserFavorites
-);
-
-router.get(
-  "/favorite-number",
-  experience.getFavoriteNumber
-);
+// router.get(
+//   "/is-already-favorited/:expId",
+//   requireSignIn,
+//   experience.isAlreadyFavorited
+// );
 
 module.exports = router;

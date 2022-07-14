@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyTwofactorAuth } from "../../actions/auth";
 import ErrorAlert from "../../components/shared/ErrorAlert";
+import { loggedInUser } from "../../Redux/reducers/auth";
 
 const TwoFactorAuth = ({ match, history }) => {
   const inputRef = useRef(null);
@@ -54,14 +55,11 @@ const TwoFactorAuth = ({ match, history }) => {
         if (res.data) {
           //Update Local storage
           window.localStorage.setItem("auth", JSON.stringify(res.data));
-
+          
           //Update redux
-          dispatch({
-            type: "LOGGED_IN_USER",
-            payload: res.data,
-          });
+          dispatch(loggedInUser(res.data));
 
-          history.push("/dashboard");
+          history.push("/dashboard")
         }
       } else {
         setError("Please enter a valid code");

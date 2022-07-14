@@ -20,7 +20,7 @@ const ResponsiveNav = () => {
   };
 
   const navigation = [
-    ...(auth
+    ...(auth && auth.user.verificationStatus === "approved"
       ? [
           { name: "Home", to: "/", current: false },
           { name: "Experiences", to: "/experiences", current: false },
@@ -51,15 +51,20 @@ const ResponsiveNav = () => {
   }
 
   const handleLogout = async () => {
-    dispatch({
+   try {
+   await logoutUser(auth.user, auth.token);
+     dispatch({
       type: "LOGOUT",
       payload: null,
     });
-    await logoutUser(auth.user, auth.token);
-    window.localStorage.removeItem("auth");
-    history.push("/login");
+    window.localStorage.removeItem('auth');
+    history.push("/login")
+   } catch (error) {
+    
+   };
   };
-  
+
+
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-1 border-gray-100">
@@ -111,7 +116,7 @@ const ResponsiveNav = () => {
                             </Link>
                           ))}
                       </div>
-                      {auth && auth.user?.role === "buyer" && (
+                      {auth && auth.user.verificationStatus === "approved" && auth.user?.role === "buyer" && (
                         <Link to="/register-company">
                           <button
                             type="submit"
@@ -130,7 +135,7 @@ const ResponsiveNav = () => {
                           </button>
                         </Link>
                       )}
-                      {auth && (
+                      {auth && auth.user.verificationStatus === "approved" && (
                         <button
                           type="button"
                           className="bg-orange-500 p-1 rounded-full text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-800 focus:ring-white"
@@ -141,7 +146,7 @@ const ResponsiveNav = () => {
                       )}
 
                       {/* Profile dropdown */}
-                      {auth && (
+                      {auth && auth.user.verificationStatus === "approved" && (
                         <Menu as="div" className="ml-3 relative z-50">
                           <div>
                             <Menu.Button className="max-w-xs bg-orange-500 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-500 focus:ring-white">
@@ -229,7 +234,7 @@ const ResponsiveNav = () => {
                   ))}
                 </div>
 
-                {auth && (
+                {auth && auth.user.verificationStatus === "approved" && (
                   <div className="pt-4 pb-3 border-t border-orange-700">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">

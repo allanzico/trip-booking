@@ -311,7 +311,7 @@ const ExperienceView = ({ match, history }) => {
                         : isOwner
                         ? "You cant book your own"
                         : auth && auth.token
-                        ? " Book Now"
+                        ? " View Tickets"
                         : "Login To Book"}
                     </button>
                   </form>

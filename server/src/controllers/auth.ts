@@ -147,6 +147,7 @@ export default class Authentication {
           phone: user.phone,
           role: user.role,
           userInterest: user.userInterests,
+          verificationStatus: user.verificationStatus,
           stripe_account_id: user.stripe_account_id,
           stripe_seller: user.stripe_seller,
           stripeSession: user.stripeSession,
@@ -166,6 +167,7 @@ export default class Authentication {
       const user = await User.findById(userId).select("-password");
       user.verificationStatus = "pending";
       await user.save();
+      res.status(200).json({ success: true, data: "user logged out" });
     } catch (error) {
       console.log(error);
     }
@@ -268,28 +270,52 @@ export default class Authentication {
   // }
 
   async verifyTwofactorAuth(req: any, res: any) {
-      const {code} = req.body;
+    const { code } = req.body;
     const userId = req.user._id;
     const user = await User.findById(userId).select("-password");
     const phoneNumber = user.phone.number;
-    const service = user.verifyToken
+    const tokenSecret = process.env.JWT_SECRET;
+    const service = user.verifyToken;
     try {
       const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
       const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
       const client = require("twilio")(accountSid, authToken);
 
-     const verificationCheck = await client.verify.v2
+      const verificationCheck = await client.verify.v2
         .services(service)
         .verificationChecks.create({ to: phoneNumber, code: code })
-        .then((verification_check: any) =>
-          (verification_check)
-        );
+        .then((verification_check: any) => verification_check);
 
       if (verificationCheck.status === "approved") {
         user.verificationStatus = verificationCheck.status;
         await user.save();
-        res.status(200).json({ success: true, data: user });
-      }else {
+
+
+           //generate token
+      const token = jwt.sign({ _id: user._id }, <string>tokenSecret, {
+        expiresIn: "7d",
+      });
+
+        res.status(201).json({
+          success: true,
+          token,
+          user: {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            userInterest: user.userInterests,
+            verificationStatus: user.verificationStatus,
+            stripe_account_id: user.stripe_account_id,
+            stripe_seller: user.stripe_seller,
+            stripeSession: user.stripeSession,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          },
+        });
+      } else {
         res.status(400).json({ success: false, data: "user not verified" });
       }
     } catch (error) {

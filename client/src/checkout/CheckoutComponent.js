@@ -1,10 +1,10 @@
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import TicketComponent from "./TicketComponent";
 
 const CheckoutComponent = ({ history }) => {
   const experience = history.location.state.experience;
-  
+
   return (
     <section className="mt-5">
       <h1 class="sr-only">Checkout</h1>

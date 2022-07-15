@@ -1,17 +1,37 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 
-const TicketComponent = ({ ticket }) => {
+const TicketComponent = ({ ticket, cart, setCart, handleCalculateTotal}) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleDecreament = (ticketId) => {
-    if (quantity > 0) {
-      ticket._id === ticketId && setQuantity(quantity - 1);
+    const exists = cart.find((item) => item._id === ticketId);
+    if (exists.quantity === 1) { 
+      setQuantity(0);
+      setCart(cart.filter((item) => item._id !== ticketId));
+
+    } else {
+      setQuantity(quantity - 1);
+      setCart(
+        cart.map((item) =>
+          item._id === ticketId ? { ...exists, quantity: item.quantity - 1 } : item
+        )
+      );
+
     }
   };
 
   const handleIncrement = (ticketId) => {
-    ticket._id === ticketId && setQuantity(quantity + 1);
+    const exists = cart.find((item) => item._id === ticketId);
+    if(exists) {
+      setQuantity(quantity + 1);
+      setCart(cart.map((item) => item._id === ticketId ? {...exists, quantity: exists.quantity + 1} : item))
+
+    } else {
+      setQuantity(quantity + 1);
+      setCart([...cart, {...ticket, quantity: 1}]);
+
+    }
   };
 
   return (

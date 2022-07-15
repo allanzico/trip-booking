@@ -46,7 +46,7 @@ const ExperienceData = (props) => {
       Yup.object({
         url: Yup.string().required(),
       })
-    ),
+    ).min(1, "Please upload at least one image"),
    extraPerks: Yup.array(
       Yup.object({
         perkName: Yup.string(),

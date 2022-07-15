@@ -41,7 +41,7 @@ const MiddleContent = () => {
   }
 
   return (
-    <div className="col-span-7 lg:col-span-5 mt-2 pb-5">
+    <div className="col-span-7  lg:col-span-5 mt-2 pb-5">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="px-1 md:px-2 py-1 md:py-2 pb-0 text-2xl md:text-4xl font-bold">
@@ -56,7 +56,7 @@ const MiddleContent = () => {
       </div>
       <hr className="m-1 md:m-2 text-gray-600" />
 
-      <section className="px-1 md:px-2 pb-0 ">
+      <section className="px-1 md:px-2 pb-0">
         <Switch>
           <SellerRoute  exact
             path="/dashboard/seller"

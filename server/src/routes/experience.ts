@@ -83,23 +83,6 @@ router.get(
   experience.getSingleExperience
 );
 
-router.get(
-  "/user-experience-bookings",
-  requireSignIn,
-  experience.getUserBookings
-);
-
-router.get(
-  "/booking/:bookingId",
-  requireSignIn,
-  experience.getSingleBooking
-);
-
-router.get(
-  "/is-already-booked/:expId",
-  requireSignIn,
-  experience.isAlreadyBooked
-);
 
 // router.get(
 //   "/is-already-favorited/:expId",

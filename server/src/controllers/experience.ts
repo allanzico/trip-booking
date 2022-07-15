@@ -33,7 +33,7 @@ export class ExperienceSetup {
     try {
       let experiences = await Experience.find({})
         .select("-image.data")
-        .populate("postedBy", "_id name")
+        .populate("postedBy", "_id firstName lastName")
         .exec();
       res.json(experiences);
     } catch (error) {
@@ -59,14 +59,14 @@ export class ExperienceSetup {
   async getSellerExperiences(req: any, res: any) {
     let all = await Experience.find({ postedBy: req.user._id })
       .select("-image.data")
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id firstName lastName")
       .exec();
     res.send(all);
   }
 
   async getSingleExperience(req: any, res: any) {
     let experience = await Experience.findById(req.params.expId)
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id firstName lastName")
       .populate({
         path: "reviews",
         populate: {
@@ -129,59 +129,7 @@ export class ExperienceSetup {
     }
   }
 
-  async getUserBookings(req: any, res: any) {
-    try {
-      const all = await Order.find({ orderedBy: req.user._id })
-        .select("session")
-        .populate("experience", "-image.data")
-        .populate({
-          path: "experience",
-          populate: {
-            path: "postedBy",
-          },
-        })
-        .populate("orderedBy", "_id name")
-        .exec();
-      res.json(all);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getSingleBooking(req: any, res: any) {
-    try {
-      let booking = await Order.findById(req.params.bookingId)
-        .select("session")
-        .populate("experience", "-image.data")
-        .populate({
-          path: "experience",
-          populate: {
-            path: "postedBy",
-          },
-        })
-        .populate("orderedBy", "_id name")
-        .exec();
-      res.json(booking);
-    } catch (error) {}
-  }
-
-  async isAlreadyBooked(req: any, res: any) {
-    const { expId } = req.params;
-    const userOrders = await Order.find({ orderedBy: req.user._id })
-      .select("experience")
-      .exec();
-
-    //check if ID exists in orders array
-    let ids = [];
-    for (let i = 0; i < userOrders.length; i++) {
-      ids.push(userOrders[i].experience.toString());
-    }
-
-    res.json({
-      ok: ids.includes(expId),
-    });
-  }
-
+  
   async searchListings(req: any, res: any) {
     const { location, date } = req.body;
     // const dates = date.split(",");

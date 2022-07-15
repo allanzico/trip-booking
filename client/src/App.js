@@ -27,10 +27,13 @@ import RegisterMerchant from "./merchant/register/RegisterMerchant";
 import DashboardHome from "./dashboard/DashboardHome";
 import CheckoutComponent from "./checkout/CheckoutComponent";
 import TwoFactorAuth from "./auth/Login/TwoFactorAuth";
+import MainFooter from "./components/footers/MainFooter";
+import OrderSuccess from "./checkout/OrderSuccess";
 
 function App() {
   return (
     <BrowserRouter>
+    <div className="flex flex-col min-h-screen">
       <ResponsiveNav />
       <Toaster />
       <Switch>
@@ -60,7 +63,8 @@ function App() {
         <PrivateRoute exact path="/dashboard" component={MainDashboard} />
         <PrivateRoute exact path="/messaging" component={Messaging} />
         <PrivateRoute exact path="/checkout" component={CheckoutComponent} />
-      
+        <PrivateRoute exact path="/order-success" component={OrderSuccess} />
+
         <PrivateRoute
           exact
           path="/stripe/callback"
@@ -73,6 +77,8 @@ function App() {
         />
         <PrivateRoute exact path="/stripe/cancel" component={StripeCancel} />
       </Switch>
+      <MainFooter />
+      </div>
     </BrowserRouter>
   );
 }

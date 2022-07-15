@@ -1,10 +1,10 @@
 import axios from "axios";
 
 
-export const createOrder = async (expId, token) => {
+export const createOrder = async (data, token) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/create-order`,
-    expId,
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,

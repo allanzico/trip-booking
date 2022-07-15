@@ -10,6 +10,7 @@ const OrderType = new Schema(
       ref: "Experience",
     },
     session: {},
+    cart: [],
     orderedBy: { type: ObjectId, ref: "User" }
   },
   { timestamps: true }

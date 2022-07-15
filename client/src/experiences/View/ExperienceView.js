@@ -88,8 +88,7 @@ const ExperienceView = ({ match, history }) => {
 
   useEffect(() => {
     loadSingleExperience();
-    
-
+  
     //calculate rating average
     if (experience.reviews) {
       const average =
@@ -98,21 +97,6 @@ const ExperienceView = ({ match, history }) => {
       setRatingAverage(average);
     }
 
-    return () => {
-      source.cancel();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (auth && auth.token) {
-      isAlreadyBooked(auth.token, match.params.expId, source.token).then(
-        (res) => {
-          if (res.data.ok) setAlreadyBooked(true);
-        }
-      );
-          //set is owner
-    
-    }
     return () => {
       source.cancel();
     };
@@ -172,21 +156,21 @@ const ExperienceView = ({ match, history }) => {
               <div className="mt-6 max-w-2xl mx-auto px-4 sm:px-4 lg:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-2">
                 <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                   <img
-                    src={experience.files[0] ? experience.files[0].url : "https://via.placeholder.com/1000x1000"}
+                    src={experience.files && experience.files[0] ? experience.files[0]?.url : "https://via.placeholder.com/1000x1000"}
                     className="w-full h-full object-center object-cover"
                   />
                 </div>
                 <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={experience.files[1] ? experience.files[1].url : "https://via.placeholder.com/1000x500"}
+                      src={experience.files && experience.files[1] ? experience.files[1]?.url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
                   </div>
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={experience.files[2] ? experience.files[2].url : "https://via.placeholder.com/1000x500"}
+                      src={experience.files && experience.files[2] ? experience.files[2]?.url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
@@ -194,7 +178,7 @@ const ExperienceView = ({ match, history }) => {
                 </div>
                 <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                   <img
-                    src={experience.files[3] ? experience.files[3].url : "https://via.placeholder.com/1000x1000"}
+                    src={experience.files && experience.files[3] ? experience.files[3]?.url : "https://via.placeholder.com/1000x1000"}
                     alt="experience-image"
                     className="w-full h-full object-center object-cover"
                   />
@@ -211,7 +195,7 @@ const ExperienceView = ({ match, history }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {experience.postedBy && experience.postedBy.firstNam}{" "}
+                      {experience.postedBy && experience.postedBy.firstName}{" "}
                     </a>
                   </h2>
                 </div>
@@ -306,8 +290,6 @@ const ExperienceView = ({ match, history }) => {
                     >
                       {loading
                         ? "Loading..."
-                        : alreadyBooked
-                        ? "You already Booked this"
                         : isOwner
                         ? "You cant book your own"
                         : auth && auth.token
@@ -331,7 +313,7 @@ const ExperienceView = ({ match, history }) => {
 
                   <div className="mt-10">
                     <h3 className="text-sm font-medium text-gray-900">
-                      Extra Perks
+                      Provided by the Host
                     </h3>
 
                     <div className="mt-4">

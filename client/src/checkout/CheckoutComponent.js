@@ -1,10 +1,44 @@
 import moment from "moment";
 import React, { useState } from "react";
 import TicketComponent from "./TicketComponent";
-
+import ImageComponent from "../components/shared/ImageComponent";
+import { useSelector } from "react-redux";
+import { createOrder } from "../actions/orders";
 const CheckoutComponent = ({ history }) => {
+  const { auth } = useSelector((state) => ({ ...state }));
+  const { token, user } = auth;
   const experience = history.location.state.experience;
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const itemsPrice = cart.reduce(
+    (acc, item) => acc + item.ticketPrice * item.quantity,
+    0
+  );
+  const taxPrice = (itemsPrice * 0.14).toFixed(2);
+  const totalPrice = parseFloat(itemsPrice + taxPrice).toFixed(2);
+
+  const handleBooking = async () => {
+
+    const booking = {
+      experience: experience._id,
+      cart: cart,
+    };
+    setLoading(true);
+    try {
+     const res = await createOrder(booking, token);
+     if (res.data) {
+        setLoading(false);
+        history.push({
+          pathname: "/order-success",
+          state: {experience, cart, totalPrice},
+        })
+     }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <section className="mt-5">
       <h1 class="sr-only">Checkout</h1>
@@ -38,7 +72,11 @@ const CheckoutComponent = ({ history }) => {
                 <ul class="-my-4 divide-y divide-gray-200">
                   {experience.tickets &&
                     experience.tickets.map((ticket) => (
-                      <TicketComponent ticket={ticket} />
+                      <TicketComponent
+                        ticket={ticket}
+                        cart={cart}
+                        setCart={setCart}
+                      />
                     ))}
                 </ul>
               </div>
@@ -48,12 +86,71 @@ const CheckoutComponent = ({ history }) => {
           <div class="py-3 bg-white">
             <div class="max-w-lg px-2 mx-auto">
               <div className="flex flex-col gap-4">
-                <div>Image</div>
-                <div>Sub totals</div>
+                <div className="w-full h-64">
+                  {experience.files.length > 0 ? (
+                    <ImageComponent
+                    src={experience.files[0]?.url}
+                    alt={experience.title}
+                  />
+                  ):<ImageComponent
+                  src="https://via.placeholder.com/1000x1000"
+                  alt={experience.title}
+                />}
+                  
+                </div>
+                <div>
+                  <p>
+                    {cart &&
+                      cart.map((item) => (
+                        <div className="flex flex-row justify-between">
+                          <p>
+                            {item.quantity}x {item.ticketTitle}
+                          </p>
+                          <p>{item.ticketPrice * item.quantity}</p>
+                        </div>
+                      ))}
+                  </p>
+                </div>
+                <hr className="-my-4 text-gray-500" />
+                {cart.length > 0 && (
+                  <>
+                  <div>
+                    <div className="flex flex-row justify-between">
+                      <p className="text-xs uppercase font-normal text-gray-600">
+                        Sub total
+                      </p>
+                      <p>{itemsPrice}</p>
+                    </div>
+                    <div className="flex flex-row justify-between">
+                      <p className="text-xs uppercase font-normal text-gray-600">
+                        Tax 14%
+                      </p>
+                      <p>{taxPrice}</p>
+                    </div>
+                    
+                  </div>
+                  <hr className="-my-4 text-gray-500" />
+                  </>
+                )}
+                
+                {cart.length > 0 && (
+                  <div className="flex flex-row justify-between">
+                    <p className="text-xl uppercase font-semibold text-gray-600">
+                      Total
+                    </p>
+                    <p className="text-xl uppercase font-semibold text-gray-600">
+                      {totalPrice}
+                    </p>
+                  </div>
+                )}
+
                 <div class="grid grid-cols-6">
                   <div class="col-span-6">
                     <button
-                      className="          
+                      onClick={handleBooking}
+                      disabled={cart.length === 0}
+                      className="
+                      disabled:opacity-50 disabled:cursor-not-allowed          
                     w-full               
                     text-white
                     bg-orange-500
@@ -65,7 +162,9 @@ const CheckoutComponent = ({ history }) => {
                     uppercase"
                       type="submit"
                     >
-                      Pay Now
+                      {loading
+                        ? "Sending..."
+                        : " Pay Now"}
                     </button>
                   </div>
                 </div>

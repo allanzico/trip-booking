@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { currencyFormatter } from "../../actions/stripe";
+import { currencyFormatter } from "../actions/stripe";
 import moment from "moment";
-import { ClipboardCheckIcon, DotsVerticalIcon } from "@heroicons/react/outline";
+import { ChevronDownIcon, ClipboardCheckIcon, DotsVerticalIcon, PencilIcon } from "@heroicons/react/outline";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Menu from "@mui/material/Menu";
 import PopupState, {
@@ -16,14 +16,49 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { PencilAltIcon } from "@heroicons/react/solid";
 import { ShareIcon, TrashIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
-import DeleteListingModal from "../../experiences/Delete/DeleteListingModal";
+import DeleteListingModal from "../experiences/Delete/DeleteListingModal";
+import { Popover, Transition } from '@headlessui/react'
+import CustomPopup from "../components/shared/CustomPopup";
+import DeleteModal from "./DeleteModal";
 
 const ListingsCard = ({ exp }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  let [isOpen, setIsOpen] = useState(false);
+  
+  function closeModal() {
+   
+    setIsOpen(false);
+  }
+
+  function openModal(e) {
+    e.stopPropagation();
+    setIsOpen(true);
+  }
+
+  
   const handleOpenDeleteModal = (e) => {
     e.stopPropagation();
-    setShowDeleteModal(!showDeleteModal);
+    setIsOpen(true);
   };
+
+  const menuItems = [
+    {
+      name: 'Edit',
+      to: `/experience/edit/${exp._id}`,
+      icon: () => <PencilIcon className='text-gray-900' />,
+    },
+    {
+      name: 'Delete',
+      icon: () => <TrashIcon className="text-gray-900" />,
+      onclick: (e) => openModal(e)
+    },
+    {
+      name: 'Itenerary',
+      description: 'Keep track of your growth',
+      to: `/itenerary/${exp._id}`,
+      icon: () =>  <ClipboardCheckIcon className="text-gray-900" />,
+    },
+  ]
 
   return (
     <div className="grid grid-cols-9 bg-white gap-2 flex py-7 px-2 pr-4 border-b hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
@@ -38,9 +73,9 @@ const ListingsCard = ({ exp }) => {
             </span>
           </div>
           <div className="relative h-16 w-24 flex-shrink-0">
-            {exp.image && exp.image.contentType ? (
+            {exp.files?.length > 0 ? (
               <img
-                src={`${process.env.REACT_APP_API}/experience/image/${exp._id}`}
+                src={exp.files[0]?.url}
                 alt={exp.title}
                 className="rounded-md object-cover h-full w-full object-cover"
               />
@@ -103,73 +138,17 @@ const ListingsCard = ({ exp }) => {
         </main>
       </div>
       <div className="col-span-1 cursor-pointer flex flex-row items-center pl-12 mr-2">
-        <PopupState variant="popover" popupId="demo-popup-menu" transition>
-          {(popupState) => (
-            <React.Fragment>
-              <div
-                className="context-menu"
-                variant="contained"
-                {...bindTrigger(popupState)}
-              >
-                <DotsVerticalIcon className="h-5 w-5 hover:bg-gray-100 transition-all duration-200" />
-              </div>
-
-              <Menu
-                {...bindMenu(popupState)}
-                elevation={5}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                style={{ margin: 5 }}
-              >
-                <MenuList>
-                  <Link to={`/experience/edit/${exp._id}`}>
-                    <MenuItem>
-                      <ListItemIcon>
-                        <PencilAltIcon className="h-4 w-4" />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <p className="text-sm">Edit</p>
-                      </ListItemText>
-                    </MenuItem>
-                  </Link>
-
-                  <MenuItem onClick={handleOpenDeleteModal}>
-                    <ListItemIcon>
-                      <TrashIcon className="h-4 w-4" />
-                    </ListItemIcon>
-                    <ListItemText>
-                      <p className="text-sm">Delete</p>
-                    </ListItemText>
-                  </MenuItem>
-                  <Link to={`/itenerary/${exp._id}`}>
-                    <MenuItem>
-                      <ListItemIcon>
-                        <ClipboardCheckIcon className="h-4 w-4" />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <p className="text-sm">Itenerary</p>
-                      </ListItemText>
-                    </MenuItem>
-                  </Link>
-                </MenuList>
-              </Menu>
-            </React.Fragment>
-          )}
-        </PopupState>
+        
+    <CustomPopup items={menuItems} />
       </div>
-      {showDeleteModal && (
-        <DeleteListingModal
-          exp={exp}
-          showDeleteModal={showDeleteModal}
-          setShowDeleteModal={setShowDeleteModal}
+    
+        <DeleteModal
+        isOpen={isOpen}
+        closeModal={closeModal}
+        openModal={openModal}
+        exp={exp}
         />
-      )}
+     
     </div>
   );
 };

@@ -122,8 +122,6 @@ const SearchResults = () => {
           </section>
         )}
       </main>
-
-      <MainFooter />
     </>
   );
 };

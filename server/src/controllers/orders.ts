@@ -62,6 +62,7 @@ export class OrderClass {
               path: "experience",
               populate: {
                 path: "postedBy",
+                select: "_id firstName lastName",
               },
             })
             .populate("orderedBy", "_id firstName lastName")
@@ -75,12 +76,13 @@ export class OrderClass {
       async getSingleBooking(req: any, res: any) {
         try {
           let booking = await Order.findById(req.params.bookingId)
-            .select("session")
+            .select({})
             .populate("experience", "-image.data")
             .populate({
               path: "experience",
               populate: {
                 path: "postedBy",
+                select: "_id firstName lastName",
               },
             })
             .populate("orderedBy", "_id firstName lastName")

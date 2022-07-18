@@ -15,7 +15,7 @@ import {
 } from "../actions/stripe";
 import { useSelector } from "react-redux";
 import EditExperience from "../experiences/Edit/EditExperience";
-import BookingsComponent from "../components/bookings/BookingsComponent";
+import BookingsComponent from "../user-bookings/BookingsComponent";
 
 
 const Dashboard = () => {

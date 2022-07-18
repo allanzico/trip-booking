@@ -79,7 +79,7 @@ const ExperienceView = ({ match, history }) => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [alreadyBooked, setAlreadyBooked] = useState(false);
-  const [isOwner, setIsOwner] = useState(history.location.state.isOwner);
+  const [isOwner, setIsOwner] = useState(history.location.state?.isOwner);
   const [ratingAverage, setRatingAverage] = useState(0);
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import PageTitle from "../Typography/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserBookings } from "../../actions/experience";
-import BookingCard from "../cards/BookingCard";
-import { fetchUserBookings } from "../../Redux/reducers/experiences";
+
 import axios from "axios";
-import BookingsSmallCard from "../cards/BookingsSmallCard";
 import BookingCardMedium from "./BookingCardMedium";
-import {FaBoxOpen} from "react-icons/fa"
-import { Skeleton } from "antd";
+import { getUserBookings } from "../actions/experience";
+import { fetchUserBookings } from "../Redux/reducers/experiences";
 
 const BookingsComponent = () => {
   const bookings = useSelector((state) => state.experiences.bookings);
@@ -46,7 +41,7 @@ const BookingsComponent = () => {
         {/* {bookings.length <1 && [1,2,3,4].map((n) => <div className="gap-2"><Skeleton key={n}  /></div>)} */}
           { bookings && bookings.map(
             (booking) =>
-              booking.experience && (
+              booking && booking.experience && (
                 <BookingCardMedium
                   key={booking._id}
                   experience={booking.experience}

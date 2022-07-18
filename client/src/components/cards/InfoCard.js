@@ -23,9 +23,9 @@ const InfoCard = ({ exp, lowestPrice}) => {
   const token = auth === undefined ? null : auth?.token;
   const history = useHistory();
   const source = axios.CancelToken.source();
-  const [alreadyFavorited, setAlreadyFavorited] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
 
   useEffect(() => {
@@ -38,25 +38,21 @@ const InfoCard = ({ exp, lowestPrice}) => {
     };
   }, []);
 
-  //Create favorites
-  const addFavorite = async (e) => {
-    e.stopPropagation();
 
-    setFavorites(prevState => ([...prevState, exp._id]))
-    // try {
-    //   await favoriteExperience(token, data);
-    // } catch (error) {
-      
-    // }
+  //Create favorites
+  const addFavorite = (e, expId) => {
+    e.stopPropagation();
+    const exists = favorites.find((item) => item._id === expId);
+    if (!exists) {
+      setFavorites(current => [...current, expId]);
+    }
   };
-  console.log(favorites);
+
+  
   const handleNavigate =(e)=> {
     e.preventDefault()
-    
     history.push({pathname: `/experience/${exp._id}`, state: {isOwner}})
   }
-
-console.log(favorites)
 
   return (
     <div
@@ -79,7 +75,7 @@ console.log(favorites)
       <div className="flex flex-col flex-grow pl-5">
         <div className="flex justify-between">
           <p>{exp.location}</p>
-          <HeartOutlined className="h-7 cursor-pointer" onClick={addFavorite} />
+          <HeartOutlined className="h-7 cursor-pointer" onClick={(e) => addFavorite(e, exp._id)} />
         </div>
         <h4 className="text-xl">{exp.title}</h4>
         <div className="border-b w-10 pt-2" />

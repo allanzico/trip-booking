@@ -11,7 +11,7 @@ import StripeCallback from "./stripe/StripeCallback";
 import Experiences from "./experiences/View/Experiences";
 import ResponsiveNav from "./components/navigation/ResponsiveNav";
 import ViewExperience from "./experiences/View/ViewExperience";
-import ViewBooking from "./components/bookings/ViewBookings";
+
 import StripeCancel from "./stripe/StripeCancel";
 import StripeSuccess from "./stripe/StripeSuccess";
 import SearchResults from "./search/SearchResults";
@@ -29,6 +29,7 @@ import CheckoutComponent from "./checkout/CheckoutComponent";
 import TwoFactorAuth from "./auth/Login/TwoFactorAuth";
 import MainFooter from "./components/footers/MainFooter";
 import OrderSuccess from "./checkout/OrderSuccess";
+import ViewBookings from "./user-bookings/ViewBookings";
 
 function App() {
   return (
@@ -52,8 +53,8 @@ function App() {
           component={ResetPassword}
         />
         <Route exact path="/experience/:expId" component={ExperienceView} />
-        <Route exact path="/booking/:bookingId" component={ViewBooking} />
-   
+        <Route exact path="/booking/:bookingId" component={ViewBookings} />
+     
         {/* <PrivateRoute
           exact
           path="/booking/:bookingId"

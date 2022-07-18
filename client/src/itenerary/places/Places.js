@@ -8,7 +8,7 @@ const Places = ({ location, section, deleteData }) => {
       {location && (
         <div className="grid grid-cols-6">
           <div className="col-span-5">
-            <div class="w-full pl-4">
+            <div class="w-full">
               <div class="relative flex flex-col justify-center py-3 px-2 bg-gray-100 text-gray-700 rounded-md leading-tight rounded-sm">
                  <LocationMarkerIcon className="absolute -left-5 h-12 w-12 py-2  rounded-full text-md text-center" />
 

@@ -11,10 +11,11 @@ import axios from "axios";
 import SellerTable from "../components/tables/seller/SellerTable";
 import SelectColumnFilter from "../components/tables/seller/SelectColumnFilter";
 import moment from "moment";
-import ListingsCard from "../components/cards/ListingsCard";
+
 import ListingsHeader from "../components/shared/ListingsHeader";
 import { PlusIcon } from "@heroicons/react/outline";
 import { fetchSellerExperiences } from "../Redux/reducers/experiences";
+import ListingsCard from "../Listings/ListingsCard";
 
 const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));

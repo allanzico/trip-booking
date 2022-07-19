@@ -1,12 +1,12 @@
 import express from 'express'
 import Authentication from '../controllers/auth'
-import { requireSignIn } from '../middlewares/middlewares'
+import { accountLimiter, requireSignIn } from '../middlewares/middlewares'
 
 const auth = new Authentication()
 
  const router = express.Router()
  
- router.post('/register', auth.registerUser)
+ router.post('/register', accountLimiter, auth.registerUser)
  router.post('/login', auth.loginUser)
  router.post('/logout', auth.logoutUser)
  router.post('/forgot-password', auth.forgotPassword)

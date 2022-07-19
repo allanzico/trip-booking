@@ -6,6 +6,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
 import helmet from "helmet";
+import { apiLimiter } from './middlewares/middlewares'
 
 dotenv.config()
 const app = express()
@@ -23,7 +24,7 @@ app.use(helmet({
 
 //route middleware
 fs.readdirSync(dirPath).map((r) => 
-app.use('/api',require(`${dirPath}/${r}`) )
+app.use('/api', apiLimiter, require(`${dirPath}/${r}`) )
 )
 
 //Error Middleware should always be last 

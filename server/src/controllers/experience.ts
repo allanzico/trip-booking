@@ -83,7 +83,7 @@ export class ExperienceSetup {
     console.log(data);
     try {
 
-      if (data.tickets.length < 1) {
+      if ( !Array.isArray(data.tickets) || !data.tickets.length) {
         return res.status(400).json({
           success: false,
           error: "Please add a ticket type",

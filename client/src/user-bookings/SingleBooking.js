@@ -12,10 +12,14 @@ import moment from "moment";
 import { diffDays } from "../actions/experience";
 import TicketModal from "./tickets/TicketModal";
 import {useHistory } from "react-router-dom";
+import ReviewsCreate from "../reviews/ReviewsCreate";
+import { useSelector } from "react-redux";
 
 const SingleBooking = ({ handleCreateConversation, booking }) => {
   const [showModal, setShowModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
+  const { auth } = useSelector((state) => ({ ...state }));
+  const user = auth === undefined ? null : auth?.user;
   const history = useHistory();
   const img =
     booking.experience?.files?.length > 0
@@ -168,8 +172,10 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> 
               </div>
+              
+              {user && booking.experience.postedBy && user._id !== booking.experience.postedBy._id && (<ReviewsCreate expId={booking.experience._id} />)}
             </div>
           </div>
         </div>

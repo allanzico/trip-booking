@@ -18,6 +18,7 @@ const IteneraryComponent = ({ history }) => {
 
   function getComponents(myHashMap) {
     let comps = [];
+    
     Object.values(myHashMap).forEach((value) => {
       if (value.type === "location") {
         comps.push(<LocationComponent location={value} />);
@@ -53,16 +54,12 @@ const IteneraryComponent = ({ history }) => {
                 </time>
                 {/* <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3> */}
                 <p class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  {item.data ? (
-                    getComponents(item.data)
-                  ) : (
-                    <p className="text-gray-700 text-sm">
-                      {" "}
-                      No Itenerary from host
-                    </p>
-                  )}
+                 { Object.keys(item.data).length === 0? <p className="text-xs text-gray-400">No Itenerary from Host</p> : getComponents(item.data)}
+                  
                 </p>
+                
               </li>
+              
             ))}
         </ol>
       </div>

@@ -139,6 +139,7 @@ const ExperienceView = ({ match, history }) => {
     }
   };
 
+  console.log(experience);
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -311,19 +312,19 @@ const ExperienceView = ({ match, history }) => {
                     </div>
                   </div>
 
-                  <div className="mt-10">
+                  <div className="mt-5">
                     <h3 className="text-sm font-medium text-gray-900">
                       Provided by the Host
                     </h3>
 
-                    <div className="mt-4">
+                    <div className="mt-2">
                       <ul
                         role="list"
                         className="pl-4 list-disc text-sm space-y-2"
                       >
-                        {product.highlights.map((highlight) => (
-                          <li key={highlight} className="text-gray-400">
-                            <span className="text-gray-600">{highlight}</span>
+                        {experience.extraPerks && experience.extraPerks.map((perk, index) => (
+                          <li key={index} className="text-gray-400">
+                            <span className="text-gray-600">{perk.perkName}</span>
                           </li>
                         ))}
                       </ul>
@@ -337,56 +338,10 @@ const ExperienceView = ({ match, history }) => {
             <div class="antialiased items-left  max-w-screen-md">
               <h3 class="mb-4 text-xl font-semibold text-gray-900">Reviews</h3>
               <div class="space-y-4">
-                {user && experience.postedBy && user._id !== experience.postedBy._id && (<ReviewsCreate expId={experience._id} />)}
                 {experience.reviews &&
                   experience.reviews.map((review) => (
                     <ReviewsView review={review} />
                   ))}
-
-                {/* <div class="flex">
-      <div class="flex-shrink-0 mr-3">
-        <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-      </div>
-      <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-        <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-        <p class="text-sm">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-          sed diam nonumy eirmod tempor invidunt ut labore et dolore
-          magna aliquyam erat, sed diam voluptua.
-        </p>
-        
-        <h4 class="my-5 uppercase tracking-wide text-gray-400 font-bold text-xs">Replies</h4>
-
-        <div class="space-y-4">
-          <div class="flex">
-            <div class="flex-shrink-0 mr-3">
-              <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-            </div>
-            <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-              <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-              <p class="text-xs sm:text-sm">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                sed diam nonumy eirmod tempor invidunt ut labore et dolore
-                magna aliquyam erat, sed diam voluptua.
-              </p>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-shrink-0 mr-3">
-              <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-            </div>
-            <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-              <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-              <p class="text-xs sm:text-sm">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                sed diam nonumy eirmod tempor invidunt ut labore et dolore
-                magna aliquyam erat, sed diam voluptua.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> */}
               </div>
             </div>
           </div>

@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 const CalendarWidget = () => {
     const [date, setDate] = useState(new Date());
     const bookings = useSelector((state) => state.experiences.bookings);
-    console.log(bookings)
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
     <Grid item xs={12} md={3}>

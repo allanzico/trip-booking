@@ -1,22 +1,18 @@
 import Experience from "../models/Experience";
 import fs from "fs";
 import Order from "../models/Order";
-import Favorites from "../models/Favorites";
 
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
+    const data = req.body;
     try {
-      let fields = req.fields;
-      const ticketFields = JSON.parse(fields.tickets);
-      let files = req.files;
-      let experience = new Experience(fields);
+      let experience = await new Experience(data);
       experience.postedBy = req.user._id;
-      experience.tickets = ticketFields;
 
       //read Image data
-      if (files.image) {
-        experience.image.data = fs.readFileSync(files.image.path);
-        experience.image.contentType = files.image.type;
+      if (data.image) {
+        experience.image.data = fs.readFileSync(data.image.path);
+        experience.image.contentType = data.image.type;
       }
       experience.save((error: any, result: any) => {
         if (error) {
@@ -35,12 +31,9 @@ export class ExperienceSetup {
 
   async getExperiences(req: any, res: any) {
     try {
-      // let experiences = await Experience.find({startDate: {$gte: new Date()}})
-
       let experiences = await Experience.find({})
-        .limit(24)
         .select("-image.data")
-        .populate("postedBy", "_id name")
+        .populate("postedBy", "_id firstName lastName")
         .exec();
       res.json(experiences);
     } catch (error) {
@@ -66,14 +59,14 @@ export class ExperienceSetup {
   async getSellerExperiences(req: any, res: any) {
     let all = await Experience.find({ postedBy: req.user._id })
       .select("-image.data")
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id firstName lastName")
       .exec();
     res.send(all);
   }
 
   async getSingleExperience(req: any, res: any) {
     let experience = await Experience.findById(req.params.expId)
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id firstName lastName")
       .populate({
         path: "reviews",
         populate: {
@@ -86,24 +79,21 @@ export class ExperienceSetup {
   }
 
   async updateExperience(req: any, res: any) {
+    const data = req.body;
+    console.log(data);
     try {
-      let fields = req.fields;
-      let files = req.files;
-      const ticketFields = JSON.parse(fields.tickets);
-      let data = { ...fields };
-      if (ticketFields.length < 1) {
+
+      if (data.tickets.length < 1) {
         return res.status(400).json({
           success: false,
           error: "Please add a ticket type",
         });
-      } else {
-        data.tickets = ticketFields;
-      }
+      } 
 
-      if (files.image) {
+      if (data.image) {
         let image: any = { data: "", contentType: "" };
-        image.data = fs.readFileSync(files.image.path);
-        image.contentType = files.image.type;
+        image.data = fs.readFileSync(data.image.path);
+        image.contentType = data.image.type;
         data.image = image;
       }
 
@@ -139,59 +129,7 @@ export class ExperienceSetup {
     }
   }
 
-  async getUserBookings(req: any, res: any) {
-    try {
-      const all = await Order.find({ orderedBy: req.user._id })
-        .select("session")
-        .populate("experience", "-image.data")
-        .populate({
-          path: "experience",
-          populate: {
-            path: "postedBy",
-          },
-        })
-        .populate("orderedBy", "_id name")
-        .exec();
-      res.json(all);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getSingleBooking(req: any, res: any) {
-    try {
-      let booking = await Order.findById(req.params.bookingId)
-        .select("session")
-        .populate("experience", "-image.data")
-        .populate({
-          path: "experience",
-          populate: {
-            path: "postedBy",
-          },
-        })
-        .populate("orderedBy", "_id name")
-        .exec();
-      res.json(booking);
-    } catch (error) {}
-  }
-
-  async isAlreadyBooked(req: any, res: any) {
-    const { expId } = req.params;
-    const userOrders = await Order.find({ orderedBy: req.user._id })
-      .select("experience")
-      .exec();
-
-    //check if ID exists in orders array
-    let ids = [];
-    for (let i = 0; i < userOrders.length; i++) {
-      ids.push(userOrders[i].experience.toString());
-    }
-
-    res.json({
-      ok: ids.includes(expId),
-    });
-  }
-
+  
   async searchListings(req: any, res: any) {
     const { location, date } = req.body;
     // const dates = date.split(",");
@@ -252,56 +190,12 @@ export class ExperienceSetup {
   }
 
   async favoriteExperience(req: any, res: any) {
-    const { experience, favoritedBy } = req.body;
-    const favorites = new Favorites({
-      experience,
-      favoritedBy,
-    });
 
-    //Save favorite
-    await favorites.save();
+    console.log(req.body);
 
-    res.json({ success: true, favorites });
+    res.json({ success: true, });
   }
 
-  async isAlreadyFavorited(req: any, res: any) {
-    const { expId } = req.body;
-    const favorites = await Favorites.find({ favoritedBy: req.user._id })
-      .select("experience")
-      .exec();
-
-    //check if ID exists in orders array
-    let ids = [];
-    for (let i = 0; i < favorites.length; i++) {
-      ids.push(favorites[i].experience.toString());
-    }
-    res.json({
-      ok: ids.includes(expId),
-    });
-  }
-
-  async getUserFavorites(req: any, res: any) {
-    try {
-      const favorites = await Favorites.find({ favoritedBy: req.user._id })
-        .populate("experience", "-image.data")
-        .populate("favoritedBy", "_id name")
-        .exec();
-      res.json(favorites);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getFavoriteNumber(req: any, res: any) {
-    try {
-      const favorites = await Favorites.find({
-        experience: req.body.experience,
-      }).exec();
-      res.json({ success: true, favoriteNumber: favorites.length });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   async createItenerary(req: any, res: any) {
     const itenerary = req.body;

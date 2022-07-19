@@ -40,6 +40,9 @@ const ReviewsCreate = ({ expId }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div class="shadow-sm overflow-hidden">
+        <div class="px-4 py-3 text-left sm:px-6"> 
+        <p className="text-md text-gray-900">Review booking</p>
+        </div>
           <div class="px-4 py-5 bg-white sm:p-6">
             <div class="grid grid-cols-6 gap-6">
               <div class="col-span-6 sm:col-span-6 lg:col-span-3">

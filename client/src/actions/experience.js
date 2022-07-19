@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createExperience = async (token, data) => {
+export const addExperience = async (token, data) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/create-experience`,
     data,
@@ -99,8 +99,10 @@ export const isAlreadyBooked = async (token, expId, cancelToken) => {
   });
 };
 
-export const searchListings = async (query) => {
-  return await axios.post(`${process.env.REACT_APP_API}/search-listings`, query);
+export const searchListings = async (query,   cancelToken) => {
+  return await axios.post(`${process.env.REACT_APP_API}/search-listings`, query, {
+    cancelToken: cancelToken
+  });
 };
 
 export const reviewExperience = async (token, expId, data) => {

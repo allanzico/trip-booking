@@ -14,6 +14,7 @@ import ReviewsView from "../../reviews/ReviewsView";
 import ReviewsCreate from "../../reviews/ReviewsCreate";
 import axios from "axios";
 import { fetchSingleExperience } from "../../Redux/reducers/experiences";
+import { getHighestPrice, getLowestPrice } from "../../components/shared/Utils";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -78,7 +79,7 @@ const ExperienceView = ({ match, history }) => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [alreadyBooked, setAlreadyBooked] = useState(false);
-  const [isOwner, setIsOwner] = useState(history.location.state.isOwner);
+  const [isOwner, setIsOwner] = useState(history.location.state?.isOwner);
   const [ratingAverage, setRatingAverage] = useState(0);
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));
@@ -87,8 +88,7 @@ const ExperienceView = ({ match, history }) => {
 
   useEffect(() => {
     loadSingleExperience();
-    
-
+  
     //calculate rating average
     if (experience.reviews) {
       const average =
@@ -102,20 +102,6 @@ const ExperienceView = ({ match, history }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (auth && auth.token) {
-      isAlreadyBooked(auth.token, match.params.expId, source.token).then(
-        (res) => {
-          if (res.data.ok) setAlreadyBooked(true);
-        }
-      );
-          //set is owner
-    
-    }
-    return () => {
-      source.cancel();
-    };
-  }, []);
 
   const loadSingleExperience = async () => {
     try {
@@ -137,19 +123,23 @@ const ExperienceView = ({ match, history }) => {
     setLoading(true);
     try {
       if (!auth) history.push("/login");
-      let res = await getSessionId(auth.token, match.params.expId);
-      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
-      stripe
-        .redirectToCheckout({
-          sessionId: res.data.sessionId,
-        })
-        .then((result) => console.log(result));
+      history.push({
+        pathname: "/checkout",
+        state: {experience: experience, user: user},
+      })
+      // let res = await getSessionId(auth.token, match.params.expId);
+      // const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+      // stripe
+      //   .redirectToCheckout({
+      //     sessionId: res.data.sessionId,
+      //   })
+      //   .then((result) => console.log(result));
     } catch (error) {
       console.log(error);
     }
   };
 
-
+  console.log(experience);
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -167,22 +157,21 @@ const ExperienceView = ({ match, history }) => {
               <div className="mt-6 max-w-2xl mx-auto px-4 sm:px-4 lg:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-2">
                 <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                   <img
-                    src={image}
-                    alt="experience-image"
+                    src={experience.files && experience.files[0] ? experience.files[0]?.url : "https://via.placeholder.com/1000x1000"}
                     className="w-full h-full object-center object-cover"
                   />
                 </div>
                 <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={image}
+                      src={experience.files && experience.files[1] ? experience.files[1]?.url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
                   </div>
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={image}
+                      src={experience.files && experience.files[2] ? experience.files[2]?.url : "https://via.placeholder.com/1000x500"}
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
@@ -190,7 +179,7 @@ const ExperienceView = ({ match, history }) => {
                 </div>
                 <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                   <img
-                    src={image}
+                    src={experience.files && experience.files[3] ? experience.files[3]?.url : "https://via.placeholder.com/1000x1000"}
                     alt="experience-image"
                     className="w-full h-full object-center object-cover"
                   />
@@ -207,7 +196,7 @@ const ExperienceView = ({ match, history }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {experience.postedBy && experience.postedBy.name}{" "}
+                      {experience.postedBy && experience.postedBy.firstName}{" "}
                     </a>
                   </h2>
                 </div>
@@ -215,13 +204,20 @@ const ExperienceView = ({ match, history }) => {
                 {/* Options */}
                 <div className="mt-4 lg:mt-0 lg:row-span-3">
                   <h2 className="sr-only">More information</h2>
-                  <div className="flex justify-between items-center">
-                    <p className="text-3xl font-bold text-orange-500">
-                      {experience.price &&
+                  <div className="flex flex-col items-left">
+                    <p className="text-xl font-bold text-orange-500">
+                      <span>{experience.tickets &&
                         currencyFormatter({
-                          amount: experience.price * 100,
+                          amount: getLowestPrice(experience.tickets) * 100,
                           currency: "ugx",
-                        })}
+                        })}</span>
+                        -
+                        <span>{experience.tickets &&
+                        currencyFormatter({
+                          amount: getHighestPrice(experience.tickets) * 100,
+                          currency: "ugx",
+                        })}</span>
+
                     </p>
 
                     {/* Reviews */}
@@ -260,7 +256,7 @@ const ExperienceView = ({ match, history }) => {
                     <div>
                       <h3 className="text-sm text-gray-900 font-medium">
                         <span class="hover:bg-gray-300 delay-100 duration-100 bg-gray-200 rounded-sm py-2 px-2 text-xs">
-                          Available for{" "}
+                          Experience lasts{" "}
                           {diffDays(experience.startDate, experience.endDate)}{" "}
                           {diffDays(experience.startDate, experience.endDate) ==
                           1
@@ -295,12 +291,10 @@ const ExperienceView = ({ match, history }) => {
                     >
                       {loading
                         ? "Loading..."
-                        : alreadyBooked
-                        ? "You already Booked this"
                         : isOwner
                         ? "You cant book your own"
                         : auth && auth.token
-                        ? " Book Now"
+                        ? " View Tickets"
                         : "Login To Book"}
                     </button>
                   </form>
@@ -318,19 +312,19 @@ const ExperienceView = ({ match, history }) => {
                     </div>
                   </div>
 
-                  <div className="mt-10">
+                  <div className="mt-5">
                     <h3 className="text-sm font-medium text-gray-900">
-                      Extra Perks
+                      Provided by the Host
                     </h3>
 
-                    <div className="mt-4">
+                    <div className="mt-2">
                       <ul
                         role="list"
                         className="pl-4 list-disc text-sm space-y-2"
                       >
-                        {product.highlights.map((highlight) => (
-                          <li key={highlight} className="text-gray-400">
-                            <span className="text-gray-600">{highlight}</span>
+                        {experience.extraPerks && experience.extraPerks.map((perk, index) => (
+                          <li key={index} className="text-gray-400">
+                            <span className="text-gray-600">{perk.perkName}</span>
                           </li>
                         ))}
                       </ul>
@@ -344,56 +338,10 @@ const ExperienceView = ({ match, history }) => {
             <div class="antialiased items-left  max-w-screen-md">
               <h3 class="mb-4 text-xl font-semibold text-gray-900">Reviews</h3>
               <div class="space-y-4">
-                {user && experience.postedBy && user._id !== experience.postedBy._id && (<ReviewsCreate expId={experience._id} />)}
                 {experience.reviews &&
                   experience.reviews.map((review) => (
                     <ReviewsView review={review} />
                   ))}
-
-                {/* <div class="flex">
-      <div class="flex-shrink-0 mr-3">
-        <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-      </div>
-      <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-        <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-        <p class="text-sm">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-          sed diam nonumy eirmod tempor invidunt ut labore et dolore
-          magna aliquyam erat, sed diam voluptua.
-        </p>
-        
-        <h4 class="my-5 uppercase tracking-wide text-gray-400 font-bold text-xs">Replies</h4>
-
-        <div class="space-y-4">
-          <div class="flex">
-            <div class="flex-shrink-0 mr-3">
-              <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-            </div>
-            <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-              <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-              <p class="text-xs sm:text-sm">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                sed diam nonumy eirmod tempor invidunt ut labore et dolore
-                magna aliquyam erat, sed diam voluptua.
-              </p>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="flex-shrink-0 mr-3">
-              <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="" />
-            </div>
-            <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-              <strong>Sarah</strong> <span class="text-xs text-gray-400">3:34 PM</span>
-              <p class="text-xs sm:text-sm">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                sed diam nonumy eirmod tempor invidunt ut labore et dolore
-                magna aliquyam erat, sed diam voluptua.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> */}
               </div>
             </div>
           </div>

@@ -12,9 +12,9 @@ const BookingCard = ({ experience, session, orderedBy }) => {
   return (
     <div class="flex w-full overflow-hidden bg-white rounded-md shadow-md duration-300">
       <div class="w-1/3 bg-cover">
-        {experience.image && experience.image.contentType ? (
+        {experience.files.length > 0 ? (
           <img
-            src={`${process.env.REACT_APP_API}/experience/image/${experience._id}`}
+            src={experience.files[0].url}
             alt="experiences-image"
             className="rounded-x-md h-full w-full object-cover"
           />

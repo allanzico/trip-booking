@@ -20,7 +20,7 @@ const ReviewsView = ({ review }) => {
       <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
         <div className="flex justify-between items-center">
           <h3 className="text-xl font-semibold text-gray-900">
-            {review.reviewedBy.name}
+            {review.reviewedBy.firstName}
           </h3>
 
           {/* Reviews */}

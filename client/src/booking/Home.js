@@ -52,11 +52,11 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-3 xl:grid-cols-4">
             {experiences.map((exp) => {
               return (
-                diffDays(exp.startDate, exp.endDate) <= 50 && (
+                diffDays(new Date(), exp.startDate) <= 10 && (
                   <SmallCard
                     key={exp._id}
                     exp={exp}
-                    img={`${process.env.REACT_APP_API}/experience/image/${exp._id}`}
+                    img={`${exp.files.length > 0 ? exp.files[0].url : "https://via.placeholder.com/900x500.png?text=PREVIEW"}`}
                   />
                 )
               );
@@ -82,7 +82,6 @@ const Home = () => {
       </main>
       
     </div>
-    <MainFooter />
 
 
 

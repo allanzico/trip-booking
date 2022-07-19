@@ -6,19 +6,41 @@ import UserInterests from "../models/UserInterests";
 const authy = require("authy")(<string>process.env.AUTHY_API_KEY);
 
 export default class Authentication {
-
   //register users
   async registerUser(req: any, res: any, next: any): Promise<void> {
-    const { firstName, lastName, email, password, confirmPassword, userInterests, role} = req.body;
+    const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
+    const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+    const client = require("twilio")(accountSid, authToken);
+    const twilioVerifyService = await client.verify.v2.services
+      .create({ friendlyName: "Kusimbula" })
+      .then((service: any) => service.sid);
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      userInterests,
+      phone,
+      role,
+    } = req.body;
     try {
       const user = await User.create({
-        firstName, lastName, email, password, confirmPassword, userInterests, role
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        userInterests,
+        role,
+        phone,
+        verifyToken: twilioVerifyService,
       });
       res.status(201).json({ success: true, user });
     } catch (error) {
+      console.log(error);
       next(error);
     }
-
 
     // try {
     //   const { name, email, password } = req.body;
@@ -50,7 +72,7 @@ export default class Authentication {
         user.password = password || user.password;
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
-        user.phone = phone || user.phone
+        user.phone = phone || user.phone;
         if (!password || password == null) {
           user.password = user.password;
         }
@@ -62,12 +84,11 @@ export default class Authentication {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
           },
           message: "Profile updated!",
         });
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -87,6 +108,11 @@ export default class Authentication {
 
     try {
       let user = await User.findOne({ email }).select("+password");
+
+      const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
+      const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+      const client = require("twilio")(accountSid, authToken);
+
       if (!user)
         return res.status(400).json({
           success: false,
@@ -104,20 +130,11 @@ export default class Authentication {
         res.status(404).json({ success: false, error: "Invalid credentials" });
       }
 
-      if (user.authyId) {
-        authy.request_sms(
-          user.authyId,
-          { force: true },
-          function (err: any, smsRes: any) {
-            if (err) {
-              return res.json({
-                message: "An error occurred while sending OTP to user",
-              });
-            }
-          }
-        );
-        return res.status(200).json({ message: "OTP sent to user" });
-      }
+      //SEND SMS
+      await client.verify.v2
+        .services(user.verifyToken)
+        .verifications.create({ to: user.phone.number, channel: "sms" })
+        .then((verification: any) => verification.status);
 
       res.status(201).json({
         success: true,
@@ -127,10 +144,10 @@ export default class Authentication {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          authyId: user.authyId,
           phone: user.phone,
           role: user.role,
           userInterest: user.userInterests,
+          verificationStatus: user.verificationStatus,
           stripe_account_id: user.stripe_account_id,
           stripe_seller: user.stripe_seller,
           stripeSession: user.stripeSession,
@@ -141,6 +158,18 @@ export default class Authentication {
     } catch (error) {
       console.log("LOGIN FAILED", error);
       next(error);
+    }
+  }
+
+  async logoutUser(req: any, res: any) {
+    const userId = req.body._id;
+    try {
+      const user = await User.findById(userId).select("-password");
+      user.verificationStatus = "pending";
+      await user.save();
+      res.status(200).json({ success: true, data: "user logged out" });
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -226,88 +255,95 @@ export default class Authentication {
 
   //2FACTOR AUTHENTICATION
 
-  async enableTwofactorAuth(req: any, res: any) {
-    try {
-      const email = req.body.email
-      const countryCode = Number(req.body.internationalNumber.countryCallingCode)
-      const phone = Number(req.body.internationalNumber.nationalNumber)
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.json({ message: "User account does not exist" });
-      }
+  // async sendTwoFactorToken(phoneNumber: any, twilioVerifyService: any) {
+  //   const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
+  //   const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+  //   const client = require("twilio")(accountSid, authToken);
+  //   try {
+  //     await client.verify.v2
+  //         .services(twilioVerifyService)
+  //         .verifications.create({ to: phoneNumber, channel: "sms" })
+  //         .then((verification: any) => (verification.status));
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   }
+  // }
 
-      authy.register_user(
-        email,
-        phone,
-        countryCode,
-        (err: any, regRes: any) => {
-          if (err) {
-            console.log(err)
-            return res.json({
-             success: false, message: err.message,
-            });
-          }
-          user.authyId = regRes.user.id;
-          user.save((err: any, user: any) => {
-            if (err) {
-              console.log(err)
-              return res.json({
-                success: false, message: err.message,
-                
-              });
-            } else {
-              res.status(200).json({success: true, message: "2FA enabled" });
-            }
-          });
-        }
-      );
-      
-    } catch (error: any) {
+  async verifyTwofactorAuth(req: any, res: any) {
+    const { code } = req.body;
+    const userId = req.user._id;
+    const user = await User.findById(userId).select("-password");
+    const phoneNumber = user.phone.number;
+    const tokenSecret = process.env.JWT_SECRET;
+    const service = user.verifyToken;
+    try {
+      const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
+      const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+      const client = require("twilio")(accountSid, authToken);
+
+      const verificationCheck = await client.verify.v2
+        .services(service)
+        .verificationChecks.create({ to: phoneNumber, code: code })
+        .then((verification_check: any) => verification_check);
+
+      if (verificationCheck.status === "approved") {
+        user.verificationStatus = verificationCheck.status;
+        await user.save();
+
+
+           //generate token
+      const token = jwt.sign({ _id: user._id }, <string>tokenSecret, {
+        expiresIn: "7d",
+      });
+
+        res.status(201).json({
+          success: true,
+          token,
+          user: {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            userInterest: user.userInterests,
+            verificationStatus: user.verificationStatus,
+            stripe_account_id: user.stripe_account_id,
+            stripe_seller: user.stripe_seller,
+            stripeSession: user.stripeSession,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          },
+        });
+      } else {
+        res.status(400).json({ success: false, data: "user not verified" });
+      }
+    } catch (error) {
       console.log(error);
-      res.status(500).json({success: false,  message: error.message });
+      res.status(400).json({ success: false, data: error });
     }
   }
 
-  async verifyTwofactorAuth (req: any, res: any) {
-        try {
-          const { email } = req.body
-          const user = await User.findOne({ email });
-          authy.verify(
-            user.authyId,
-            req.params.twoFactorToken,
-            function(err: any, tokenRes: any){
-                if (err) {
-                    res.json({ message: 'OTP verification failed'});
-                }
-                res.status(200).json({ message: 'Token is valid'});
-            });
-        } catch (error: any) {
-          console.log(error)
-          res.status(500).json({ message: error.message});
-        }
-  }
-
-  async createUserInterests (req: any, res: any, next:any) {
-    const {title } = req.body;
+  async createUserInterests(req: any, res: any, next: any) {
+    const { title } = req.body;
     try {
       const userInterests = await UserInterests.create({
-        title
+        title,
       });
       res.status(201).json({ success: true, userInterests });
     } catch (error) {
       next(error);
     }
-
-}
-
-async getUserInterests(req: any, res: any) {
-  try {
-    let userInterests = await UserInterests.find({})
-      .select("-image.data")
-      .exec();
-    res.json(userInterests);
-  } catch (error) {
-    console.log(error);
   }
-}
+
+  async getUserInterests(req: any, res: any) {
+    try {
+      let userInterests = await UserInterests.find({})
+        .select("-image.data")
+        .exec();
+      res.json(userInterests);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

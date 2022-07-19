@@ -3,25 +3,40 @@ import {
   ChatAlt2Icon,
   ChatAltIcon,
   ChevronRightIcon,
+  ClipboardListIcon,
   DocumentIcon,
   FilterIcon,
   TicketIcon,
 } from "@heroicons/react/outline";
 import moment from "moment";
-import { diffDays } from "../../actions/experience";
-import TicketModal from "../modals/TicketModal";
-const SingleBooking = ({ handleCreateConversation, booking, image }) => {
-  const product = {
-    highlights: [
-      "Lorem ipsum dolor sit am",
-      "Lorem ipsum dolor sit a",
-      "Lorem ipsum dolor sit",
-      "Lorem ipsum dolor si",
-    ],
-  };
+import { diffDays } from "../actions/experience";
+import TicketModal from "./tickets/TicketModal";
+import {useHistory } from "react-router-dom";
+import ReviewsCreate from "../reviews/ReviewsCreate";
+import { useSelector } from "react-redux";
 
+const SingleBooking = ({ handleCreateConversation, booking }) => {
   const [showModal, setShowModal] = useState(false);
+  let [isOpen, setIsOpen] = useState(false);
+  const { auth } = useSelector((state) => ({ ...state }));
+  const user = auth === undefined ? null : auth?.user;
+  const history = useHistory();
+  const img =
+    booking.experience?.files?.length > 0
+      ? `${booking?.experience?.files[0]?.url}`
+      : "https://via.placeholder.com/1000x1000.png?text=PREVIEW";
 
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  const handleItenerary = () => {
+    history.push({pathname: '/view-itenerary', state: booking.experience.itenerary});
+  }
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -33,7 +48,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                   <h1 className="text-lg font-bold tracking-tight lg:text-xl">
                     <span className="text-gray-900 ">Your trip to </span>
                     <span className="text-orange-500">
-                      {booking.experience.location}
+                      {booking && booking.experience?.location}
                     </span>
                   </h1>
                 </div>
@@ -42,7 +57,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
               <div className="mt-6 max-w-xl h-64 lg:h-80 mx-auto px-4 sm:px-4 lg:px-6 lg:max-w-7xl lg:px-8 grid grid-cols-1">
                 <div className="aspect-w-3 aspect-h-4 rounded-lg overflow-hidden">
                   <img
-                    src={image}
+                    src={img}
                     alt="experience-image"
                     className="w-full h-full object-center object-cover"
                   />
@@ -59,7 +74,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {booking.experience.postedBy.name}
+                      {booking && booking.experience?.postedBy?.firstName}
                     </a>
                   </h2>
                 </div>
@@ -71,11 +86,11 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                   <div className="py-2">
                     <div className="flex items-center justify-between">
                       <h3 className="lg:text-xl text-lg text-gray-500 text-semibold">
-                        {moment(new Date(booking.experience.startDate)).format(
+                        {moment(new Date(booking.experience?.startDate)).format(
                           "Do MMMM YYYY"
                         )}{" "}
                         -{" "}
-                        {moment(new Date(booking.experience.endDate)).format(
+                        {moment(new Date(booking.experience?.endDate)).format(
                           "Do MMMM YYYY"
                         )}
                       </h3>
@@ -95,29 +110,28 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                       </p>
                     </div>
                     <div
-                      onClick={() => setShowModal(!showModal)}
+                      onClick={openModal}
                       className="py-3 flex justify-between items-center cursor-pointer"
                     >
-                      {showModal && (
-                        <TicketModal
-                          showModal={showModal}
-                          setShowModal={setShowModal}
-                          booking={booking}
-                        />
-                      )}
-
                       <h5 className="flex items-center">
                         <TicketIcon className="w-4 h-4 mr-2" />
-                        View your ticket
+                        View your tickets
                       </h5>
                       <p>
                         <ChevronRightIcon className="w-4 h-4" />
                       </p>
                     </div>
-                    <div className="py-3 flex justify-between items-center cursor-pointer">
+
+                    <TicketModal
+                      isOpen={isOpen}
+                      closeModal={closeModal}
+                      booking={booking}
+                    />
+
+                    <div onClick={handleItenerary} className="py-3 flex justify-between items-center cursor-pointer">
                       <h5 className="flex items-center">
-                        <DocumentIcon className="w-4 h-4 mr-2" />
-                        Print PDF
+                        <ClipboardListIcon className="w-4 h-4 mr-2" />
+                       View Itenerary
                       </h5>
                       <p>
                         <ChevronRightIcon className="w-4 h-4" />
@@ -125,8 +139,8 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                     </div>
                   </div>
                   {diffDays(
-                    booking.experience.startDate,
-                    booking.experience.endDate
+                    booking.experience?.startDate,
+                    booking.experience?.endDate
                   ) >= 7 && (
                     <button className=" mt-5 w-full cursor-pointer bg-orange-500 rounded-sm py-2 flex items-center justify-center text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed">
                       Cancel order
@@ -142,7 +156,7 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                     </h3>
                     <div className="space-y-4">
                       <p className="text-base text-gray-700">
-                        {booking.experience.description}
+                        {booking && booking.experience?.description}
                       </p>
                     </div>
                   </div>
@@ -158,26 +172,10 @@ const SingleBooking = ({ handleCreateConversation, booking, image }) => {
                       </p>
                     </div>
                   </div>
-                  <div className="mt-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Provided by the host
-                    </h3>
-
-                    <div className="mt-2">
-                      <ul
-                        role="list"
-                        className="pl-4 list-disc text-sm space-y-2"
-                      >
-                        {product.highlights.map((highlight) => (
-                          <li key={highlight} className="text-gray-400">
-                            <span className="text-gray-600">{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                </div> 
               </div>
+              
+              {user && booking.experience.postedBy && user._id !== booking.experience.postedBy._id && (<ReviewsCreate expId={booking.experience._id} />)}
             </div>
           </div>
         </div>

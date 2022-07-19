@@ -15,3 +15,30 @@ export function getDatesInRange(startDate, endDate) {
   }
   return dates;
 }
+
+export function getLowestPrice(tickets) {
+  return tickets
+    .filter(
+      (ticket) =>
+        ticket.ticketPrice ===
+        Math.min(...tickets.map((ticket) => ticket.ticketPrice))
+    )
+    .map((ticket) => ticket.ticketPrice);
+}
+
+export function getHighestPrice(tickets) {
+  return tickets
+    .filter(
+      (ticket) =>
+        ticket.ticketPrice ===
+        Math.max(...tickets.map((ticket) => ticket.ticketPrice))
+    )
+    .map((ticket) => ticket.ticketPrice);
+}
+
+export function updatePrice(experiences) {
+  return experiences.map((exp) => ({
+    ...exp,
+    price: parseInt(getLowestPrice(exp.tickets)),
+  }));
+}

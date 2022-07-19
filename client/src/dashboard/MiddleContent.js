@@ -2,19 +2,23 @@ import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Switch, useLocation, Link } from "react-router-dom";
-import BookingsComponent from "../components/bookings/BookingsComponent";
+
 import PrivateRoute from "../components/PrivateRoute";
 import EditExperience from "../experiences/Edit/EditExperience";
 import DashboardSeller from "../user/DashboardSeller";
 import Messaging from "../messaging/Messaging";
 import PaymentComponent from "../components/payment/PaymentComponent";
 import Tickets from "../components/tickets/Tickets";
-import ViewBookings from "../components/bookings/ViewBookings";
+
 import CreateExperience from "../experiences/Create/CreateExperience";
 import Settings from "../settings/Settings";
 import SellerRoute from "../components/SellerRoute";
 import DashboardHome from "./DashboardHome";
 import CreateItenerary from "../itenerary/CreateItenerary";
+import FavoritesComponent from "../components/favorites/FavoritesComponent";
+import ViewBookings from "../user-bookings/ViewBookings";
+import BookingsComponent from "../user-bookings/BookingsComponent";
+import IteneraryComponent from "../user-bookings/itenerary/IteneraryComponent";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -32,13 +36,16 @@ const MiddleContent = () => {
     case "/add-payment-method":
       heading = "Payments";
       break;
-      case "/settings":
-        heading = "Settings";
-        break;
+    case "/settings":
+      heading = "Settings";
+      break;
+    case "/user-favorites":
+      heading = "Favorites";
+      break;
   }
 
   return (
-    <div className="col-span-7 lg:col-span-5 mt-2 pb-5">
+    <div className="col-span-7  lg:col-span-5 mt-2 pb-5">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="px-1 md:px-2 py-1 md:py-2 pb-0 text-2xl md:text-4xl font-bold">
@@ -53,32 +60,41 @@ const MiddleContent = () => {
       </div>
       <hr className="m-1 md:m-2 text-gray-600" />
 
-      <section className="px-1 md:px-2 pb-0 ">
+      <section className="px-1 md:px-2 pb-0">
         <Switch>
-          <SellerRoute  exact
+          <SellerRoute
+            exact
             path="/dashboard/seller"
-            component={DashboardSeller} />
+            component={DashboardSeller}
+          />
           {/* <PrivateRoute
             exact
             path="/dashboard/home"
             component={DashboardHome}
           /> */}
-           <PrivateRoute
+          <PrivateRoute
             exact
             path="/user-experience-bookings"
             component={BookingsComponent}
           />
+
           <PrivateRoute
             exact
             path="/experiences/new"
             component={CreateExperience}
+          />
+
+          <PrivateRoute
+            exact
+            path="/user-favorites"
+            component={FavoritesComponent}
           />
           <PrivateRoute
             exact
             path="/experience/edit/:expId"
             component={EditExperience}
           />
-                    <PrivateRoute
+          <PrivateRoute
             exact
             path="/itenerary/:expId"
             component={CreateItenerary}
@@ -96,6 +112,12 @@ const MiddleContent = () => {
             exact
             path="/add-payment-method"
             component={PaymentComponent}
+          />
+
+          <PrivateRoute
+            exact
+            path="/view-itenerary"
+            component={IteneraryComponent}
           />
         </Switch>
       </section>

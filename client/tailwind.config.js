@@ -10,7 +10,7 @@ module.exports = {
 
   theme: {
     extend: {
-      
+      display: ["group-hover"],
     },
     fontFamily: {
       Poppins: ["Poppins, sans-serif"],

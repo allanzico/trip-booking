@@ -1,50 +1,64 @@
-import { TextField } from '@mui/material'
-import { alpha, styled } from '@mui/material/styles';
-import React from 'react'
-import { useField } from 'formik'
+import { TextField } from "@mui/material";
+import { alpha, styled } from "@mui/material/styles";
+import React, { useState } from "react";
+import { useField } from "formik";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
-const CustomDatePicker = ({name, ...otherProps}) => {
+const CustomDatePicker = ({ name, label, onChange, value, ...otherProps }) => {
+  const [selectedDate, setSelectedDate] = useState(null);
   const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-      color: '#F97316',
+    "& label.Mui-focused": {
+      color: "#F97316",
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: '#F97316',
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#F97316",
     },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#D1D5DB',
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#D1D5DB",
         borderRadius: 1,
       },
-      '&:hover fieldset': {
-        borderColor: '#CBD5E1',
+      "&:hover fieldset": {
+        borderColor: "#CBD5E1",
       },
-      '&.Mui-focused fieldset': {
-        borderColor: '#D1D5DB',
+      "&.Mui-focused fieldset": {
+        borderColor: "#D1D5DB",
       },
     },
-    
   });
 
-  const [field, meta] = useField(name)
+  const [field, meta] = useField(name);
   const configDateTimePicker = {
     ...field,
     ...otherProps,
-    type: 'date',
-    variant: 'outlined',
+    type: "date",
+    variant: "outlined",
     InputLabelProps: {
       shrink: true,
-     }
-   }
+    },
+  };
 
-   if (meta && meta.touched && meta.error) {
-     configDateTimePicker.error = true
-     configDateTimePicker.helperText = meta.error
-   }
+  if (meta && meta.touched && meta.error) {
+    configDateTimePicker.error = true;
+    configDateTimePicker.helperText = meta.error;
+  }
 
   return (
-    <CssTextField fullWidth={true} {...configDateTimePicker} sx={{border: 0}}  />
-  )
-}
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <DesktopDatePicker
+        disablePast
+        label={label}
+        value={value}
+        onChange={onChange}
+        renderInput={(params) => (
+          <CssTextField fullWidth {...params} {...configDateTimePicker} />
+        )}
+      />
+    </LocalizationProvider>
+    //   <CssTextField fullWidth={true} {...configDateTimePicker} sx={{border: 0}}  />
+  );
+};
 
-export default CustomDatePicker
+export default CustomDatePicker;

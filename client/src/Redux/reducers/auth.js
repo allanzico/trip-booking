@@ -1,4 +1,5 @@
 const UPDATE_USER = 'UPDATE_USER'
+const LOGGED_IN_USER = 'LOGGED_IN_USER'
 
 let userState;
 
@@ -20,6 +21,14 @@ export const authReducer = (state=userState, {type,payload}) => {
       default:
         return state;
     }
+  }
+
+  //Update user details
+  export function loggedInUser(data) {
+    return {
+      type: LOGGED_IN_USER,
+      payload: data,
+    };
   }
 
   //Update user details

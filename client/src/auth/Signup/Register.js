@@ -6,6 +6,7 @@ import PersonalInfo from "./steps/PersonalInfo";
 import UserInterests from "./steps/UserInterests";
 import SignupSVG from "../../images/SignupSVG";
 import { register } from "../../actions/auth";
+import { parsePhoneNumber } from "react-phone-number-input";
 
 const Register = ({ history }) => {
   const [data, setData] = useState({
@@ -16,6 +17,7 @@ const Register = ({ history }) => {
     confirmPassword: "",
     userInterests: [],
     role: "buyer",
+    phone: ""
   });
   const { password, confirmPassword } = data;
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,7 +31,11 @@ const Register = ({ history }) => {
         }, 5000);
         return setError("Passwords don't match");
       }
-
+      if(data.phone) {
+        formData.phone = parsePhoneNumber(data.phone);
+      }else {
+        formData.phone = {}
+      }
       try {
         await register(formData);
         history.push("/login");

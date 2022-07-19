@@ -22,30 +22,30 @@ const TicketComponent = ({ booking }) => {
             <p className="pt-4 text-l text-gray-900">
               <span>
                 {" "}
-                {moment(new Date(booking.experience.startDate)).format(
+                {moment(new Date(booking.experience?.startDate)).format(
                   "Do MMMM YYYY"
                 )}{" "}
                 -{" "}
               </span>
               <span>
-                {moment(new Date(booking.experience.endDate)).format(
+                {moment(new Date(booking.experience?.endDate)).format(
                   "Do MMMM YYYY"
                 )}
               </span>
             </p>
-            <div className="text-gray-900 text-l">{booking.experience.title}</div>
+            <div className="text-gray-900 text-l">{booking.experience?.title}</div>
             <div className="text-gray-900 text-l">
               {" "}
-              {booking.experience.location}
+              {booking.experience?.location}
             </div>
 
           </div>
           <div className="flex px-3 flex-col items-center gap-1">
             <span className="uppercase text-l text-gray-900 font-semibold">
-              {moment(new Date(booking.experience.startDate)).format("MMMM")}
+              {moment(new Date(booking.experience?.startDate)).format("MMMM")}
             </span>
             <span className="uppercase text-4xl text-gray-900 font-semibold">
-              {moment(new Date(booking.experience.startDate)).format("DD")}
+              {moment(new Date(booking.experience?.startDate)).format("DD")}
             </span>
           </div>
         </div>
@@ -55,8 +55,8 @@ const TicketComponent = ({ booking }) => {
         <div className="flex flex-row items-center">
         <div className=" transform rotate-180 uppercase font-semibold text-xl" style={{ writingMode: 'vertical-rl' }}>Admits one</div>
         <div className=" transform rotate-180 text-md" style={{ writingMode: 'vertical-rl' }}>{booking.orderedBy.name}</div>
-        <div className=" transform rotate-180 text-xs" style={{ writingMode: 'vertical-rl' }}> {moment(new Date(booking.experience.startDate)).format("Do MMMM")}</div>
-                <div className=" transform rotate-180 text-xs" style={{ writingMode: 'vertical-rl' }}>{`${booking.experience.title.substring(
+        <div className=" transform rotate-180 text-xs" style={{ writingMode: 'vertical-rl' }}> {moment(new Date(booking.experience?.startDate)).format("Do MMMM")}</div>
+                <div className=" transform rotate-180 text-xs" style={{ writingMode: 'vertical-rl' }}>{`${booking.experience?.title.substring(
           0,
           15
         )}...`}</div>

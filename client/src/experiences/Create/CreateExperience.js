@@ -1,36 +1,32 @@
 import React, { useState } from "react";
-import PageTitle from "../../components/Typography/PageTitle";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
-import { createExperience } from "../../actions/experience";
+import { addExperience} from "../../actions/experience";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import CreateTicketModal from "./CreateTicketModal";
-import CreateTicketForm from "./CreateTicketForm";
-import ExperienceData from "./steps/ExperienceData";
-import TicketData from "./steps/TicketData";
+import ExperienceData from "../steps/ExperienceData";
+import TicketData from "../steps/TicketData";
+import { getDatesInRange } from "../../components/shared/Utils";
+import { experienceCreate } from "../../Redux/reducers/experiences";
+import moment from "moment";
+
 
 const CreateExperience = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
-  const [values, setValues] = useState({
-    title: "",
-    description: "",
-    image: "",
-    price: "",
-    from: "",
-    to: "",
-    available: "",
-  });
 
   const [data, setData] = useState({
     title: "",
     description: "",
     image: "",
-    price: "",
     startDate: "",
+    location: "",
     endDate: "",
-    available: "",
-    test: "",
+    lat: "",
+    lng: "",
+    tickets: [],
+    itenerary: [],
+    files: [],
+    extraPerks: [],
   });
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState({
@@ -47,57 +43,16 @@ const CreateExperience = () => {
     "https://via.placeholder.com/300x150.png?text=PREVIEW"
   );
 
-  const [ticketArray, setTicketArray] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const dispatch = useDispatch();
-  const handleSubmit = async (evt, newData) => {
-    evt.preventDefault();
-    // const mergeData = { ...formData, address, coordinates };
-    setData((prev) => ({ ...prev, ...newData }));
-    console.log(data);
-    // const refreshToast = toast.loading("Adding...");
-    // try {
-    //   // let experienceData = new FormData();
-    //   // experienceData.append("title", title);
-    //   // experienceData.append("description", description);
-    //   // image && experienceData.append("image", image);
-    //   // experienceData.append("price", price);
-    //   // experienceData.append("startDate", startDate);
-    //   // experienceData.append("endDate", endDate);
-    //   // experienceData.append("available", available);
-    //   // experienceData.append("location", address);
-    //   // experienceData.append("lat", coordinates.lat);
-    //   // experienceData.append("lng", coordinates.lng);
-    //   // experienceData.append(`tickets`, JSON.stringify(ticketArray))
-    //   const res = await createExperience(token, data);
-    //   // dispatch(createExperience(res.data))
-    //   toast.success("Added new experience", {
-    //     id: refreshToast,
-    //   });
-    //   setTimeout(() => {
-    //     window.location.reload();
-    //   }, 500);
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error("Error adding", {
-    //     id: refreshToast,
-    //   });
-    // }
-  };
 
   const handleImageChange = (evt) => {
     setPreview(URL.createObjectURL(evt.target.files[0]));
-    setValues({ ...values, image: evt.target.files[0] });
+    setData({ ...data, image: evt.target.files[0] });
   };
 
-  const handleChange = (evt) => {
-    setValues({
-      ...values,
-      [evt.target.name]: evt.target.value,
-    });
-  };
-
+ 
   //select place
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
@@ -108,21 +63,37 @@ const CreateExperience = () => {
   };
 
   const makeRequest = async (formData) => {
-    const mergeData = { ...formData, address, coordinates };
-    console.log(mergeData);
-    // try {
-    //   const res = await createExperience(token, mergeData);
-    //   dispatch(createExperience(res.data))
-    //   toast.success("Added new experience", {
-    //     id: refreshToast,
-    //   });
-    //   setTimeout(() => {
-    //     window.location.reload();
-    //   }, 500);
-    // } catch (error) {
-    //   console.log(error);
-    //   setError(error.response.data.error);
-    // }
+    const mergeData = { ...formData, location:address, lat:coordinates.lat, lng:coordinates.lng };
+    const formatStartDate = new Date(formData.startDate.toString());
+    const formatEndDate = new Date(formData.endDate.toString());
+    const dates = getDatesInRange(formatStartDate, formatEndDate);
+    mergeData.itenerary = dates.map((date) => {
+      return {
+        date: (date.date).toLocaleDateString(),
+        title: "new itenerary",
+        data: new Map(),
+      };
+    })
+    console.log("Dates", mergeData.itenerary);
+    mergeData.startDate = formatStartDate.toLocaleString()
+    mergeData.endDate = formatEndDate.toLocaleString()
+    const refreshToast = toast.loading("Adding...");
+    try {
+   
+     await addExperience(token, mergeData);
+      toast.success("Added new experience", {
+        id: refreshToast,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.log(error);
+      // setError(error.response.data.error);
+            toast.error("Error adding", {
+        id: refreshToast,
+      });
+    }
   };
 
   const handleNextStep = (newData, final = false) => {
@@ -147,14 +118,9 @@ const CreateExperience = () => {
       address={address}
       setAddress={setAddress}
       handleSelect={handleSelect}
+      handleImageChange={handleImageChange}
     />,
-    <TicketData
-      next={handleNextStep}
-      prev={handlePrevStep}
-      data={data}
-      ticketArray={ticketArray}
-      setTicketArray={setTicketArray}
-    />,
+    <TicketData next={handleNextStep} prev={handlePrevStep} data={data} />,
   ];
 
   return (

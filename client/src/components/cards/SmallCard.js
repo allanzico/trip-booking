@@ -11,8 +11,8 @@ const SmallCard = ({exp,img}) => {
         <div>
             <h2>{exp.location}</h2>
             <h3 className='text-gray-500'>
-            {diffDays(exp.startDate, exp.endDate)}{" "}
-            {diffDays(exp.startDate, exp.endDate) == 1 ? " day" : " days"} left 
+            {diffDays(new Date(), exp.startDate)}{" "}
+            {diffDays(new Date(), exp.startDate) == 1 ? " day" : " days"} left
             </h3>
         </div>
     </div>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const MainFooter = () => {
   return (
-<footer class="sticky bottom-0 bg-white z-50 border-t text-gray-900 border-1 border-gray-100">
+<footer class="sticky bottom-0 mt-auto bg-white z-50 border-t text-gray-900 border-1 border-gray-100">
   <div>
     <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
       <p class="text-gray-500 text-sm text-center sm:text-left">© 2022 Footer —

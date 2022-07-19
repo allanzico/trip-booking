@@ -8,10 +8,11 @@ const auth = new Authentication()
  
  router.post('/register', auth.registerUser)
  router.post('/login', auth.loginUser)
+ router.post('/logout', auth.logoutUser)
  router.post('/forgot-password', auth.forgotPassword)
  router.post('/reset-password/:resetToken', auth.resetPassword)
- router.post('/enable-2fa', requireSignIn, auth.enableTwofactorAuth)
- router.post('/verify-2fa/:twoFactorToken', auth.verifyTwofactorAuth)
+//  router.post('/enable-2fa', auth.enableTwofactorAuth)
+ router.post('/verify', requireSignIn, auth.verifyTwofactorAuth)
  router.post('/create-user-interests', auth.createUserInterests)
  router.put('/edit-profile', requireSignIn, auth.updateUser)
  

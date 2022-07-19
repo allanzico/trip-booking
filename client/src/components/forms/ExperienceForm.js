@@ -70,6 +70,7 @@ const ExperienceForm = (props) => {
                       name="endDate"
                       label="start date"
                       size="small"
+                      
                     />
                   </div>
                 </div>

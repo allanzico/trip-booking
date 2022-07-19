@@ -12,7 +12,6 @@ router.post(
   "/create-experience",
   requireSignIn,
   authSeller,
-  formidable(),
   experience.createExperience
 );
 
@@ -58,7 +57,6 @@ router.put(
   requireSignIn,
   expOwner,
   authSeller,
-  formidable(),
   experience.updateExperience
 );
 
@@ -85,39 +83,11 @@ router.get(
   experience.getSingleExperience
 );
 
-router.get(
-  "/user-experience-bookings",
-  requireSignIn,
-  experience.getUserBookings
-);
 
-router.get(
-  "/booking/:bookingId",
-  requireSignIn,
-  experience.getSingleBooking
-);
-
-router.get(
-  "/is-already-booked/:expId",
-  requireSignIn,
-  experience.isAlreadyBooked
-);
-
-router.get(
-  "/is-already-favorited/:expId",
-  requireSignIn,
-  experience.isAlreadyFavorited
-);
-
-router.get(
-  "/user-favorites",
-  requireSignIn,
-  experience.getUserFavorites
-);
-
-router.get(
-  "/favorite-number",
-  experience.getFavoriteNumber
-);
+// router.get(
+//   "/is-already-favorited/:expId",
+//   requireSignIn,
+//   experience.isAlreadyFavorited
+// );
 
 module.exports = router;

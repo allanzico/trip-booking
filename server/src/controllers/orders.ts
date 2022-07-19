@@ -8,7 +8,7 @@ export class OrderClass {
       const {experience, cart} = req.body;
       // const host = await Experience.findById(experience)
       // .populate("postedBy", "_id firstName lastName")
-      // .select("-image.data")
+      // .select({})
       // .exec();
         const user = await User.findById(req.user._id).exec();
         const email = user.email;
@@ -57,7 +57,7 @@ export class OrderClass {
         try {
           const all = await Order.find({ orderedBy: req.user._id })
             .select({})
-            .populate("experience", "-image.data")
+            .populate("experience")
             .populate({
               path: "experience",
               populate: {
@@ -77,7 +77,7 @@ export class OrderClass {
         try {
           let booking = await Order.findById(req.params.bookingId)
             .select({})
-            .populate("experience", "-image.data")
+            .populate("experience")
             .populate({
               path: "experience",
               populate: {

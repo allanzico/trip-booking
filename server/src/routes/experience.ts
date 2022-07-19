@@ -1,7 +1,7 @@
 
 import express from "express";
 import { ExperienceSetup } from "../controllers/experience";
-import {  authSeller, expOwner, requireSignIn } from "../middlewares/middlewares";
+import {  apiLimiter, authSeller, expOwner, requireSignIn } from "../middlewares/middlewares";
 import formidable from "express-formidable"
 
 const experience = new ExperienceSetup()
@@ -12,6 +12,7 @@ router.post(
   "/create-experience",
   requireSignIn,
   authSeller,
+  apiLimiter,
   experience.createExperience
 );
 
@@ -19,23 +20,27 @@ router.delete(
   "/delete-experience/:expId",
   requireSignIn,
   authSeller,
+  apiLimiter,
   experience.deleteExperience
 );
 router.post(
   "/create-itenerary/:expId",
   requireSignIn,
   authSeller,
+  apiLimiter,
   experience.createItenerary
 );
 router.patch(
   "/delete-ticket/:expId",
   requireSignIn,
   authSeller,
+  apiLimiter,
   experience.deleteTicket
 );
 
 router.post(
   "/search-listings",
+  apiLimiter,
   experience.searchListings
 );
 
@@ -43,12 +48,14 @@ router.post(
   "/review-experience/:expId",
   requireSignIn,
   formidable(),
+  apiLimiter,
   experience.reviewExperience
 );
 
 router.post(
   "/favorite-experience",
   requireSignIn,
+  apiLimiter,
   experience.favoriteExperience
 );
 
@@ -57,16 +64,19 @@ router.put(
   requireSignIn,
   expOwner,
   authSeller,
+  apiLimiter,
   experience.updateExperience
 );
 
 router.get(
   "/experiences",
+  apiLimiter,
   experience.getExperiences
 );
 
 router.get(
   "/experience/image/:experienceId",
+  apiLimiter,
   experience.getImages
 );
 
@@ -74,12 +84,13 @@ router.get(
   "/seller-experiences",
   requireSignIn,
   authSeller,
+  apiLimiter,
   experience.getSellerExperiences
 );
 
 router.get(
   "/experience/:expId",
-  // requireSignIn,
+  apiLimiter,
   experience.getSingleExperience
 );
 

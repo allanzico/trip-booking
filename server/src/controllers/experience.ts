@@ -32,7 +32,7 @@ export class ExperienceSetup {
   async getExperiences(req: any, res: any) {
     try {
       let experiences = await Experience.find({})
-        .select("-image.data")
+        .select({})
         .populate("postedBy", "_id firstName lastName")
         .exec();
       res.json(experiences);
@@ -58,7 +58,7 @@ export class ExperienceSetup {
 
   async getSellerExperiences(req: any, res: any) {
     let all = await Experience.find({ postedBy: req.user._id })
-      .select("-image.data")
+      .select({})
       .populate("postedBy", "_id firstName lastName")
       .exec();
     res.send(all);
@@ -73,7 +73,7 @@ export class ExperienceSetup {
           path: "reviewedBy",
         },
       })
-      .select("-image.data")
+      .select({})
       .exec();
     res.json(experience);
   }
@@ -90,16 +90,9 @@ export class ExperienceSetup {
         });
       } 
 
-      if (data.image) {
-        let image: any = { data: "", contentType: "" };
-        image.data = fs.readFileSync(data.image.path);
-        image.contentType = data.image.type;
-        data.image = image;
-      }
-
       let updated = await Experience.findByIdAndUpdate(req.params.expId, data, {
         new: true,
-      }).select("-image.data");
+      }).select({});
       res.json(updated);
     } catch (error) {
       console.log(error);
@@ -139,14 +132,14 @@ export class ExperienceSetup {
     //   endDate: { $lte: dates[1] },
     //   location: new RegExp(location, "i"),
     // })
-    //   .select("-image.data")
+    //   .select({})
     //   .exec();
 
     let result = await Experience.find({
       startDate: { $gte: date },
       location: new RegExp(location, "i"),
     })
-      .select("-image.data")
+      .select({})
       .exec();
     res.json(result);
   }
@@ -155,7 +148,7 @@ export class ExperienceSetup {
     const { rating, comment } = req.fields;
 
     const experience = await Experience.findById(req.params.expId).select(
-      "-image.data"
+     {}
     );
     try {
       if (experience) {

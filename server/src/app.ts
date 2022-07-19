@@ -24,8 +24,10 @@ app.use(helmet({
 
 //route middleware
 fs.readdirSync(dirPath).map((r) => 
-app.use('/api', apiLimiter, require(`${dirPath}/${r}`) )
+app.use('/api', require(`${dirPath}/${r}`) )
 )
+
+
 
 //Error Middleware should always be last 
 app.use(errorHandler)

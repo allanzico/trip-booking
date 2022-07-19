@@ -1,4 +1,4 @@
-FROM node:current-alpine
+FROM node:18.6.0-slim
 
 LABEL version="1.0"
 LABEL description="Development image for the socket server"

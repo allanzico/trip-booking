@@ -33,10 +33,6 @@ const ExperienceType = new Schema(
       type: String,
       required: [true, "location is required"],
     },
-    image: {
-      data: Buffer,
-      contentType: String,
-    },
     startDate: {
       type: Date,
     },

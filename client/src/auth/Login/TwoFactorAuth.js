@@ -9,7 +9,7 @@ import { verifyTwofactorAuth } from "../../actions/auth";
 import ErrorAlert from "../../components/shared/ErrorAlert";
 import { loggedInUser } from "../../Redux/reducers/auth";
 
-const TwoFactorAuth = ({ match, history }) => {
+const TwoFactorAuth = ({ history }) => {
   const inputRef = useRef(null);
   const [otpInput, setOtpInput] = useState(new Array(6).fill(""));
   const [activeOTPIndex, setActiveOTPIndex] = useState(0);
@@ -102,12 +102,11 @@ const TwoFactorAuth = ({ match, history }) => {
                   <React.Fragment key={index}>
                     <input
                       ref={index === activeOTPIndex ? inputRef : null}
-                      className="m-2 border h-10 w-10 text-center form-control rounded-sm outline-none
+                      className="m-2 border h-10 w-10 text-center rounded-sm outline-none
                     focus-visible:shadow-none
                     focus:border-primary spin-button-none"
                       type="number"
                       id="first"
-                      maxLength={1}
                       onChange={(e) => handleOnChange(e, index)}
                       onKeyDown={(e) => handleOnKeyDown(e, index)}
                       value={otpInput[index]}

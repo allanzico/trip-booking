@@ -11,12 +11,15 @@ import {
 import moment from "moment";
 import { diffDays } from "../actions/experience";
 import TicketModal from "./tickets/TicketModal";
+import {useHistory } from "react-router-dom";
+
 const SingleBooking = ({ handleCreateConversation, booking }) => {
   const [showModal, setShowModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
   const img =
-    booking.experience.files.length > 0
-      ? `${booking.experience.files[0]?.url}`
+    booking.experience?.files?.length > 0
+      ? `${booking?.experience?.files[0]?.url}`
       : "https://via.placeholder.com/1000x1000.png?text=PREVIEW";
 
   function closeModal() {
@@ -27,6 +30,9 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
     setIsOpen(true);
   }
 
+  const handleItenerary = () => {
+    history.push({pathname: '/view-itenerary', state: booking.experience.itenerary});
+  }
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -118,7 +124,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                       booking={booking}
                     />
 
-                    <div className="py-3 flex justify-between items-center cursor-pointer">
+                    <div onClick={handleItenerary} className="py-3 flex justify-between items-center cursor-pointer">
                       <h5 className="flex items-center">
                         <ClipboardListIcon className="w-4 h-4 mr-2" />
                        View Itenerary

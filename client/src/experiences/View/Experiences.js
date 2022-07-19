@@ -75,7 +75,6 @@ const Experiences = () => {
           <Mapbox experiences={experiences} />
         </section> */}
       </main>
-      <MainFooter />
     </div>
   );
 };

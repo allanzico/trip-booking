@@ -18,6 +18,7 @@ import CreateItenerary from "../itenerary/CreateItenerary";
 import FavoritesComponent from "../components/favorites/FavoritesComponent";
 import ViewBookings from "../user-bookings/ViewBookings";
 import BookingsComponent from "../user-bookings/BookingsComponent";
+import IteneraryComponent from "../user-bookings/itenerary/IteneraryComponent";
 
 const MiddleContent = () => {
   const { pathname } = useLocation();
@@ -35,12 +36,12 @@ const MiddleContent = () => {
     case "/add-payment-method":
       heading = "Payments";
       break;
-      case "/settings":
-        heading = "Settings";
-        break;
-        case "/user-favorites":
-          heading = "Favorites";
-          break;
+    case "/settings":
+      heading = "Settings";
+      break;
+    case "/user-favorites":
+      heading = "Favorites";
+      break;
   }
 
   return (
@@ -61,27 +62,29 @@ const MiddleContent = () => {
 
       <section className="px-1 md:px-2 pb-0">
         <Switch>
-          <SellerRoute  exact
+          <SellerRoute
+            exact
             path="/dashboard/seller"
-            component={DashboardSeller} />
+            component={DashboardSeller}
+          />
           {/* <PrivateRoute
             exact
             path="/dashboard/home"
             component={DashboardHome}
           /> */}
-           <PrivateRoute
+          <PrivateRoute
             exact
             path="/user-experience-bookings"
             component={BookingsComponent}
           />
-          
+
           <PrivateRoute
             exact
             path="/experiences/new"
             component={CreateExperience}
           />
-         
-           <PrivateRoute
+
+          <PrivateRoute
             exact
             path="/user-favorites"
             component={FavoritesComponent}
@@ -91,7 +94,7 @@ const MiddleContent = () => {
             path="/experience/edit/:expId"
             component={EditExperience}
           />
-                    <PrivateRoute
+          <PrivateRoute
             exact
             path="/itenerary/:expId"
             component={CreateItenerary}
@@ -109,6 +112,12 @@ const MiddleContent = () => {
             exact
             path="/add-payment-method"
             component={PaymentComponent}
+          />
+
+          <PrivateRoute
+            exact
+            path="/view-itenerary"
+            component={IteneraryComponent}
           />
         </Switch>
       </section>

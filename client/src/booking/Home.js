@@ -82,7 +82,6 @@ const Home = () => {
       </main>
       
     </div>
-    <MainFooter />
 
 
 

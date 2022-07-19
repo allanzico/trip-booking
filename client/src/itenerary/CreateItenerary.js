@@ -75,8 +75,6 @@ const CreateItenerary = ({ match }) => {
     }
   }
 
-  console.log(experience.itenerary)
-  
   return (
     <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
       <div className="grid grid-cols-1 mb-5">

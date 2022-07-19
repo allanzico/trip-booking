@@ -15,8 +15,8 @@ const CheckoutComponent = ({ history }) => {
     (acc, item) => acc + item.ticketPrice * item.quantity,
     0
   );
-  const taxPrice = (itemsPrice * 0.14).toFixed(2);
-  const totalPrice = parseFloat(itemsPrice + taxPrice).toFixed(2);
+  const taxPrice = Math.round(itemsPrice * 0.14);
+  const totalPrice = itemsPrice + taxPrice;
 
   const handleBooking = async () => {
 

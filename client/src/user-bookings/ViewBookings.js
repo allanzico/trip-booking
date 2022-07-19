@@ -16,7 +16,6 @@ const ViewBookings = ({match}) => {
   const dispatch = useDispatch();
   const source = axios.CancelToken.source();
 
- 
   useEffect(() => {
     loadSingleBooking();
     handleGetConversations()
@@ -28,6 +27,7 @@ const ViewBookings = ({match}) => {
   const loadSingleBooking = async () => {
     try {
       const res = await getSingleBooking(match.params.bookingId, token, source.token);
+     
       dispatch(fetchSingleBooking(res.data));
     } catch (error) {
       console.log(error);
@@ -66,6 +66,7 @@ const ViewBookings = ({match}) => {
       window.location.href = "/messaging";
     } catch (error) {}
   };
+
 
   return (
     <div>

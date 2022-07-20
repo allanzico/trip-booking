@@ -29,7 +29,7 @@ const CustomCheckBox = ({ name, label, legend, value, ...otherProps }) => {
 
   return (
     <FormControl {...configFormControl}>
-      <FormLabel component="legend">{legend}</FormLabel>
+      <FormLabel component="legend" className="text-orange-500">{legend}</FormLabel>
 
       <FormGroup>
         <FormControlLabel

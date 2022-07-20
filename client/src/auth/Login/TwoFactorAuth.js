@@ -1,3 +1,4 @@
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   LockClosedIcon,
   ChevronDoubleRightIcon,
@@ -19,6 +20,7 @@ const TwoFactorAuth = ({ history }) => {
   const token = auth === undefined ? null : auth?.token;
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(true);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleOnChange = (e, index) => {
@@ -50,6 +52,7 @@ const TwoFactorAuth = ({ history }) => {
     e.preventDefault();
     try {
       if (finalOTP.length > 5) {
+        setLoading(true);
         const data = { code: finalOTP };
         const res = await verifyTwofactorAuth(data, token);
         if (res.data) {
@@ -58,8 +61,8 @@ const TwoFactorAuth = ({ history }) => {
           
           //Update redux
           dispatch(loggedInUser(res.data));
-
           history.push("/dashboard")
+          setLoading(false);
         }
       } else {
         setError("Please enter a valid code");
@@ -125,9 +128,13 @@ const TwoFactorAuth = ({ history }) => {
                           py-2
                           transition
                           hover:bg-orange-700
+                          inline-flex
+                          items-center
+                          justify-center
                           uppercase"
                 >
-                  send
+                  {loading ? (<LoadingOutlined className='h-4 w-4' />) : null }
+                  {loading ? "Verifying..." : "Verify"}
                 </button>
                 <button className="flex items-center text-orange-500 cursor-pointer mt-3">
                   <span className="font-bold ">Resend code</span>

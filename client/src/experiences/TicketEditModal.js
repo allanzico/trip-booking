@@ -15,9 +15,12 @@ const TicketEditModal = ({closeModal, setData, data, ticketEdit, handleTicket, i
       });
     
       const handleSubmit = (values) => { 
-        setData({ ...data, tickets: data.tickets.map(ticket => ticket._id === values._id ? values : ticket) });
+        const exists = data.tickets.map(ticket => ticket._id === values._id)
+        console.log(exists)
+        setData({ ...data, tickets: values });
         closeModal();
       }
+
       return (
         <>
           <Transition appear show={isOpen} as={Fragment}>

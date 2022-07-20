@@ -102,6 +102,20 @@ const ExperienceView = ({ match, history }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (auth && auth.token) {
+      isAlreadyBooked(auth.token, match.params.expId, source.token).then(
+        (res) => {
+          if (res.data.ok) setAlreadyBooked(true);
+        }
+      );
+          //set is owner
+    
+    }
+    return () => {
+      source.cancel();
+    };
+  }, []);
 
   const loadSingleExperience = async () => {
     try {
@@ -293,6 +307,8 @@ const ExperienceView = ({ match, history }) => {
                         ? "Loading..."
                         : isOwner
                         ? "You cant book your own"
+                        : alreadyBooked
+                        ? "You already Booked this"
                         : auth && auth.token
                         ? " View Tickets"
                         : "Login To Book"}

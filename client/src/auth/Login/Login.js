@@ -10,25 +10,17 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(true)
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       let res = await login({ email, password });
       if (res.data) {
-
-          //  //Update Local storage
-          //  window.localStorage.setItem("auth", JSON.stringify(res.data));
-         
-          //  //save to redux
-          //  dispatch({
-          //    type: "LOGGED_IN_USER",
-          //    payload: res.data,
-          //  });
-
         setShowAlert(false)
         history.push({pathname: `/verify`, state: res.data});
-      
+        setLoading(false)
       }
     } catch (error) {
       // setError(error.response.data.error);
@@ -58,6 +50,7 @@ const Login = ({ history }) => {
               error={error}
               showAlert={showAlert}
               setShowAlert={setShowAlert}
+              loading={loading}
             />
           </div>
         </div>

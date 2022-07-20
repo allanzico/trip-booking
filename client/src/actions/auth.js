@@ -53,6 +53,7 @@ export const editProfile = async (user, token, cancelToken) => {
   });
 };
 
+
 export const getUserById = async (userId, token, cancelToken) => {
   return await axios.get(`${process.env.REACT_APP_API}/users/${userId}`, {
     headers: {

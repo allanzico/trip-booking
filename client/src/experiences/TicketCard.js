@@ -23,7 +23,7 @@ const TicketCard = ({ ticket, data, setData, handleDelete}) => {
   return (
     <>
     <div className="col-span-6">
-    <TicketEditModal setData={setData} data={data} ticketEdit={ticketEdit} isOpen={isOpen} openModal={openModal} closeModal={closeModal}/>
+    <TicketEditModal setEditValues={setEditValues} setData={setData} data={data} ticketEdit={ticketEdit} isOpen={isOpen} openModal={openModal} closeModal={closeModal}/>
   </div>
     <div className="col-span-6">
       <div

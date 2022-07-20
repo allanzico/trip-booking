@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createStripeAccount } from "../../actions/stripe";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import {GrStripe} from 'react-icons/gr'
 
 const PaymentComponent = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -20,7 +21,7 @@ const PaymentComponent = () => {
   };
   return (
     <div>
-      {!auth.stripe_seller && !auth.stripe_seller.charges_enabled ? (
+      {!auth?.stripe_seller && !auth?.stripe_seller?.charges_enabled ? (
         <div className="cursor-pointer">
           <button
             disabled={loading}
@@ -37,7 +38,7 @@ const PaymentComponent = () => {
                             uppercase
   "
           >
-            {loading ? "Processing" : "Setup Payouts"}
+            {loading ? "Processing" : "Setup Stripe Payouts"}
           </button>
         </div>
       ) : null}

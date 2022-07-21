@@ -69,7 +69,7 @@ const Home = () => {
             Latest Experiences
           </h2>
           <div className="flex space-x-3 overflow-scroll scrollbar-hide p-3 -ml-3">
-            {experiences && experiences.slice(-5).reverse().map((exp) => {
+            {experiences && experiences.slice(-3).reverse().map((exp) => {
               return (
                 <MediumCard
                   key={exp._id}

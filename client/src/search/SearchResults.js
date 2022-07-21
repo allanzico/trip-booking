@@ -16,6 +16,7 @@ import SearchForm from "../components/forms/SearchForm";
 import FilterComponent from "../components/shared/FilterComponent";
 import useFetch from "../hooks/useFetch";
 import { getLowestPrice, updatePrice } from "../components/shared/Utils";
+import NoResults from "../components/shared/NoResults";
 
 const SearchResults = () => {
   const [searchLocation, setSearchLocation] = useState("");
@@ -82,14 +83,15 @@ const SearchResults = () => {
   };
 
   return (
+    filteredData.length > 0 ? (
     <>
+    
       <main className="flex">
         <section className="flex-grow px-6">
           <div className="w-full pt-3 mb-3 ">
             <SearchForm />
           </div>
-          <p className="text-xs pt-1"> {} experiences</p>
-          <h1 className="text-3xl font-semibold mb-5 text-orange-500">
+              <h1 className="text-3xl font-semibold mb-5 text-orange-500">
             {" "}
             experiences in {searchLocation}
           </h1>
@@ -115,6 +117,7 @@ const SearchResults = () => {
                 );
               })}
           </div>
+        
         </section>
         {filteredData && filteredData.length > 1 && (
           <section className="hidden xl:inline-flex xl:min-w-[800px]">
@@ -123,6 +126,7 @@ const SearchResults = () => {
         )}
       </main>
     </>
+    ) : <NoResults message="Looks like there is no experiences out here..."/>
   );
 };
 

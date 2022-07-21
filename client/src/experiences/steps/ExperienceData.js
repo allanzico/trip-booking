@@ -16,7 +16,6 @@ const ExperienceData = (props) => {
   const { address, handleSelect, setAddress } = props;
 
   const handleSubmit = (values) => {
-    console.log(values);
     props.next(values);
   };
   const customStyle = {
@@ -38,9 +37,9 @@ const ExperienceData = (props) => {
       )
       .required("End Date is required"),
     description: Yup.string().required("description is required"),
-    // available: Yup.number("ticket availability must be a number").required(
-    //   "ticket availability is required"
-    // ),
+    available: Yup.number("ticket availability must be a number").required(
+      "ticket availability is required"
+    ),
     // price: Yup.number("price must be a number").required("price is required"),
     files: Yup.array(
       Yup.object({
@@ -86,7 +85,9 @@ const ExperienceData = (props) => {
                     customStyle={customStyle}
                   />
                 </div>
-
+                <div className="col-span-6">
+                  <CustomTextField name="available" label="available qty" size="small" type="number" />
+                </div>
                 <div className="col-span-6">
                   <div className="flex flex-col md:flex-row gap-2">
                     <CustomDatePicker
@@ -167,9 +168,11 @@ const ExperienceData = (props) => {
                       Add Images to this experience
                     </p>
                     {values.files && values.files.length > 0 && (
-                      <>{JSON.stringify(values.files)}</>
+                      <>{values.files.map(file =>             
+                        JSON.stringify(file.url)
+                        )}</>
                     )}
-                    <MultipleFIleUploadField name="files" />
+                    <MultipleFIleUploadField name="files"  />
                   </div>
                 </div>
 

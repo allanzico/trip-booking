@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { currencyFormatter } from "../actions/stripe";
 import moment from "moment";
-import { ChevronDownIcon, ClipboardCheckIcon, DotsVerticalIcon, PencilIcon } from "@heroicons/react/outline";
+import {
+  ChevronDownIcon,
+  ClipboardCheckIcon,
+  DotsVerticalIcon,
+  PencilIcon,
+} from "@heroicons/react/outline";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Menu from "@mui/material/Menu";
 import PopupState, {
@@ -17,16 +22,16 @@ import { PencilAltIcon } from "@heroicons/react/solid";
 import { ShareIcon, TrashIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import DeleteListingModal from "../experiences/Delete/DeleteListingModal";
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition } from "@headlessui/react";
 import CustomPopup from "../components/shared/CustomPopup";
 import DeleteModal from "./DeleteModal";
 
 const ListingsCard = ({ exp }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
-  
+ 
+
   function closeModal() {
-   
     setIsOpen(false);
   }
 
@@ -35,30 +40,30 @@ const ListingsCard = ({ exp }) => {
     setIsOpen(true);
   }
 
-  
   const handleOpenDeleteModal = (e) => {
     e.stopPropagation();
     setIsOpen(true);
   };
 
+
   const menuItems = [
     {
-      name: 'Edit',
+      name: "Edit",
       to: `/experience/edit/${exp._id}`,
-      icon: () => <PencilIcon className='text-gray-900' />,
+      icon: () => <PencilIcon className="text-gray-900" />,
     },
     {
-      name: 'Delete',
+      name: "Delete",
       icon: () => <TrashIcon className="text-gray-900" />,
-      onclick: (e) => openModal(e)
+      onclick: (e) => openModal(e),
     },
     {
-      name: 'Itenerary',
-      description: 'Keep track of your growth',
+      name: "Itenerary",
+      description: "Keep track of your growth",
       to: `/itenerary/${exp._id}`,
-      icon: () =>  <ClipboardCheckIcon className="text-gray-900" />,
+      icon: () => <ClipboardCheckIcon className="text-gray-900" />,
     },
-  ]
+  ];
 
   return (
     <div className="grid grid-cols-9 bg-white gap-2 flex py-7 px-2 pr-4 border-b hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
@@ -107,10 +112,8 @@ const ListingsCard = ({ exp }) => {
           <div className="col-span-2">
             <h6>Sold</h6>
           </div>
-          <div className="col-span-2">
-            <h6>Gross</h6>
-          </div>
-          <div className="col-span-2">
+
+          <div className="col-span-4">
             <h6>Status</h6>
           </div>
         </main>
@@ -121,34 +124,29 @@ const ListingsCard = ({ exp }) => {
               {exp.available}
             </p>
           </div>
-          <div className="col-span-2">
-            <p>
-              {" "}
-              {currencyFormatter({
-                amount: exp.price * 100 * exp.booked,
-                currency: "ugx",
-              })}
-            </p>
-          </div>
-          <div className="col-span-2">
-            <span class="hover:bg-orange-700 text-white delay-100 duration-100 bg-orange-500 rounded-sm py-1 px-2 text-xs">
-              Done
+          <div className="col-span-4">
+            <span
+              className={
+                exp.isActive
+                  ? "text-white bg-orange-500 rounded-sm py-1 px-2 text-xs"
+                  : "text-white bg-gray-400 rounded-sm py-1 px-2 text-xs"
+              }
+            >
+              {exp.isActive ? "Active" : "Inactive"}
             </span>
           </div>
         </main>
       </div>
       <div className="col-span-1 cursor-pointer flex flex-row items-center pl-12 mr-2">
-        
-    <CustomPopup items={menuItems} />
+        <CustomPopup items={menuItems} />
       </div>
-    
-        <DeleteModal
+
+      <DeleteModal
         isOpen={isOpen}
         closeModal={closeModal}
         openModal={openModal}
         exp={exp}
-        />
-     
+      />
     </div>
   );
 };

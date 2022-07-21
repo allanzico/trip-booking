@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { fetchUserBookings } from '../../Redux/reducers/experiences';
 import { getUserBookings } from '../../actions/experience';
-import NoTickets from './NoTickets';
 import TicketComponent from './TicketComponent';
+import NoResults from '../shared/NoResults';
 
 const Tickets = () => {
   const bookings = useSelector((state) => state.experiences.bookings);
@@ -32,7 +32,7 @@ const Tickets = () => {
   }, []);
 
   return (
-    bookings.length === 0 ? (<NoTickets />) : (    <main className="flex">
+    bookings.length === 0 ? (<NoResults message="No tickets"/>) : (    <main className="flex">
     <section className="flex-grow mt-3">
       <div className="flex flex-col gap-5"> {
         bookings && bookings.map((booking) =>(

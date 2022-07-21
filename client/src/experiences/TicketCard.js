@@ -35,8 +35,8 @@ const TicketCard = ({ ticket, data, setData, handleDelete}) => {
             {/* <p className="text-xs py-2 text-gray-500">12/02/2022 - 12/02/2022</p> */}
           </div>
         </div>
-        <div className="col-span-2 ">{ticket.ticketAvailable} tickets</div>
-        <div className="col-span-2">
+        {/* <div className="col-span-2 ">{ticket.ticketAvailable} tickets</div> */}
+        <div className="col-span-4">
           <p className="text-md font-semibold text-orange-500">
             {currencyFormatter({
               amount: ticket.ticketPrice * 100,

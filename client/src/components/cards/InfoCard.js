@@ -55,7 +55,7 @@ const InfoCard = ({ exp, lowestPrice}) => {
   }
 
   return (
-    <div
+    exp.isActive ? (<div
       className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t"
       onClick={handleNavigate}
     >
@@ -104,7 +104,7 @@ const InfoCard = ({ exp, lowestPrice}) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>) : null
   );
 };
 

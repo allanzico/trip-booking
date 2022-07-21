@@ -25,6 +25,7 @@ const TicketData = (props) => {
     closeModal();
   };
 
+ 
   const handleDelete = (e, ticketId) => {
     e.preventDefault();
     if (props.data.tickets.length > 1) {

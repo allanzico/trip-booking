@@ -41,6 +41,7 @@ export class ExperienceSetup {
     }
   }
 
+
   async getImages(req: any, res: any) {
     try {
       let experience = await Experience.findById(
@@ -80,7 +81,7 @@ export class ExperienceSetup {
 
   async updateExperience(req: any, res: any) {
     const data = req.body;
-    console.log(data);
+    
     try {
 
       if ( !Array.isArray(data.tickets) || !data.tickets.length) {

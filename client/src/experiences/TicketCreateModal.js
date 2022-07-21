@@ -9,10 +9,10 @@ const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {
   const ticketDataValidationSchema = Yup.object().shape({
     tickets: Yup.array(Yup.object().shape({
       ticketTitle: Yup.string().required("title is required"),
-      ticketAvailable: Yup.number().required("price is required"),
+      // ticketAvailable: Yup.number().required("price is required"),
       ticketPrice: Yup.number().required("price is required"),
-      minAvailable: Yup.number().required("min tickets is required"),
-      maxAvailable: Yup.number().required("max tickets is required"),
+      // minAvailable: Yup.number().required("min tickets is required"),
+      // maxAvailable: Yup.number().required("max tickets is required"),
     }))
       .min(1, "Please add at least one ticket")
 
@@ -73,37 +73,16 @@ const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {
                                 />
                               </div>
                               <div className="col-span-6 mb-2">
-                                <div className="flex flex-col md:flex-row gap-2">
+                               
                                   <CustomTextField
                                     type="number"
                                     name="tickets.ticketPrice"
                                     label="price"
                                     size="small"
                                   />
-                                  <CustomTextField
-                                    type="number"
-                                    name="tickets.ticketAvailable"
-                                    label="available"
-                                    size="small"
-                                  />
-                                </div>
+
                               </div>
-                              <div className="col-span-6 mb-2">
-                                <div className="flex flex-col md:flex-row gap-2">
-                                  <CustomTextField
-                                    type="number"
-                                    name="tickets.minAvailable"
-                                    label="min tickets"
-                                    size="small"
-                                  />
-                                  <CustomTextField
-                                    type="number"
-                                    name="tickets.maxAvailable"
-                                    label="max tickets"
-                                    size="small"
-                                  />
-                                </div>
-                              </div>
+
                             </div>
 
                             <div className="grid grid-cols-1 mt-3 ">

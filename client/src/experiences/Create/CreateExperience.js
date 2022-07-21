@@ -23,6 +23,7 @@ const CreateExperience = () => {
     endDate: "",
     lat: "",
     lng: "",
+    available: 0,
     tickets: [],
     itenerary: [],
     files: [],
@@ -52,7 +53,7 @@ const CreateExperience = () => {
     setData({ ...data, image: evt.target.files[0] });
   };
 
- 
+
   //select place
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
@@ -120,7 +121,7 @@ const CreateExperience = () => {
       handleSelect={handleSelect}
       handleImageChange={handleImageChange}
     />,
-    <TicketData next={handleNextStep} prev={handlePrevStep} data={data} />,
+    <TicketData setData={setData} next={handleNextStep} prev={handlePrevStep} data={data} />,
   ];
 
   return (

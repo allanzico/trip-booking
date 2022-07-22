@@ -1,43 +1,60 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import FilePreview from './FilePreview'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import FilePreview from "./FilePreview";
+import { useDispatch, useSelector } from "react-redux";
+import { getCloudinarySignature } from "../../actions/experience";
+
 const source = axios.CancelToken.source();
 
-const SingleFileUpload = ({file, url, onDelete, onUpload}) => {
-const [progress, setProgress] = useState(0)
+const SingleFileUpload = ({ file, url, onDelete, onUpload }) => {
+  const { auth } = useSelector((state) => ({ ...state }));
+  const { token } = auth;
+
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
-    uploadFile()
+    uploadFile();
     return () => {
       source.cancel();
     };
-  }, [])
-  
-  
-const uploadFile = async() => {
-  const url = "https://api.cloudinary.com/v1_1/demo/image/upload";
-  const key = "docs_upload_example_us_preset"
-  //const percent = Math.round((progress.loaded / progress.total) * 100)
-  
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", key);
-  
-  return await axios.post(url, formData, source.token, { headers: {"X-Requested-With": "XMLHttpRequest"  } })
-  .then(res => {
-    const data = res.data;
-    const fileUrl = data.secure_url;
-    onUpload(file,fileUrl)
-    return fileUrl;
-  })
-}
+  }, [file]);
 
+  const cloudinarySignature = async () => {
+    try {
+      let res = await getCloudinarySignature(token);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const uploadFile = async () => {
+    const { signature, timestamp } = await cloudinarySignature();
+    const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const key = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+    const api = process.env.REACT_APP_CLOUDINARY_API;
 
-  return (
-    
-      <FilePreview file={file} url={url} onDelete={onDelete}/>
-  
-  )
-}
+    //const percent = Math.round((progress.loaded / progress.total) * 100)
+    const formData = new FormData();
+    formData.append("file", file);
+    // formData.append("upload_preset", key);
+    formData.append("signature", signature);
+    formData.append("timestamp", timestamp);
+    formData.append("api_key", api);
 
-export default SingleFileUpload
+    return await axios
+      .post(url, formData, source.token, {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      })
+      .then((res) => {
+        const data = res.data;
+        const fileUrl = data.secure_url;
+        onUpload(file, fileUrl);
+        return fileUrl;
+      });
+  };
+
+  return <FilePreview file={file} url={url} onDelete={onDelete} />;
+};
+
+export default SingleFileUpload;

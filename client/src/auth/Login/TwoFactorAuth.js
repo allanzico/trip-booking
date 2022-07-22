@@ -106,7 +106,7 @@ const TwoFactorAuth = ({ history }) => {
                     <input
                       ref={index === activeOTPIndex ? inputRef : null}
                       className="m-2 border h-10 w-10 text-center rounded-sm outline-none
-                    focus-visible:shadow-none
+                    focus-visible:shadow-none outline-none appearance-none
                     focus:border-primary spin-button-none"
                       type="number"
                       id="first"

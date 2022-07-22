@@ -167,15 +167,11 @@ const ExperienceData = (props) => {
                     <p className="text-xs font-semibold text-gray-500">
                       Add Images to this experience
                     </p>
-                    {values.files && values.files.length > 0 && (
-                      <>{values.files.map(file =>             
-                        JSON.stringify(file.url)
-                        )}</>
-                    )}
-                    <MultipleFIleUploadField name="files"  />
+                   
+                    <MultipleFIleUploadField name="files" oldFiles={values.files} />
                   </div>
                 </div>
-
+                {/* <pre>{JSON.stringify(values.files, null, 4)}</pre> */}
                 <div className="grid grid-cols-1 mt-3 ">
                   <div class="mb2 px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <div className="cursor-pointer">

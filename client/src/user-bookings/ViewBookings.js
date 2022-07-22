@@ -4,7 +4,7 @@ import axios from "axios";
 import { getSingleBooking } from '../actions/experience';
 import { fetchSingleBooking } from '../Redux/reducers/experiences';
 import { createConversation, getConversations } from '../actions/conversations';
-import { fetchConversations } from '../Redux/reducers/messaging';
+import { fetchChats } from '../Redux/reducers/messaging';
 import SingleBooking from './SingleBooking';
 
 const ViewBookings = ({match}) => {
@@ -37,7 +37,7 @@ const ViewBookings = ({match}) => {
   const handleGetConversations = async () => {
     try {
       const res = await getConversations(user._id, token, source.token);
-      dispatch(fetchConversations(res.data))
+      dispatch(fetchChats(res.data))
     } catch (error) {
       console.log(error);
     }

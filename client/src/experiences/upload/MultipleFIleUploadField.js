@@ -4,7 +4,8 @@ import { useDropzone } from "react-dropzone";
 import FileValidation from "./FileValidation";
 import SingleFileUpload from "./SingleFileUpload";
 
-const MultipleFIleUploadField = ({ name }) => {
+
+const MultipleFIleUploadField = ({ name  }) => {
   const baseStyle = {
     flex: 1,
     display: "flex",
@@ -50,7 +51,7 @@ const MultipleFIleUploadField = ({ name }) => {
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
       onDrop,
-      accept: { "image/*": ["jpg", "png"] },
+      accept: "image/*",
       maxSize: 1000000,
       maxFiles: 5,
     });
@@ -91,9 +92,9 @@ const MultipleFIleUploadField = ({ name }) => {
         </p>
         <p>Accepted files: png and jpg with a maximum size of 1MB</p>
       </div>
-      <main className="max-w-full mx-auto shadow-xs bg-white rounded-md p-3 mt-2">
+      <main className="max-w-full shadow-xs bg-white rounded-md mt-2">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-4">
-          {files.map((fileWrapper, index) =>
+          {files?.map((fileWrapper, index) =>
             fileWrapper.errors.length ? (
               <FileValidation
                 key={index}

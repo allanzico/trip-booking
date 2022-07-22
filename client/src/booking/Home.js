@@ -30,12 +30,11 @@ const Home = () => {
     };
   };
 
-  const handleExperienceEdit = () => {};
   return (
     <>
 <div className="flex flex-col container mx-auto mt-10">
       <div className="flex items-center justify-center mb-2">
-        <h1 className="text-orange-500 uppercase font-bold text-2xl md:text-4xl">Explore new adventures</h1>
+        <h1 className="text-orange-500 uppercase font-bold text-xl md:text-4xl">Explore new adventures</h1>
  
       </div>
       <p className="flex text-xl items-center justify-center mb-2">

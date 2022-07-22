@@ -3,55 +3,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserById } from "../actions/auth";
 import { fetchUser } from "../Redux/reducers/users";
 import axios from "axios";
+import { message } from "antd";
+import { getChats } from "../actions/chat";
+import toast from "react-hot-toast";
+import { getSender } from "../components/shared/Utils";
 
-const ConversationComponent = ({ conversations, currentUser, messages }) => {
-  //const user = useSelector((state) => state.user.user);
+const ConversationComponent = ({
+  chatMember,
+  currentChat,
+  userChat,
+  conversations,
+  currentUser,
+  messages,
+}) => {
   const { auth } = useSelector((state) => ({ ...state }));
-  const { token } = auth;
-  const [user, setUser] = useState(null);
-  const [recentMessage, setRecentMessage] = useState("");
-  const dispatch = useDispatch();
+  const user = auth === undefined ? null : auth?.user;
+  const token = auth === undefined ? null : auth?.token;
   const source = axios.CancelToken.source();
-
-  const getUser = async (userId) => {
-    try {
-      let res = await getUserById(userId, token, source.token);
-      // dispatch(fetchUser(res.data))
-      setUser(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [sender, setSender] = useState(null);
 
   useEffect(() => {
-    const friendId = conversations.members.find(
-      (member) => member !== currentUser._id
-    );
-
-    getUser(friendId);
-
+    const senderData = getSender(userChat.members, user);
+    setSender(senderData);
     return () => {
       source.cancel();
     };
-  }, [currentUser, conversations]);
+  }, [user]);
 
-  // useEffect(() => {
-  //   const mostRecentDate = new Date(Math.max(...messages.map(e => new Date(e.createdAt))))
-    
-  //   var mostRecentObject = messages.filter( e => { 
-  //     var d = new Date( e.createdAt ); 
-  //     console.log(e)
-  //     return d.getTime() == mostRecentDate.getTime();
-  // })[0]
-  // // setRecentMessage(mostRecentObject)
-  // return () => {
-  //   source.cancel();
-  // };
-  // }, [])
-  
+
+
+  //fetch all cchats by user
   return (
- 
-    <div className="flex py-3 px-3 cursor-pointer hover:bg-gray-100 rounded-md mx-3 transition duration-200 ease-out">
+    <div
+      className=
+           "flex py-3 px-3 cursor-pointer hover:bg-gray-100 rounded-md mx-3 transition duration-200 ease-out"
+      
+    >
       <div className="mr-4 relative w-12">
         <img
           className="rounded-full w-full mr-2"
@@ -62,7 +49,7 @@ const ConversationComponent = ({ conversations, currentUser, messages }) => {
       <div className="flex flex-col flex-1">
         <div className="flex justify-between items-center">
           <div className="text-gray-800 text-base font-semibold ">
-            {user && user.name}
+            {sender && sender.firstName}
           </div>
           <div className="text-gray-700 text-xs">17:30</div>
         </div>

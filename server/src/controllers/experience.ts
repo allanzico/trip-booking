@@ -1,7 +1,6 @@
 import Experience from "../models/Experience";
 import fs from "fs";
-import Order from "../models/Order";
-
+const cloudinary = require("cloudinary").v2;
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     const data = req.body;
@@ -204,5 +203,19 @@ export class ExperienceSetup {
         error,
       });
     }
+  }
+
+  async getCloudinarySignature (req: any, res: any) {
+    const timestamp = Math.round(new Date().getTime() / 1000);
+
+    var signature = cloudinary.utils.api_sign_request(
+      {
+        timestamp: timestamp,
+      },
+      process.env.CLOUDINARY_API_SECRET
+    );
+  
+    res.statusCode = 200;
+    res.json({ signature, timestamp });
   }
 }

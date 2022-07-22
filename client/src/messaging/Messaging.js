@@ -2,72 +2,60 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { MdSend } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { getConversations } from "../actions/conversations";
 import { getMessages, sendMessage } from "../actions/messages";
 import ConversationComponent from "./ConversationComponent";
 import MessagesComponent from "./MessagesComponent";
-import { fetchConversations, fetchMessages } from "../Redux/reducers/messaging";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 import axios from "axios";
-import ResponsiveMessageComponent from "./message-components/ResponsiveMessageComponent";
-import UserHeader from "./UserHeader";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
-import { getUserById } from "../actions/auth";
+import {useHistory} from "react-router-dom";
+import { getChats } from "../actions/chat";
+import toast from "react-hot-toast";
+import { currentChatSet, fetchChats, fetchMessages, fetchNotifications, resetCurrentChat } from "../Redux/reducers/messaging";
+let socket, selectedChatCompare
 
 const Messaging = () => {
-  const { auth } = useSelector((state) => ({ ...state }));
-  const conversations = useSelector((state) => state.messaging.conversations);
-  const { user, token } = auth;
-  const [currentChat, setCurrentChat] = useState(null);
+
+  // const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [arrivalMessage, setArrivalMessage] = useState(null);
   const [receiver, setReceiver] = useState(null)
   const scrollRef = useRef();
-  const socket = useRef();
   const source = axios.CancelToken.source();
   const dispatch = useDispatch();
+  const { auth } = useSelector((state) => ({ ...state }));
+  const user = auth === undefined ? null : auth?.user;
+  const token = auth === undefined ? null : auth?.token;
+  const [chatMember, setChatMember] = useState(null);
+  const [chats, setChats] = useState([]);
+ const history = useHistory();
+const [socketConnected, setSocketConnected] = useState(false);
+const [notification, setNotification] = useState([]);
+const currentChat = useSelector((state) => state.messaging.currentChat);
 
-  //Use Effect 
+//Start Socket Client
   useEffect(() => {
-    socket.current = io(process.env.REACT_APP_SOCKET_IO_URL);
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
+    socket  = io(process.env.REACT_APP_SOCKET_IO_URL);
   }, []);
 
+
+ useEffect(() => {
+  setChatMember(user)
+  dispatch(resetCurrentChat(null));
+}, [history, user]);
+
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
+    socket.emit("setup", user);
+    socket.on("connection", () => setSocketConnected(true));
   }, [user]);
-
-  useEffect(() => {
-    const friendId =
-      currentChat &&
-      currentChat.members.find((member) => member !== user._id);
-    getUser(friendId);
-
-    return () => {
-      source.cancel();
-    };
-  }, [currentChat]);
-
-  useEffect(() => {
-    arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.sender) &&
-      setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   useEffect(() => {
-    handleGetConversations();
+    handleGetChats()
     return () => {
       source.cancel();
     };
@@ -75,24 +63,30 @@ const Messaging = () => {
 
   useEffect(() => {
     handleGetMessages();
+    selectedChatCompare = currentChat;
+    
   }, [currentChat]);
 
-
-  //Functions
-  const handleGetConversations = async () => {
-    try {
-      const res = await getConversations(user._id, token, source.token);
-      dispatch(fetchConversations(res.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        //send notification
+        if(!notification.includes(newMessageReceived)) {
+            setNotification([newMessageReceived,...notification])
+            dispatch(fetchNotifications([newMessageReceived,...notification]));
+        }
+      }else {
+        setMessages([...messages, newMessageReceived]);
+      }
+    })
+  });
 
   const handleGetMessages = async () => {
+    if(!currentChat) return;
     try {
-      const res = await getMessages(currentChat?._id, token);
+      const res = await getMessages(currentChat._id, token);
       setMessages(res.data);
-      dispatch(fetchMessages(res.data));
+      socket.emit("join chat", currentChat._id);
     } catch (error) {
       console.log(error);
     }
@@ -101,41 +95,42 @@ const Messaging = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const msg = {
-      sender: user._id,
-      text: newMessage,
-      conversationId: currentChat._id,
+      content: newMessage,
+      chatId: currentChat._id,
     };
-    const receiverId = currentChat.members.find(
-      (member) => member !== user._id
-    );
-    socket.current.emit("sendMessage", {
-      senderId: user._id,
-      receiverId,
-      text: newMessage,
-    });
+    const refreshToast = null
     try {
-      const res = await sendMessage(token, msg);
-      setMessages([...messages, res.data]);
-      setNewMessage("");
+      if (newMessage.trim() !== "" && newMessage) {
+        setNewMessage("");
+        const res = await sendMessage(token, msg);
+        setMessages([...messages, res.data]);
+        socket.emit("new message", res.data)
+       }
+
     } catch (error) {
       console.log(error);
+      toast.error("Error sending message", {
+        id: refreshToast,
+      });
     }
   };
 
 
-
-  const getUser = async (userId) => {
+  const handleGetChats = async () => {
     try {
-      let res = await getUserById(userId, token, source.token);
-      setReceiver(res.data);
+      let res = await getChats(token, source.token);
+      setChats(res.data);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleSetCurrentChat = (chat) => {
+    dispatch(currentChatSet(chat));
+    
   };
 
- 
   return (
     // <ResponsiveMessageComponent />
 
@@ -157,15 +152,18 @@ const Messaging = () => {
                   <div className="w-full">
                     {/* User Start */}
 
-                    {conversations.map((conversation) => (
+                    {chats && chats.map((chat) => (
                       <div
-                        key={conversation._id}
-                        onClick={() => setCurrentChat(conversation)}
+                        key={chat._id}
+                        onClick={() => handleSetCurrentChat(chat)}
                       >
                         <ConversationComponent
-                          conversations={conversation}
+                          conversations={chat}
                           currentUser={user}
                           messages={messages}
+                          chatMember={chatMember}
+                          userChat={chat}
+                          currentChat={currentChat}
                         />
                       </div>
                     ))}
@@ -217,17 +215,22 @@ const Messaging = () => {
 
                       <Disclosure.Panel className="md:hidden">
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                          {conversations.map((conversation) => (
-                            <div
-                              key={conversation._id}
-                              onClick={() => setCurrentChat(conversation)}
-                            >
-                              <ConversationComponent
-                                conversations={conversation}
-                                currentUser={user}
-                              />
-                            </div>
-                          ))}
+
+                        {chats && chats.map((chat) => (
+                      <div
+                        key={chat._id}
+                        onClick={() => handleSetCurrentChat(chat)}
+                      >
+                        <ConversationComponent
+                          conversations={chat}
+                          currentUser={user}
+                          messages={messages}
+                          chatMember={chatMember}
+                          userChat={chat}
+                          currentChat={currentChat}
+                        />
+                      </div>
+                    ))}
                         </div>
                       </Disclosure.Panel>
                     </>
@@ -237,11 +240,11 @@ const Messaging = () => {
 
               <div className="flex-1 overflow-y-scroll p-5 scrollbar-thumb-color scrollbar-width space-y-5">
                 {currentChat
-                  ? messages.map((message) => (
+                  ? messages.map((message, index) => (
                       <div ref={scrollRef} key={message._id}>
                         <MessagesComponent
                           message={message}
-                          own={message.sender === user._id}
+                          own={message.sender._id === user._id}
                         />
                       </div>
                     ))

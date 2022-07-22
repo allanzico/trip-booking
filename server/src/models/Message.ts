@@ -5,13 +5,14 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const MessagesType = new Schema(
   {
-    conversationId: {
+    sender: { type: ObjectId, ref: "User" },
+    content: {
       type: String,
     },
-    sender: { type: String },
-    text: {
-      type: String,
-    },
+    chat: {
+      type: ObjectId,
+      ref: "UserChat",
+    }
   },
   { timestamps: true }
 );

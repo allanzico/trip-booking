@@ -184,6 +184,16 @@ export default class Authentication {
     }
   }
 
+  async getUsers(req: any, res: any) {
+    try {
+      let users = await User.find({_id: {$ne: req.params.userId}}).select("firstName lastName email").exec()
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+
   async forgotPassword(req: any, res: any, next: any) {
     const { email } = req.body;
     const passwordResetUrl = process.env.RESET_URL;

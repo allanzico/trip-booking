@@ -161,3 +161,12 @@ export const createItenerary = async (data,expId, token) => {
       },
     });
 };
+
+export const getCloudinarySignature = async (token) => {
+  return await axios.get(`${process.env.REACT_APP_API}/cloudinary-signature`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  
+  });
+};

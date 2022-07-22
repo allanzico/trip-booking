@@ -6,7 +6,6 @@ import rateLimit from 'express-rate-limit'
 const tokenSecret = process.env.JWT_SECRET;
 export const requireSignIn = expressJwt({ secret: <string>tokenSecret, algorithms: ["HS256"] })
 
-
 export const expOwner = async (req:any, res: any, next: any) => {
     let experience = await Experience.findById(req.params.expId).exec()
     let owner = experience.postedBy._id == req.user._id;
@@ -44,3 +43,4 @@ export const accountLimiter = rateLimit({
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
+

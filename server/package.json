@@ -40,12 +40,11 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/nodemailer": "^6.4.4",
-    "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.8"
   },
   "scripts": {
-    "start": "npm run build && nodemon build/app.js",
-    "build": "rimraf ./build && tsc",
+    "start": "nodemon build/app.js",
+    "build": "tsc",
     "build:watch": "tsc -w",
     "dev": "npm run build && nodemon build/app.js"
   },

@@ -89,6 +89,13 @@ router.get(
 );
 
 router.get(
+  "/cloudinary-signature",
+  requireSignIn,
+  apiLimiter,
+  experience.getCloudinarySignature
+);
+
+router.get(
   "/experience/:expId",
   apiLimiter,
   experience.getSingleExperience

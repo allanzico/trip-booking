@@ -6,8 +6,9 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
 import helmet from "helmet";
-import { apiLimiter } from './middlewares/middlewares'
-
+import Experience from './models/Experience'
+var cron = require('node-cron');
+const today = new Date();
 dotenv.config()
 const app = express()
 const dirPath = path.resolve(__dirname, './routes')
@@ -27,6 +28,22 @@ fs.readdirSync(dirPath).map((r) =>
 app.use('/api', require(`${dirPath}/${r}`) )
 )
 
+//Date cronjob
+cron.schedule('0 0 0 * * *', async () => {
+  try {
+    const experiences = await Experience.find({})
+    experiences.map(exp =>{
+      if(today > new Date(exp.endDate)){
+        exp.isActive = false
+        exp.save()
+      }
+  
+    })
+  } catch (error) {
+    console.log(error);
+  }
+ 
+});
 
 
 //Error Middleware should always be last 

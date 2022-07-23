@@ -11,11 +11,11 @@ import {
 import moment from "moment";
 import { diffDays } from "../actions/experience";
 import TicketModal from "./tickets/TicketModal";
-import {useHistory } from "react-router-dom";
+import {Link, useHistory } from "react-router-dom";
 import ReviewsCreate from "../reviews/ReviewsCreate";
 import { useSelector } from "react-redux";
 
-const SingleBooking = ({ handleCreateConversation, booking }) => {
+const SingleBooking = ({ handleCreateChat, booking }) => {
   const [showModal, setShowModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
   const { auth } = useSelector((state) => ({ ...state }));
@@ -35,7 +35,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
   }
 
   const handleItenerary = () => {
-    history.push({pathname: '/view-itenerary', state: booking.experience.itenerary});
+    history.push({pathname: '/view-itenerary', state: booking?.experience?.itenerary});
   }
   return (
     <main className="flex-auto">
@@ -48,7 +48,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                   <h1 className="text-lg font-bold tracking-tight lg:text-xl">
                     <span className="text-gray-900 ">Your trip to </span>
                     <span className="text-orange-500">
-                      {booking && booking.experience?.location}
+                      {booking && booking?.experience?.location}
                     </span>
                   </h1>
                 </div>
@@ -74,7 +74,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {booking && booking.experience?.postedBy?.firstName}
+                      {booking && booking?.experience?.postedBy?.firstName}
                     </a>
                   </h2>
                 </div>
@@ -86,19 +86,20 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                   <div className="py-2">
                     <div className="flex items-center justify-between">
                       <h3 className="lg:text-xl text-lg text-gray-500 text-semibold">
-                        {moment(new Date(booking.experience?.startDate)).format(
+                        {moment(new Date(booking?.experience?.startDate)).format(
                           "Do MMMM YYYY"
                         )}{" "}
                         -{" "}
-                        {moment(new Date(booking.experience?.endDate)).format(
+                        {moment(new Date(booking?.experience?.endDate)).format(
                           "Do MMMM YYYY"
                         )}
                       </h3>
                     </div>
                   </div>
                   <div class="grid grid-cols-1 divide-y">
+               
                     <div
-                      onClick={handleCreateConversation}
+                      onClick={handleCreateChat}
                       className="py-3 flex justify-between items-center cursor-pointer"
                     >
                       <h5 className="flex items-center">
@@ -109,6 +110,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                         <ChevronRightIcon className="w-4 h-4" />
                       </p>
                     </div>
+                  
                     <div
                       onClick={openModal}
                       className="py-3 flex justify-between items-center cursor-pointer"
@@ -139,8 +141,8 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                     </div>
                   </div>
                   {diffDays(
-                    booking.experience?.startDate,
-                    booking.experience?.endDate
+                    booking?.experience?.startDate,
+                    booking?.experience?.endDate
                   ) >= 7 && (
                     <button className=" mt-5 w-full cursor-pointer bg-orange-500 rounded-sm py-2 flex items-center justify-center text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed">
                       Cancel order
@@ -156,7 +158,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                     </h3>
                     <div className="space-y-4">
                       <p className="text-base text-gray-700">
-                        {booking && booking.experience?.description}
+                        {booking && booking?.experience?.description}
                       </p>
                     </div>
                   </div>
@@ -175,7 +177,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                 </div> 
               </div>
               
-              {user && booking.experience.postedBy && user._id !== booking.experience.postedBy._id && (<ReviewsCreate expId={booking.experience._id} />)}
+              {user && booking?.experience?.postedBy && user._id !== booking?.experience?.postedBy._id && (<ReviewsCreate expId={booking?.experience?._id} />)}
             </div>
           </div>
         </div>

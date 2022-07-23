@@ -9,7 +9,7 @@ const Settings = () => {
     return classes.filter(Boolean).join(" ");
   }
   let [categories] = useState({
-    "General": [],
+    // "General": [],
     "Profile": [],
     "Security": [],
     "Notifications": [],
@@ -37,7 +37,7 @@ const Settings = () => {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          <Tab.Panel className="rounded-sm h-screen bg-white p-3">
+          {/* <Tab.Panel className="rounded-sm h-screen bg-white p-3">
             
             <main className="shadow-xs bg-white rounded-md">
           <div className="grid grid-cols-1 divide-y">
@@ -48,7 +48,7 @@ const Settings = () => {
                </div>
             
             </main>
-          </Tab.Panel>
+          </Tab.Panel> */}
 
           <Tab.Panel className="rounded-sm h-screen bg-white p-3">
            

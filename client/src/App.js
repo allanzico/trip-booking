@@ -30,6 +30,8 @@ import TwoFactorAuth from "./auth/Login/TwoFactorAuth";
 import MainFooter from "./components/footers/MainFooter";
 import OrderSuccess from "./checkout/OrderSuccess";
 import ViewBookings from "./user-bookings/ViewBookings";
+import PaymentComponent from "./components/payment/PaymentComponent";
+import MiddleContent from "./dashboard/MiddleContent";
 
 function App() {
   return (
@@ -65,7 +67,6 @@ function App() {
         <PrivateRoute exact path="/messaging" component={Messaging} />
         <PrivateRoute exact path="/checkout" component={CheckoutComponent} />
         <PrivateRoute exact path="/order-success" component={OrderSuccess} />
-
         <PrivateRoute
           exact
           path="/stripe/callback"

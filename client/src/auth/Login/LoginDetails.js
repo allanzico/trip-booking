@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ErrorAlert from "../../components/shared/ErrorAlert";
+import { LoadingOutlined } from '@ant-design/icons'
 
 const LoginDetails = ({
   handleSubmit,
@@ -11,6 +12,7 @@ const LoginDetails = ({
   setShowAlert,
   showAlert,
   error,
+  loading
 }) => {
   return (
     <main className="flex items-center justify-center ">
@@ -80,9 +82,13 @@ const LoginDetails = ({
              transition
              hover:bg-opacity-90
              uppercase
+             inline-flex
+             items-center
+             justify-center
              "
             >
-              Login
+              {loading ? (<LoadingOutlined className='h-4 w-4' />) : null }
+              {loading ? "Loging in..." : "Login"}
             </button>
           </div>
           <div class="mb-2 my-2">

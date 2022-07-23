@@ -1,7 +1,6 @@
 import Experience from "../models/Experience";
 import fs from "fs";
-import Order from "../models/Order";
-
+const cloudinary = require("cloudinary").v2;
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
     const data = req.body;
@@ -40,6 +39,7 @@ export class ExperienceSetup {
       console.log(error);
     }
   }
+
 
   async getImages(req: any, res: any) {
     try {
@@ -80,7 +80,7 @@ export class ExperienceSetup {
 
   async updateExperience(req: any, res: any) {
     const data = req.body;
-    console.log(data);
+    
     try {
 
       if ( !Array.isArray(data.tickets) || !data.tickets.length) {
@@ -101,7 +101,12 @@ export class ExperienceSetup {
   }
 
   async deleteExperience(req: any, res: any) {
-    await Experience.findByIdAndDelete(req.params.expId);
+    try {
+      await Experience.findByIdAndDelete(req.params.expId);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("Delete failed");
+    }
   }
 
   async deleteTicket(req: any, res: any) {
@@ -203,5 +208,19 @@ export class ExperienceSetup {
         error,
       });
     }
+  }
+
+  async getCloudinarySignature (req: any, res: any) {
+    const timestamp = Math.round(new Date().getTime() / 1000);
+
+    var signature = cloudinary.utils.api_sign_request(
+      {
+        timestamp: timestamp,
+      },
+      process.env.CLOUDINARY_API_SECRET
+    );
+  
+    res.statusCode = 200;
+    res.json({ signature, timestamp });
   }
 }

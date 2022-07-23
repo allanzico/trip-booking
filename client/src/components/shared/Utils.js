@@ -42,3 +42,8 @@ export function updatePrice(experiences) {
     price: parseInt(getLowestPrice(exp.tickets)),
   }));
 }
+
+export function getSender(chatMembers, loggedInUser){
+  const sender = chatMembers.find((member) => member._id !== loggedInUser._id);
+  return sender;
+};

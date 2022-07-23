@@ -64,7 +64,6 @@ const EditProfile = () => {
         phone,
       };
       const res = await editProfile(data, token, source.token);
-      dispatch(updateUser(res.data));
       toast.success('Profile has been updated', {
         id: refreshToast,
       });

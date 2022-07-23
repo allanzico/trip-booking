@@ -8,18 +8,19 @@ import { MessagesClass } from "../controllers/messages";
 const messaging = new MessagesClass()
 
 const router = express.Router();
-router.post(
-    "/create-message",
-    requireSignIn,
-    apiLimiter,
-    messaging.createMessage
-);
 
 router.get(
-    "/messages/:conversationId",
+    "/get-messages/:chatId",
     requireSignIn,
     apiLimiter,
     messaging.getMessages
+);
+
+router.post(
+    "/message",
+    requireSignIn,
+    apiLimiter,
+    messaging.sendMessage
 );
 
 

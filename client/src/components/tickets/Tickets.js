@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import TicketComponent from './TicketComponent'
+
 import axios from "axios";
 import { fetchUserBookings } from '../../Redux/reducers/experiences';
 import { getUserBookings } from '../../actions/experience';
+import TicketComponent from './TicketComponent';
+import NoResults from '../shared/NoResults';
 
 const Tickets = () => {
   const bookings = useSelector((state) => state.experiences.bookings);
@@ -28,22 +30,25 @@ const Tickets = () => {
       source.cancel();
     };
   }, []);
+
   return (
-    <main className="flex">
-        <section className="flex-grow">
-          <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
-            <p className="filter-component-button">Button</p>
-            <p className="filter-component-button">Another Button</p>
-            <p className="filter-component-button">More Button</p>
-            <p className="filter-component-button">Cool Button</p>
+    bookings.length === 0 ? (<NoResults message="No tickets"/>) : (    <main className="flex">
+    <section className="flex-grow mt-3">
+      <div className="flex flex-col gap-5"> {
+        bookings && bookings.map((booking) =>(
+          <div className='flex flex-col gap-2'>
+            <h2 className='mb-2 text-md font-semibold text-gray-900'>{booking.experience.title}</h2>
+            { booking?.cart && booking.cart?.map((ticket) => (
+            <TicketComponent  booking={booking} ticket={ticket} />
+          )
+        )}
           </div>
-          <div className="flex flex-col gap-2"> {
-            bookings && bookings.map((booking) =><TicketComponent booking={booking} /> )
-          }
-            
-          </div>
-        </section>
-      </main>
+           ) )
+      }
+        
+      </div>
+    </section>
+  </main>)
   )
 }
 

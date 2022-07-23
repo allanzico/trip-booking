@@ -6,68 +6,17 @@ import {
   getSingleExperience,
   isAlreadyBooked,
 } from "../../actions/experience";
-import { currencyFormatter, getSessionId } from "../../actions/stripe";
-import { loadStripe } from "@stripe/stripe-js";
+import { currencyFormatter } from "../../actions/stripe";
 import { StarIcon } from "@heroicons/react/solid";
-import { RadioGroup } from "@headlessui/react";
 import ReviewsView from "../../reviews/ReviewsView";
-import ReviewsCreate from "../../reviews/ReviewsCreate";
 import axios from "axios";
 import { fetchSingleExperience } from "../../Redux/reducers/experiences";
 import { getHighestPrice, getLowestPrice } from "../../components/shared/Utils";
+import { ChatAlt2Icon, ChevronRightIcon } from "@heroicons/react/outline";
+import { createChat } from "../../actions/chat";
+import { currentChatSet } from "../../Redux/reducers/messaging";
+import { Link } from "react-router-dom";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Lorem ipsum dolor sit am",
-    "Lorem ipsum dolor sit a",
-    "Lorem ipsum dolor sit",
-    "Lorem ipsum dolor si",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
@@ -76,7 +25,6 @@ function classNames(...classes) {
 
 const ExperienceView = ({ match, history }) => {
   const experience = useSelector((state) => state.experiences.singleExperience);
-  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [alreadyBooked, setAlreadyBooked] = useState(false);
   const [isOwner, setIsOwner] = useState(history.location.state?.isOwner);
@@ -84,11 +32,12 @@ const ExperienceView = ({ match, history }) => {
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
-  const dispatch = useDispatch()
+  const token = auth === undefined ? null : auth?.token;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     loadSingleExperience();
-  
+
     //calculate rating average
     if (experience.reviews) {
       const average =
@@ -102,12 +51,24 @@ const ExperienceView = ({ match, history }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (auth && auth.token) {
+      isAlreadyBooked(auth.token, match.params.expId, source.token).then(
+        (res) => {
+          if (res.data.ok) setAlreadyBooked(true);
+        }
+      );
+      //set is owner
+    }
+    return () => {
+      source.cancel();
+    };
+  }, []);
 
   const loadSingleExperience = async () => {
     try {
       let res = await getSingleExperience(match.params.expId, source.token);
-      dispatch(fetchSingleExperience(res.data))
-      setImage(`${process.env.REACT_APP_API}/experience/image/${res.data._id}`);
+      dispatch(fetchSingleExperience(res.data));
     } catch (error) {
       console.log(error);
     }
@@ -125,8 +86,8 @@ const ExperienceView = ({ match, history }) => {
       if (!auth) history.push("/login");
       history.push({
         pathname: "/checkout",
-        state: {experience: experience, user: user},
-      })
+        state: { experience: experience, user: user },
+      });
       // let res = await getSessionId(auth.token, match.params.expId);
       // const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
       // stripe
@@ -139,7 +100,18 @@ const ExperienceView = ({ match, history }) => {
     }
   };
 
-  console.log(experience);
+  const handleCreateChat = async () => {
+    const data = {
+      userId: experience.postedBy._id,
+    };
+    try {
+      const res = await createChat(token, data);
+      dispatch(currentChatSet(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <main className="flex-auto">
       <div className="overflow-hidden">
@@ -157,21 +129,33 @@ const ExperienceView = ({ match, history }) => {
               <div className="mt-6 max-w-2xl mx-auto px-4 sm:px-4 lg:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-2">
                 <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                   <img
-                    src={experience.files && experience.files[0] ? experience.files[0]?.url : "https://via.placeholder.com/1000x1000"}
+                    src={
+                      experience.files && experience.files[0]
+                        ? experience.files[0]?.url
+                        : "https://via.placeholder.com/1000x1000"
+                    }
                     className="w-full h-full object-center object-cover"
                   />
                 </div>
                 <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={experience.files && experience.files[1] ? experience.files[1]?.url : "https://via.placeholder.com/1000x500"}
+                      src={
+                        experience.files && experience.files[1]
+                          ? experience.files[1]?.url
+                          : "https://via.placeholder.com/1000x500"
+                      }
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
                   </div>
                   <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                     <img
-                      src={experience.files && experience.files[2] ? experience.files[2]?.url : "https://via.placeholder.com/1000x500"}
+                      src={
+                        experience.files && experience.files[2]
+                          ? experience.files[2]?.url
+                          : "https://via.placeholder.com/1000x500"
+                      }
                       alt="experience-image"
                       className="w-full h-full object-center object-cover"
                     />
@@ -179,7 +163,11 @@ const ExperienceView = ({ match, history }) => {
                 </div>
                 <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                   <img
-                    src={experience.files && experience.files[3] ? experience.files[3]?.url : "https://via.placeholder.com/1000x1000"}
+                    src={
+                      experience.files && experience.files[3]
+                        ? experience.files[3]?.url
+                        : "https://via.placeholder.com/1000x1000"
+                    }
                     alt="experience-image"
                     className="w-full h-full object-center object-cover"
                   />
@@ -196,9 +184,30 @@ const ExperienceView = ({ match, history }) => {
                       className="text-orange-500 hover:text-orange-700 hover:underline"
                     >
                       {" "}
-                      {experience.postedBy && experience.postedBy.firstName}{" "}
+                      {experience.postedBy &&
+                        experience.postedBy.firstName}{" "}
                     </a>
                   </h2>
+                  {auth && !isOwner &&
+                    auth.token &&
+                    auth.user.verificationStatus === "approved" && (
+                      <Link to="/messaging">
+                      <div className="border px-2">
+                        <h3 className="sr-only">Contact host</h3>
+                        <div className="flex items-center">
+                          <div
+                            onClick={handleCreateChat}
+                            className="py-3 flex justify-between items-center cursor-pointer"
+                          >
+                            <h5 className="flex items-center">
+                              <ChatAlt2Icon className="w-4 h-4 mr-2" />
+                              Message host
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                      </Link>
+                    )}
                 </div>
 
                 {/* Options */}
@@ -206,18 +215,21 @@ const ExperienceView = ({ match, history }) => {
                   <h2 className="sr-only">More information</h2>
                   <div className="flex flex-col items-left">
                     <p className="text-xl font-bold text-orange-500">
-                      <span>{experience.tickets &&
-                        currencyFormatter({
-                          amount: getLowestPrice(experience.tickets) * 100,
-                          currency: "ugx",
-                        })}</span>
-                        -
-                        <span>{experience.tickets &&
-                        currencyFormatter({
-                          amount: getHighestPrice(experience.tickets) * 100,
-                          currency: "ugx",
-                        })}</span>
-
+                      <span>
+                        {experience.tickets &&
+                          currencyFormatter({
+                            amount: getLowestPrice(experience.tickets) * 100,
+                            currency: "ugx",
+                          })}
+                      </span>
+                      -
+                      <span>
+                        {experience.tickets &&
+                          currencyFormatter({
+                            amount: getHighestPrice(experience.tickets) * 100,
+                            currency: "ugx",
+                          })}
+                      </span>
                     </p>
 
                     {/* Reviews */}
@@ -293,6 +305,8 @@ const ExperienceView = ({ match, history }) => {
                         ? "Loading..."
                         : isOwner
                         ? "You cant book your own"
+                        : alreadyBooked
+                        ? "You already Booked this"
                         : auth && auth.token
                         ? " View Tickets"
                         : "Login To Book"}
@@ -316,35 +330,47 @@ const ExperienceView = ({ match, history }) => {
                     <h3 className="text-sm font-medium text-gray-900">
                       Provided by the Host
                     </h3>
-
-                    <div className="mt-2">
-                      <ul
-                        role="list"
-                        className="pl-4 list-disc text-sm space-y-2"
-                      >
-                        {experience.extraPerks && experience.extraPerks.map((perk, index) => (
-                          <li key={index} className="text-gray-400">
-                            <span className="text-gray-600">{perk.perkName}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {experience.extraPerks.length > 0 ? (
+                      <div className="mt-2">
+                        <ul
+                          role="list"
+                          className="pl-4 list-disc text-sm space-y-2"
+                        >
+                          {experience.extraPerks &&
+                            experience.extraPerks.map((perk, index) => (
+                              <li key={index} className="text-gray-400">
+                                <span className="text-gray-600">
+                                  {perk.perkName}
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 mt-2 ">
+                        This experience has no extra perks
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-white pt-6 ">
-            <div class="antialiased items-left  max-w-screen-md">
-              <h3 class="mb-4 text-xl font-semibold text-gray-900">Reviews</h3>
-              <div class="space-y-4">
-                {experience.reviews &&
-                  experience.reviews.map((review) => (
-                    <ReviewsView review={review} />
-                  ))}
+          {experience.reviews && experience.reviews.length > 0 ? (
+            <div className="bg-white pt-6 ">
+              <div class="antialiased items-left  max-w-screen-md">
+                <h3 class="mb-4 text-xl font-semibold text-gray-900">
+                  Reviews
+                </h3>
+                <div class="space-y-4">
+                  {experience.reviews &&
+                    experience.reviews.map((review) => (
+                      <ReviewsView review={review} />
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </main>

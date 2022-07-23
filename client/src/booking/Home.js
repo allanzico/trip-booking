@@ -30,12 +30,11 @@ const Home = () => {
     };
   };
 
-  const handleExperienceEdit = () => {};
   return (
     <>
 <div className="flex flex-col container mx-auto mt-10">
       <div className="flex items-center justify-center mb-2">
-        <h1 className="text-orange-500 uppercase font-bold text-2xl md:text-4xl">Explore new adventures</h1>
+        <h1 className="text-orange-500 uppercase font-bold text-xl md:text-4xl">Explore new adventures</h1>
  
       </div>
       <p className="flex text-xl items-center justify-center mb-2">
@@ -44,15 +43,16 @@ const Home = () => {
       <div className="flex items-center justify-center mb-2 p-10 bg-gray-100">
         <SearchForm />
       </div>
-      <main className="max-w-7xl mx-auto ">
+      
+      {experiences.length > 0 ? (<main className="max-w-7xl">
         <section className="pt-6">
           <h2 className="text-4xl font-semibold text-gray-700">
-            Closing soon...
+            Closing soon
           </h2>
           <div className="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-3 xl:grid-cols-4">
             {experiences.map((exp) => {
               return (
-                diffDays(new Date(), exp.startDate) <= 10 && (
+                diffDays(new Date(), new Date(exp.startDate)) <= 10 && (
                   <SmallCard
                     key={exp._id}
                     exp={exp}
@@ -65,21 +65,21 @@ const Home = () => {
         </section>
         <section>
           <h2 className="text-4xl font-semibold py-8 text-gray-700 ">
-            Popular Destinations
+            Latest Experiences
           </h2>
           <div className="flex space-x-3 overflow-scroll scrollbar-hide p-3 -ml-3">
-            {experiences.map((exp) => {
+            {experiences && experiences.slice(-3).reverse().map((exp) => {
               return (
                 <MediumCard
                   key={exp._id}
                   exp={exp}
-                  img="https://cdn.pixabay.com/photo/2020/10/14/19/49/santorini-5655299_960_720.jpg"
+                  img={exp?.files?.length > 0 ? exp?.files[0].url : "https://via.placeholder.com/900x500.png?text=PREVIEW"}
                 />
               );
             })}
           </div>
         </section>
-      </main>
+      </main>) : null}
       
     </div>
 

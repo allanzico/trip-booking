@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import BackgroundLetterAvatars from "../shared/ProfileAvatar";
 import { logoutUser } from "../../actions/auth";
+import NotificationsComponent from "./NotificationsComponent";
 
 const ResponsiveNav = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -136,13 +137,7 @@ const ResponsiveNav = () => {
                         </Link>
                       )}
                       {auth && auth.user.verificationStatus === "approved" && (
-                        <button
-                          type="button"
-                          className="bg-orange-500 p-1 rounded-full text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-800 focus:ring-white"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
+                        <NotificationsComponent />
                       )}
 
                       {/* Profile dropdown */}
@@ -256,13 +251,6 @@ const ResponsiveNav = () => {
                           {user.email}
                         </div>
                       </div>
-                      <button
-                        type="button"
-                        className="ml-auto bg-orange-700 p-1 rounded-full text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-800 focus:ring-white"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-4 w-4" aria-hidden="true" />
-                      </button>
                     </div>
                     <div className="mt-3 px-2 space-y-1">
                       {userNavigation.map((item) => (

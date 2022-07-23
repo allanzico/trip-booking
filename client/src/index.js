@@ -14,10 +14,10 @@ import "./index.css";
 import "react-phone-number-input/style.css";
 
 //Create Redux store
-
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["messaging.currentChat"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -28,7 +28,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+ 
         <App />
+
       </PersistGate>
     </Provider>
   </React.StrictMode>,

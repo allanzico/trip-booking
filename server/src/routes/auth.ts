@@ -23,6 +23,12 @@ const auth = new Authentication()
   );
 
   router.get(
+    "/users",
+    requireSignIn,
+    auth.getUsers
+  );
+
+  router.get(
     "/user-interests",
     auth.getUserInterests
   );

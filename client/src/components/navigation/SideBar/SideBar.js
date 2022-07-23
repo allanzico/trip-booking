@@ -12,7 +12,6 @@ import {
 import { UserGroupIcon } from "@heroicons/react/solid";
 
 import React from "react";
-import { Link } from "react-router-dom";
 import SideBarRow from "./SideBarRow";
 import { useSelector } from "react-redux";
 

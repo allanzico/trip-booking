@@ -25,12 +25,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
       
     - run:
-        cd "server"
+        cd server
         npm i
-        npm start
-        cd "client"
+        cd client
         npm i
         npm run build
-        cd "socket"
-        npm i
-        npm start
+        

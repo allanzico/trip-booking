@@ -23,6 +23,24 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+  server:
+
+  runs-on: self-hosted
+
+  steps:
+    - name: Install dependencies
+      uses: actions/checkout@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+      
+    - name: Install dependencies
+      working-directory: ./server
+      run: npm i
+    
+    - name: Build server
+      working-directory: ./server
+      run: npm run build
     
   client:
 
@@ -41,3 +59,21 @@ jobs:
       - name: Build client
         working-directory: ./client
         run: npm run build
+
+  socket:
+
+  runs-on: self-hosted
+
+  steps:
+    - name: Install dependencies
+      uses: actions/checkout@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+      
+    - name: Install dependencies
+      working-directory: ./socket
+      run: npm i
+    
+    - name: Build socket
+      working-directory: ./socket
+      run: npm run build

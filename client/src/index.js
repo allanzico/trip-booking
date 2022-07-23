@@ -17,7 +17,7 @@ import "react-phone-number-input/style.css";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["messaging"],
+  blacklist: ["messaging.currentChat"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

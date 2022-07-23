@@ -52,7 +52,7 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-3 xl:grid-cols-4">
             {experiences.map((exp) => {
               return (
-                diffDays(new Date(), exp.startDate) <= 10 && (
+                diffDays(new Date(), new Date(exp.startDate)) <= 10 && (
                   <SmallCard
                     key={exp._id}
                     exp={exp}

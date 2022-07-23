@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { currencyFormatter } from "../actions/stripe";
+
 import moment from "moment";
 import {
   ChevronDownIcon,
   ClipboardCheckIcon,
-  DotsVerticalIcon,
+  
   PencilIcon,
 } from "@heroicons/react/outline";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import Menu from "@mui/material/Menu";
-import PopupState, {
-  bindTrigger,
-  bindMenu,
-  use,
-} from "material-ui-popup-state";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import { PencilAltIcon } from "@heroicons/react/solid";
-import { ShareIcon, TrashIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
-import DeleteListingModal from "../experiences/Delete/DeleteListingModal";
-import { Popover, Transition } from "@headlessui/react";
+
+
+import { TrashIcon } from "@heroicons/react/outline";
+
 import CustomPopup from "../components/shared/CustomPopup";
 import DeleteModal from "./DeleteModal";
 
 const ListingsCard = ({ exp }) => {
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
   let [isOpen, setIsOpen] = useState(false);
  
 
@@ -39,12 +27,6 @@ const ListingsCard = ({ exp }) => {
     e.stopPropagation();
     setIsOpen(true);
   }
-
-  const handleOpenDeleteModal = (e) => {
-    e.stopPropagation();
-    setIsOpen(true);
-  };
-
 
   const menuItems = [
     {

@@ -12,7 +12,10 @@ import ReviewsView from "../../reviews/ReviewsView";
 import axios from "axios";
 import { fetchSingleExperience } from "../../Redux/reducers/experiences";
 import { getHighestPrice, getLowestPrice } from "../../components/shared/Utils";
-
+import { ChatAlt2Icon, ChevronRightIcon } from "@heroicons/react/outline";
+import { createChat } from "../../actions/chat";
+import { currentChatSet } from "../../Redux/reducers/messaging";
+import { Link } from "react-router-dom";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -29,6 +32,7 @@ const ExperienceView = ({ match, history }) => {
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
+  const token = auth === undefined ? null : auth?.token;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -91,6 +95,18 @@ const ExperienceView = ({ match, history }) => {
       //     sessionId: res.data.sessionId,
       //   })
       //   .then((result) => console.log(result));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateChat = async () => {
+    const data = {
+      userId: experience.postedBy._id,
+    };
+    try {
+      const res = await createChat(token, data);
+      dispatch(currentChatSet(res.data));
     } catch (error) {
       console.log(error);
     }
@@ -172,6 +188,26 @@ const ExperienceView = ({ match, history }) => {
                         experience.postedBy.firstName}{" "}
                     </a>
                   </h2>
+                  {auth && !isOwner &&
+                    auth.token &&
+                    auth.user.verificationStatus === "approved" && (
+                      <Link to="/messaging">
+                      <div className="border px-2">
+                        <h3 className="sr-only">Contact host</h3>
+                        <div className="flex items-center">
+                          <div
+                            onClick={handleCreateChat}
+                            className="py-3 flex justify-between items-center cursor-pointer"
+                          >
+                            <h5 className="flex items-center">
+                              <ChatAlt2Icon className="w-4 h-4 mr-2" />
+                              Message host
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                      </Link>
+                    )}
                 </div>
 
                 {/* Options */}
@@ -294,22 +330,27 @@ const ExperienceView = ({ match, history }) => {
                     <h3 className="text-sm font-medium text-gray-900">
                       Provided by the Host
                     </h3>
-                        {experience.extraPerks.length > 0 ? (                    <div className="mt-2">
-                      <ul
-                        role="list"
-                        className="pl-4 list-disc text-sm space-y-2"
-                      >
-                        {experience.extraPerks &&
-                          experience.extraPerks.map((perk, index) => (
-                            <li key={index} className="text-gray-400">
-                              <span  className="text-gray-600">
-                                {perk.perkName}
-                              </span>
-                            </li>
-                          ))}
-                      </ul>
-                    </div>): <p className="text-xs text-gray-500 mt-2 ">This experience has no extra perks</p>}
-
+                    {experience.extraPerks.length > 0 ? (
+                      <div className="mt-2">
+                        <ul
+                          role="list"
+                          className="pl-4 list-disc text-sm space-y-2"
+                        >
+                          {experience.extraPerks &&
+                            experience.extraPerks.map((perk, index) => (
+                              <li key={index} className="text-gray-400">
+                                <span className="text-gray-600">
+                                  {perk.perkName}
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 mt-2 ">
+                        This experience has no extra perks
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

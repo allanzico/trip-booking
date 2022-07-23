@@ -113,12 +113,12 @@ const MiddleContent = () => {
             path="/add-payment-method"
             component={PaymentComponent}
           />
-
           <PrivateRoute
             exact
             path="/view-itenerary"
             component={IteneraryComponent}
           />
+           
         </Switch>
       </section>
     </div>

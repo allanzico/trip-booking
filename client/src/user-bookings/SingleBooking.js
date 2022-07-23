@@ -11,11 +11,11 @@ import {
 import moment from "moment";
 import { diffDays } from "../actions/experience";
 import TicketModal from "./tickets/TicketModal";
-import {useHistory } from "react-router-dom";
+import {Link, useHistory } from "react-router-dom";
 import ReviewsCreate from "../reviews/ReviewsCreate";
 import { useSelector } from "react-redux";
 
-const SingleBooking = ({ handleCreateConversation, booking }) => {
+const SingleBooking = ({ handleCreateChat, booking }) => {
   const [showModal, setShowModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
   const { auth } = useSelector((state) => ({ ...state }));
@@ -97,8 +97,9 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                     </div>
                   </div>
                   <div class="grid grid-cols-1 divide-y">
+               
                     <div
-                      onClick={handleCreateConversation}
+                      onClick={handleCreateChat}
                       className="py-3 flex justify-between items-center cursor-pointer"
                     >
                       <h5 className="flex items-center">
@@ -109,6 +110,7 @@ const SingleBooking = ({ handleCreateConversation, booking }) => {
                         <ChevronRightIcon className="w-4 h-4" />
                       </p>
                     </div>
+                  
                     <div
                       onClick={openModal}
                       className="py-3 flex justify-between items-center cursor-pointer"

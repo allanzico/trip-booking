@@ -47,7 +47,6 @@ const SearchResults = () => {
     setFilteredData(res.data);
   };
 
-  // console.log(getTicketPrices(experiences));
   const handleFilterByPrice = (min, max) => {
     const updatedPrice = updatePrice(experiences)
     const priceFilter = updatedPrice.filter(

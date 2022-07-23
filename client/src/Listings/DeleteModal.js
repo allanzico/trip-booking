@@ -2,21 +2,31 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSingleExperience } from "../actions/experience";
-import { removeExperience } from "../Redux/reducers/experiences";
+import { fetchSellerExperiences } from "../Redux/reducers/experiences";
 const DeleteModal = ({ closeModal, isOpen, exp }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
+  const sellerExperiences = useSelector(
+    (state) => state.experiences.sellerExperiences
+  );
   const dispatch = useDispatch();
   const deleteExperience = async () => {
     try {
       await deleteSingleExperience(exp._id, token);
-      dispatch(removeExperience(exp._id));
-    } catch (error) {}
-  };
-    const handleDelete = () => {
- deleteExperience();
-        closeModal();
+    } catch (error) {
+      console.log(error);
     }
+  };
+  const handleDelete = () => {
+    deleteExperience();
+    closeModal();
+    dispatch(
+      fetchSellerExperiences(
+        sellerExperiences.filter((sellerExp) => sellerExp._id !== exp._id)
+      )
+    );
+  };
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -78,7 +88,7 @@ const DeleteModal = ({ closeModal, isOpen, exp }) => {
                         </div>
                         <div className="cursor-pointer">
                           <button
-                          onClick={handleDelete}
+                            onClick={handleDelete}
                             type="submit"
                             className="
                             text-white

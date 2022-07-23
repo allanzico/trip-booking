@@ -9,18 +9,23 @@ import io from "socket.io-client";
 import axios from "axios";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getChats } from "../actions/chat";
 import toast from "react-hot-toast";
-import { currentChatSet, fetchChats, fetchMessages, fetchNotifications, resetCurrentChat } from "../Redux/reducers/messaging";
-let socket, selectedChatCompare
+import {
+  currentChatSet,
+  fetchChats,
+  fetchMessages,
+  fetchNotifications,
+  resetCurrentChat,
+} from "../Redux/reducers/messaging";
+let socket, selectedChatCompare;
 
 const Messaging = () => {
-
   // const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [receiver, setReceiver] = useState(null)
+  const [receiver, setReceiver] = useState(null);
   const scrollRef = useRef();
   const source = axios.CancelToken.source();
   const dispatch = useDispatch();
@@ -28,22 +33,23 @@ const Messaging = () => {
   const user = auth === undefined ? null : auth?.user;
   const token = auth === undefined ? null : auth?.token;
   const [chatMember, setChatMember] = useState(null);
-  const [chats, setChats] = useState([]);
- const history = useHistory();
-const [socketConnected, setSocketConnected] = useState(false);
-const [notification, setNotification] = useState([]);
-const currentChat = useSelector((state) => state.messaging.currentChat);
 
-//Start Socket Client
+  const history = useHistory();
+  const [socketConnected, setSocketConnected] = useState(false);
+  const currentChat = useSelector((state) => state.messaging.currentChat);
+  const chats = useSelector((state) => state.messaging.chats);
+  //const messages = useSelector((state) => state.messaging.messages);
+  const notifications = useSelector((state) => state.messaging.notifications);
+
+  //Start Socket Client
   useEffect(() => {
-    socket  = io(process.env.REACT_APP_SOCKET_IO_URL);
+    socket = io(process.env.REACT_APP_SOCKET_IO_URL);
   }, []);
 
-
- useEffect(() => {
-  setChatMember(user)
-  dispatch(resetCurrentChat(null));
-}, [history, user]);
+  useEffect(() => {
+    setChatMember(user);
+  // dispatch(resetCurrentChat(null));
+  }, [history, user]);
 
   useEffect(() => {
     socket.emit("setup", user);
@@ -55,34 +61,38 @@ const currentChat = useSelector((state) => state.messaging.currentChat);
   }, [messages]);
 
   useEffect(() => {
-    handleGetChats()
+    handleGetChats();
     return () => {
       source.cancel();
     };
-  }, []);
+  }, [history, currentChat]);
 
   useEffect(() => {
     handleGetMessages();
     selectedChatCompare = currentChat;
-    
   }, [currentChat]);
+
 
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
-      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
         //send notification
-        if(!notification.includes(newMessageReceived)) {
-            setNotification([newMessageReceived,...notification])
-            dispatch(fetchNotifications([newMessageReceived,...notification]));
+        if (!notifications.includes(newMessageReceived)) {
+          dispatch(fetchNotifications([newMessageReceived, ...notifications]));
         }
-      }else {
+      } 
+      else {
         setMessages([...messages, newMessageReceived]);
+       // dispatch(fetchMessages([...messages, newMessageReceived]));
       }
-    })
+    });
   });
 
   const handleGetMessages = async () => {
-    if(!currentChat) return;
+    if (!currentChat) return;
     try {
       const res = await getMessages(currentChat._id, token);
       setMessages(res.data);
@@ -92,22 +102,21 @@ const currentChat = useSelector((state) => state.messaging.currentChat);
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const msg = {
       content: newMessage,
       chatId: currentChat._id,
     };
-    const refreshToast = null
+    const refreshToast = null;
     try {
       if (newMessage.trim() !== "" && newMessage) {
         setNewMessage("");
         const res = await sendMessage(token, msg);
         setMessages([...messages, res.data]);
-        socket.emit("new message", res.data)
-       }
-
+        dispatch(fetchMessages([...messages, res.data]));
+        socket.emit("new message", res.data);
+      }
     } catch (error) {
       console.log(error);
       toast.error("Error sending message", {
@@ -116,19 +125,17 @@ const currentChat = useSelector((state) => state.messaging.currentChat);
     }
   };
 
-
   const handleGetChats = async () => {
     try {
       let res = await getChats(token, source.token);
-      setChats(res.data);
+      dispatch(fetchChats(res.data));
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleSetCurrentChat = (chat) => {
     dispatch(currentChatSet(chat));
-    
   };
 
   return (
@@ -152,21 +159,22 @@ const currentChat = useSelector((state) => state.messaging.currentChat);
                   <div className="w-full">
                     {/* User Start */}
 
-                    {chats && chats.map((chat) => (
-                      <div
-                        key={chat._id}
-                        onClick={() => handleSetCurrentChat(chat)}
-                      >
-                        <ConversationComponent
-                          conversations={chat}
-                          currentUser={user}
-                          messages={messages}
-                          chatMember={chatMember}
-                          userChat={chat}
-                          currentChat={currentChat}
-                        />
-                      </div>
-                    ))}
+                    {chats &&
+                      chats.map((chat) => (
+                        <div
+                          key={chat._id}
+                          onClick={() => handleSetCurrentChat(chat)}
+                        >
+                          <ConversationComponent
+                            conversations={chat}
+                            currentUser={user}
+                            messages={messages}
+                            chatMember={chatMember}
+                            userChat={chat}
+                            currentChat={currentChat}
+                          />
+                        </div>
+                      ))}
 
                     {/* User End */}
                   </div>
@@ -215,22 +223,22 @@ const currentChat = useSelector((state) => state.messaging.currentChat);
 
                       <Disclosure.Panel className="md:hidden">
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-
-                        {chats && chats.map((chat) => (
-                      <div
-                        key={chat._id}
-                        onClick={() => handleSetCurrentChat(chat)}
-                      >
-                        <ConversationComponent
-                          conversations={chat}
-                          currentUser={user}
-                          messages={messages}
-                          chatMember={chatMember}
-                          userChat={chat}
-                          currentChat={currentChat}
-                        />
-                      </div>
-                    ))}
+                          {chats &&
+                            chats.map((chat) => (
+                              <div
+                                key={chat._id}
+                                onClick={() => handleSetCurrentChat(chat)}
+                              >
+                                <ConversationComponent
+                                  conversations={chat}
+                                  currentUser={user}
+                                  messages={messages}
+                                  chatMember={chatMember}
+                                  userChat={chat}
+                                  currentChat={currentChat}
+                                />
+                              </div>
+                            ))}
                         </div>
                       </Disclosure.Panel>
                     </>

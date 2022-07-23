@@ -29,11 +29,17 @@ const NotificationsComponent = () => {
   };
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left px-3">
       <div>
-        <Menu.Button className="bg-orange-500 p-1 rounded-full text-white hover:text-white focus:outline-none">
+        <Menu.Button className=" relative bg-gray-700 p-1 rounded-full text-white hover:text-white focus:outline-none">
           <span className="sr-only">View notifications</span>
-          <BellIcon className="h-4 w-4" aria-hidden="true" />
+          <BellIcon className="h-6 w-6" aria-hidden="true" />
+          {notifications.length > 0 && ( <span class="absolute inset-4 object-right-bottom -mr-6">
+    <div class="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-orange-500 text-white">
+     {notifications.length}
+    </div>
+  </span>)}
+
         </Menu.Button>
       </div>
 

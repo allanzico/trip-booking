@@ -21,7 +21,8 @@ const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
   const source = axios.CancelToken.source();
-  const [sellerExperiences, setSellerExperiences] = useState([]);
+  //const [sellerExperiences, setSellerExperiences] = useState([]);
+  const sellerExperiences = useSelector((state) => state.experiences.sellerExperiences);
   const dispatch = useDispatch();
   useEffect(() => {
     loadSellerExperiences();
@@ -32,7 +33,7 @@ const DashboardSeller = () => {
 
   const loadSellerExperiences = async () => {
     let { data } = await getSellerExperiences(auth.token, source.token);
-    setSellerExperiences(data);
+    dispatch(fetchSellerExperiences(data));
   };
 
   const handleClick = async () => {
@@ -47,62 +48,10 @@ const DashboardSeller = () => {
     }
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Id",
-        accessor: "_id",
-        Cell: ({ value }) => {
-          return `${value.substring(0, 10)}...`;
-        },
-      },
-      {
-        Header: "Title",
-        accessor: "title",
-        Cell: ({ value }) => {
-          return `${value.substring(0, 25)}...`;
-        },
-      },
-      {
-        Header: "Location",
-        accessor: "location",
-        Cell: ({ value }) => {
-          return `${value.substring(0, 25)}...`;
-        },
-      },
-      {
-        Header: "Start Date",
-        accessor: "startDate",
-        Cell: ({ value }) => {
-          return moment(value).format("L");
-        },
-      },
-      {
-        Header: "End Date",
-        accessor: "endDate",
-        Cell: ({ value }) => {
-          return moment(value).format("L");
-        },
-      },
-      {
-        Header: "Reviews",
-        accessor: "numReviews",
-      },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      //   Filter: SelectColumnFilter,
-      //   filter: 'includes',
-      // },
-    ],
-    []
-  );
-
-  // const data = useMemo(() => [...sellerExperiences], [sellerExperiences]);
-
+  
   const connectedSeller = () => {
     return (
-      // <SellerTable columns={columns} data={data} />
+   
       <main className="flex">
         <section className="flex-grow">
           <div className="hidden lg:inline-flex mb-3 space-x-3 text-gray-800 whitespace-nowrap">

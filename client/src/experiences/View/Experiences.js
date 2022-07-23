@@ -16,32 +16,6 @@ import { getLowestPrice } from "../../components/shared/Utils";
 
 const Experiences = () => {
   const experiences = useSelector((state) => state.experiences.experiences);
-  const dispatch = useDispatch();
-  const source = axios.CancelToken.source();
-
-  useEffect(() => {
-    loadExperiences();
-    return () => {
-      source.cancel();
-    };
-  }, []);
-
-  const loadExperiences = async () => {
-    try {
-      let res = await getExperiences(source.token);
-
-      dispatch(fetchExperiences(res.data));
-    } catch (error) {
-      if (axios.isCancel(error)) {
-      } else {
-        console.log(error);
-        throw error;
-      }
-    }
-  };
-
-
-  const handleExperienceEdit = () => {};
   return (
     <div className="h-screen ">
       <main className="flex">
@@ -64,7 +38,6 @@ const Experiences = () => {
                   <InfoCard
                     key={exp._id}
                     exp={exp}
-                    handleExperienceEdit={handleExperienceEdit}
                     lowestPrice={getLowestPrice(exp.tickets)}
                   />
                 );

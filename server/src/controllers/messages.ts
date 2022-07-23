@@ -5,7 +5,7 @@ import UserChat from "../models/UserChat";
 export class MessagesClass {
   async sendMessage(req: any, res: any) {
     const { chatId, content } = req.body;
-
+  
     if (!chatId || !content) {
       res.status(400).json({
         message: "Missing parameters",

@@ -3,12 +3,9 @@ export const FETCH_SELLER_EXPERIENCES = "FETCH_SELLER_EXPERIENCES";
 export const SET_VIEW_STATE = "SET_VIEW_STATE";
 export const FETCH_USER_BOOKINGS = "FETCH_USER_BOOKINGS";
 export const FETCH_SINGLE_BOOKING = "FETCH_SINGLE_BOOKING";
-export const CREATE_EXPERIENCES = "CREATE_EXPERIENCES";
 export const FETCH_SINGLE_EXPERIENCE = "FETCH_SINGLE_EXPERIENCE";
-export const FAVORITE_EXPERIENCE = "FAVORITE_EXPERIENCE";
 export const FETCH_FAVORITES = "FETCH_FAVORITES";
-export const DELETE_EXPERIENCE = " DELETE_EXPERIENCE";
-export const DELETE_TICKET = "DELETE_TICKET";
+
 
 const initialState = {
   experiences: [],
@@ -43,26 +40,6 @@ export function fetchSellerExperiences(sellerExperiences) {
   };
 }
 
-export function experienceCreate(experiences) {
-  return {
-    type: CREATE_EXPERIENCES,
-    payload: experiences,
-  };
-}
-
-export function removeExperience(expId) {
-  return {
-    type: DELETE_EXPERIENCE,
-    payload: expId,
-  };
-}
-
-export function removeTicket(ticketId) {
-  return {
-    type: DELETE_TICKET,
-    payload: ticketId,
-  };
-}
 
 export function fetchUserBookings(bookings) {
   return {
@@ -90,12 +67,7 @@ export function fetchFavorites(favorites) {
     payload: favorites,
   };
 }
-export function createFavoriteExperience(experience) {
-  return {
-    type: FAVORITE_EXPERIENCE,
-    payload: experience,
-  };
-}
+
 
 export const experiencesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -107,26 +79,12 @@ export const experiencesReducer = (state = initialState, { type, payload }) => {
       return { ...state, experiences: payload };
     case "FETCH_SINGLE_EXPERIENCE":
       return { ...state, singleExperience: payload };
-    case "FAVORITE_EXPERIENCE":
-      return { ...state, favorites: payload };
     case "FETCH_FAVORITES":
       return { ...state, favorites: payload };
     case "FETCH_USER_BOOKINGS":
       return { ...state, bookings: payload };
     case "FETCH_SINGLE_BOOKING":
       return { ...state, singleBooking: payload };
-    case "DELETE_EXPERIENCE":
-      return {
-        ...state,
-        experiences: state.experiences.filter((exp) => exp._id !== payload),
-      };
-    case "DELETE_TICKET":
-      return {
-        ...state,
-        experiences: state.singleExperience.tickets.filter(
-          (ticket) => ticket._id !== payload
-        ),
-      };
     default:
       return state;
   }

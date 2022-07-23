@@ -30,7 +30,7 @@ const ConversationComponent = ({
     };
   }, [user]);
 
-
+console.log(sender)
 
   //fetch all cchats by user
   return (

@@ -101,7 +101,12 @@ export class ExperienceSetup {
   }
 
   async deleteExperience(req: any, res: any) {
-    await Experience.findByIdAndDelete(req.params.expId);
+    try {
+      await Experience.findByIdAndDelete(req.params.expId);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("Delete failed");
+    }
   }
 
   async deleteTicket(req: any, res: any) {

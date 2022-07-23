@@ -12,9 +12,9 @@ export const getChats = async ( token, cancelToken) => {
   );
 };
 
-export const createConversation = async (token, data) => {
+export const createChat = async (token, data) => {
   return await axios.post(
-    `${process.env.REACT_APP_API}/create-conversation`,
+    `${process.env.REACT_APP_API}/chat`,
     data,
     {
       headers: {

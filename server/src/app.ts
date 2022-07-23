@@ -12,7 +12,10 @@ const today = new Date();
 dotenv.config()
 const app = express()
 const dirPath = path.resolve(__dirname, './routes')
+
+//append  client to server - required bt Github actions
 app.use(express.static(path.join(__dirname, '/client/build')))
+
 const errorHandler = require('./middlewares/error')
 
 //middlewares

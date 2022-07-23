@@ -28,6 +28,10 @@ jobs:
 
     runs-on: self-hosted
 
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
       - name: Install dependencies
         uses: actions/checkout@v3
@@ -46,6 +50,10 @@ jobs:
 
     runs-on: self-hosted
 
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
       - name: Install dependencies
         uses: actions/checkout@v3
@@ -63,6 +71,10 @@ jobs:
   socket:
 
     runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [16.x]
 
     steps:
       - name: Install dependencies

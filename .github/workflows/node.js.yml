@@ -7,10 +7,6 @@ on:
   push:
     branches: [ "master" ]
 
-defaults:
-  run:
-    working-directory: client
-
 jobs:
   build:
 
@@ -27,9 +23,21 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: "npm"
-        cache-dependency-path: client/package-lock.json
+    
+  client:
 
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+    runs-on: self-hosted
+
+    steps:
+      - name: Install dependencies
+        uses: actions/checkout@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+        
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm i
+      
+      - name: Build client
+        working-directory: ./client
+        run: npm run build

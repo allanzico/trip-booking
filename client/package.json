@@ -7,7 +7,7 @@
     "@babel/core": "^7.17.5",
     "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.16.7",
     "@badrap/bar-of-progress": "^0.1.2",
-    "@craco/craco": "^6.4.3",
+    "@craco/craco": "^6.4.5",
     "@date-io/moment": "^2.14.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -57,7 +57,7 @@
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.8",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "5.0.0",
+
     "react-scroll": "^1.8.6",
     "react-table": "^7.7.0",
     "react-toastify": "^8.2.0",
@@ -100,6 +100,8 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "@svgr/plugin-svgo": "^6.3.1",
+    "cross-env": "^7.0.3",
+    "react-scripts": "^5.0.1"
   }
 }

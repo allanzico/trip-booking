@@ -62,18 +62,18 @@ jobs:
 
   socket:
 
-  runs-on: self-hosted
+    runs-on: self-hosted
 
-  steps:
-    - name: Install dependencies
-      uses: actions/checkout@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+    steps:
+      - name: Install dependencies
+        uses: actions/checkout@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+        
+      - name: Install dependencies
+        working-directory: ./socket
+        run: npm i
       
-    - name: Install dependencies
-      working-directory: ./socket
-      run: npm i
-    
-    - name: Build socket
-      working-directory: ./socket
-      run: npm run build
+      - name: Build socket
+        working-directory: ./socket
+        run: npm run build

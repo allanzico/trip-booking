@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import User from "../models/User";
 import jwt from "jsonwebtoken";
 import EmailSender from "../lib/sendEmail";

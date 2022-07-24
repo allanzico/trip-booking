@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Experience from "../models/Experience";
 const cloudinary = require("cloudinary").v2;
 export class ExperienceSetup {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Message from "../models/Message";
 import User from "../models/User";
 import UserChat from "../models/UserChat";

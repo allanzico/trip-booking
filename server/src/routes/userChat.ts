@@ -1,7 +1,7 @@
 import express from "express";
 import { ChatClass } from "../controllers/Chat";
 
-import {  apiLimiter, expOwner, requireSignIn } from "../middlewares/middlewares";
+import {  apiLimiter,  requireSignIn } from "../middlewares/middlewares";
 const chat = new ChatClass()
 
 const router = express.Router();

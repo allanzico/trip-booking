@@ -5,7 +5,6 @@ export default class EmailSender {
     const emailService = process.env.EMAIL_SERVICE;
     const emailuserName= process.env.EMAIL_USER_NAME;
     const emailHost = process.env.EMAIL_HOST;
-    const smtpKey = process.env.EMAIL_SMTP_KEY;
     const password = process.env.EMAIL_PASSWORD;
     const from = process.env.EMAIL_FROM;
     const transporter = nodemailer.createTransport({

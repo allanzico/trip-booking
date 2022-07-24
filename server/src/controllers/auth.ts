@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import EmailSender from "../lib/sendEmail";
 import crypto from "crypto";
 import UserInterests from "../models/UserInterests";
-const authy = require("authy")(<string>process.env.AUTHY_API_KEY);
 
 export default class Authentication {
   //register users

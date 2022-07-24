@@ -1,26 +1,16 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { getExperiences, searchListings } from "../actions/experience";
-import HorizontalCard from "../components/cards/HorizontalCard";
+import React, { useEffect, useState } from "react";
+import { searchListings } from "../actions/experience";
 import InfoCard from "../components/cards/InfoCard";
-import MainFooter from "../components/footers/MainFooter";
-import ExperiencesHeader from "../components/headers/ExperiencesHeader";
 import Mapbox from "../components/maps/Mapbox";
-import PageTitle from "../components/Typography/PageTitle";
-import { useIsMounted } from "../hooks/useIsMounted";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchExperiences } from "../Redux/reducers/experiences";
 import queryString from "query-string";
-import { Link } from "react-router-dom";
 import SearchForm from "../components/forms/SearchForm";
 import FilterComponent from "../components/shared/FilterComponent";
-import useFetch from "../hooks/useFetch";
 import { getLowestPrice, updatePrice } from "../components/shared/Utils";
 import NoResults from "../components/shared/NoResults";
 
 const SearchResults = () => {
   const [searchLocation, setSearchLocation] = useState("");
-  const [searchDate, setSearchDate] = useState("");
   const [experiences, setExperiences] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);

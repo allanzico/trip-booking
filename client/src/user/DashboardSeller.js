@@ -1,19 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PageTitle from "../components/Typography/PageTitle";
+
 import { useSelector, useDispatch } from "react-redux";
 import { HomeOutlined } from "@ant-design/icons";
 import { createStripeAccount } from "../actions/stripe";
 import { toast } from "react-toastify";
 import { getSellerExperiences } from "../actions/experience";
-import HorizontalCard from "../components/cards/HorizontalCard";
-import axios from "axios";
-import SellerTable from "../components/tables/seller/SellerTable";
-import SelectColumnFilter from "../components/tables/seller/SelectColumnFilter";
-import moment from "moment";
 
-import ListingsHeader from "../components/shared/ListingsHeader";
-import { PlusIcon } from "@heroicons/react/outline";
+import axios from "axios";
+
 import { fetchSellerExperiences } from "../Redux/reducers/experiences";
 import ListingsCard from "../Listings/ListingsCard";
 
@@ -29,7 +24,7 @@ const DashboardSeller = () => {
     return () => {
       source.cancel();
     };
-  }, []);
+  }, );
 
   const loadSellerExperiences = async () => {
     let { data } = await getSellerExperiences(auth.token, source.token);

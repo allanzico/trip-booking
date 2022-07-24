@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import FilePreview from "./FilePreview";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getCloudinarySignature } from "../../actions/experience";
 
 const source = axios.CancelToken.source();

@@ -1,5 +1,5 @@
 import { TrashIcon } from "@heroicons/react/outline";
-import React, { useState } from "react";
+import React from "react";
 import Tasks from "./Tasks";
 
 const IteneraryCheckList = ({ section, checkList, deleteData }) => {

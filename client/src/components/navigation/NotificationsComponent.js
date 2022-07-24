@@ -1,7 +1,6 @@
 import React from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
 import { BellIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { getSender } from "../shared/Utils";

@@ -1,19 +1,19 @@
-import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
+
 import React from "react";
-import { useSelector } from "react-redux";
-import { Switch, useLocation, Link } from "react-router-dom";
+
+import { Switch, useLocation, } from "react-router-dom";
 
 import PrivateRoute from "../components/PrivateRoute";
 import EditExperience from "../experiences/Edit/EditExperience";
 import DashboardSeller from "../user/DashboardSeller";
-import Messaging from "../messaging/Messaging";
+
 import PaymentComponent from "../components/payment/PaymentComponent";
 import Tickets from "../components/tickets/Tickets";
 
 import CreateExperience from "../experiences/Create/CreateExperience";
 import Settings from "../settings/Settings";
 import SellerRoute from "../components/SellerRoute";
-import DashboardHome from "./DashboardHome";
+
 import CreateItenerary from "../itenerary/CreateItenerary";
 import FavoritesComponent from "../components/favorites/FavoritesComponent";
 import ViewBookings from "../user-bookings/ViewBookings";

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment,  } from "react";
 import CustomTextField from "../components/CustomMUI/CustomTextField";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form,} from "formik";
 import * as Yup from "yup";
 
 const TicketCreateModal = ({closeModal, data,handleTicket, isOpen }) => {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { login } from "../../actions/auth";
-import { useDispatch } from "react-redux";
 import LoginSVG from "../../images/LoginSvg";
 import PageTitle from "../../components/Typography/PageTitle";
 import LoginDetails from "./LoginDetails";
@@ -11,7 +10,7 @@ const Login = ({ history }) => {
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(true)
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -23,8 +22,7 @@ const Login = ({ history }) => {
         setLoading(false)
       }
     } catch (error) {
-      // setError(error.response.data.error);
-      console.log(error);
+      setError(error.response.data.error);
       setShowAlert(true)
     }
   };

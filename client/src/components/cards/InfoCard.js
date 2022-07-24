@@ -2,31 +2,23 @@ import { HeartOutlined, StarFilled } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import ImageComponent from "../shared/ImageComponent";
 import { currencyFormatter } from "../../actions/stripe";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import {useHistory } from "react-router-dom";
 import {
   diffDays,
-  favoriteExperience,
-  getUserFavorites,
-  isAlreadyFavorited,
+
 } from "../../actions/experience";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import axios from "axios";
-import {
-  createFavoriteExperience,
-  fetchFavorites,
-} from "../../Redux/reducers/experiences";
 
 const InfoCard = ({ exp, lowestPrice}) => {
   
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
-  const token = auth === undefined ? null : auth?.token;
+  // const token = auth === undefined ? null : auth?.token;
   const history = useHistory();
   const source = axios.CancelToken.source();
   const [favorites, setFavorites] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
-
 
   useEffect(() => {
     if (auth == null) return

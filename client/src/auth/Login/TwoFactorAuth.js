@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/outline";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,  } from "react-redux";
 import { verifyTwofactorAuth } from "../../actions/auth";
 import ErrorAlert from "../../components/shared/ErrorAlert";
 import { loggedInUser } from "../../Redux/reducers/auth";

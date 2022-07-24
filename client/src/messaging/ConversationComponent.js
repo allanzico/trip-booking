@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserById } from "../actions/auth";
-import { fetchUser } from "../Redux/reducers/users";
+import {  useSelector } from "react-redux";
 import axios from "axios";
-import { message } from "antd";
-import { getChats } from "../actions/chat";
-import toast from "react-hot-toast";
 import { getSender } from "../components/shared/Utils";
 
 const ConversationComponent = ({
-  chatMember,
-  currentChat,
   userChat,
-  conversations,
-  currentUser,
-  messages,
+
 }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;
-  const token = auth === undefined ? null : auth?.token;
+  // const token = auth === undefined ? null : auth?.token;
   const source = axios.CancelToken.source();
   const [sender, setSender] = useState(null);
 
@@ -29,8 +20,6 @@ const ConversationComponent = ({
       source.cancel();
     };
   }, [user]);
-
-console.log(sender)
 
   //fetch all cchats by user
   return (

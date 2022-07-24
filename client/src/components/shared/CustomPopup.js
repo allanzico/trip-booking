@@ -1,8 +1,8 @@
 import React from 'react'
 import { Popover, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+
 import { Fragment } from 'react'
-import { DotsVerticalIcon, PencilIcon } from '@heroicons/react/outline'
+import { DotsVerticalIcon,  } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 
 const CustomPopup = ({items}) => {

@@ -5,10 +5,7 @@ import { DocumentDownloadIcon } from "@heroicons/react/outline";
 import * as htmlToImage from 'html-to-image';
 
 const TicketComponent = ({ booking, ticket }) => {
-  const handleDownload = (e, ticketId) => {
-    e.preventDefault();
-    console.log("downloading ticket", ticketId);
-  };
+
   const domElement = useRef(null);
  
   const downloadImage = async () => {

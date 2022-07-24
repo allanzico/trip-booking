@@ -15,6 +15,7 @@ const MessagesComponent = ({
           <div className="flex justify-start">
            <div className="w-14 mr-5">
               <img
+              alt="avatar"
                 className="rounded-full w-full mr-2"
                 src="https://i.pravatar.cc/300?img=3"
               />

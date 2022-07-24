@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import {
   ChevronDownIcon,
   ClipboardListIcon,
   DocumentIcon,
-  XIcon,
 } from "@heroicons/react/outline";
 import moment from "moment";
 import IteneraryCheckList from "./checklists/IteneraryCheckList";

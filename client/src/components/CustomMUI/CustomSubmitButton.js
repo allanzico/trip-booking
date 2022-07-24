@@ -1,8 +1,8 @@
 import React from 'react'
-import { useField, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 import { Button } from '@mui/material';
 
-const CustomSubmitButton = ({children, ...otherprops}) => {
+const CustomSubmitButton = ({children}) => {
     const { submitForm } = useFormikContext();
     const handleSubmit = () => {
         submitForm()

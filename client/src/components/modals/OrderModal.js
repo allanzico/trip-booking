@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal } from "antd";
-import { currencyFormatter } from "../../actions/stripe";
 
 const OrderModal = ({ session, orderedBy, showModal, setShowModal }) => {
   return (

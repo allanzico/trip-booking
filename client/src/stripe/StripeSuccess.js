@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { stripeSuccessRequest } from '../actions/stripe'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -17,7 +17,7 @@ const StripeSuccess = ({match, history}) => {
       }
       
     })
-  }, [match.params.expId])
+  }, [history, match.params.expId, token])
   return (
     <div className="container">
     <div className="d-flex justify-content-center p-5">

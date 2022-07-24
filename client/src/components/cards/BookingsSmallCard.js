@@ -2,7 +2,7 @@ import React from 'react'
 import ImageComponent from '../shared/ImageComponent'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
-const BookingsSmallCard = ({experience, session}) => {
+const BookingsSmallCard = ({experience}) => {
     const img = experience.image && experience.image.contentType ? `${process.env.REACT_APP_API}/experience/image/${experience._id}` : "https://via.placeholder.com/900x500.png?text=PREVIEW"
   const history = useHistory()
     return (

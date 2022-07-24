@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
+import { useAsyncDebounce } from "react-table";
 
 const GlobalFilter = ({
   preGlobalFilteredRows,

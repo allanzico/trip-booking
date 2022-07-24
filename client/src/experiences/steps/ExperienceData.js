@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import React from "react";
+import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../components/CustomMUI/CustomTextField";
 import CustomDatePicker from "../../components/CustomMUI/CustomDatePicker";
 import GooglePlacesSearch from "../../components/GooglePlacesSearch";
 import MultipleFIleUploadField from "../upload/MultipleFIleUploadField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import TextField from "@mui/material/TextField";
-import FilePreview from "../upload/FilePreview";
-import { PlusIcon, XIcon } from "@heroicons/react/outline";
+
+import { XIcon } from "@heroicons/react/outline";
 
 const ExperienceData = (props) => {
   const { address, handleSelect, setAddress } = props;

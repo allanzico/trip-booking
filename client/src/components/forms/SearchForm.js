@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import { DatePicker, Select } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { Wrapper } from "@googlemaps/react-wrapper";
-import PlacesAutocomplete from "react-places-autocomplete";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import { useHistory } from "react-router-dom";
 import GooglePlacesSearch from "../GooglePlacesSearch";
 import moment from "moment";
 const SearchForm = () => {
   const history = useHistory();
-  const { RangePicker } = DatePicker;
-  const { option } = Select;
   const [address, setAddress] = useState("");
   const [date, setDate] = useState("");
   const [coordinates, setCoordinates] = useState({
@@ -48,6 +43,7 @@ const SearchForm = () => {
           setAddress={setAddress}
           handleSelect={handleSelect}
           customStyle={customStyle}
+          location={location}
         />
       </div>
       <div className="col-span-9 md:col-span-3 ">

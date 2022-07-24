@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   useTable,
   useGlobalFilter,
-  useAsyncDebounce,
+
   useFilters,
   useSortBy,
   usePagination,
-  loopHooks,
+
 } from "react-table";
 import GlobalFilter from "./GlobalFilter";
 import {
@@ -25,7 +25,7 @@ const SellerTable = ({
   data,
   handleExperienceEdit = (func) => func,
 }) => {
-  const [showModal, setShowModal] = useState(false);
+
 
   const tableHooks = (hooks) => {
     hooks.visibleColumns.push((columns) => [

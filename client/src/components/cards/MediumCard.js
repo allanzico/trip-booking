@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ImageComponent from "../shared/ImageComponent";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const MediumCard = ({ exp, img }) => {
@@ -9,9 +9,9 @@ const MediumCard = ({ exp, img }) => {
   const user = auth === undefined ? null : auth?.user;
   const history = useHistory();
   const source = axios.CancelToken.source();
-  const [favorites, setFavorites] = useState([]);
+
   const [isOwner, setIsOwner] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
+
 
   useEffect(() => {
     if (auth == null) return;

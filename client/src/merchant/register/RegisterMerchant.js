@@ -11,7 +11,7 @@ import AlreadyRegistered from "../AlreadyRegistered";
 const RegisterMerchant = ({ history }) => {
   const source = axios.CancelToken.source();
   const { auth } = useSelector((state) => ({ ...state }));
-  const { token, user } = auth;
+  const { token} = auth;
   const [data, setData] = useState({
     email: "",
     termsOfService: false
@@ -85,6 +85,8 @@ const RegisterMerchant = ({ history }) => {
       address={address}
       setAddress={setAddress}
       handleSelect={handleSelect}
+      error={error}
+      location={location}
     />,
     <Complete />,
   ];

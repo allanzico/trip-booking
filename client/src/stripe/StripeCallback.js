@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAccountStatus } from '../actions/stripe'
 import { updateLocalStorage } from '../actions/auth'
 
-const StripeCallback = ({history}) => {
+const StripeCallback = () => {
 const {auth} = useSelector((state) => ({...state}))
 const dispatch = useDispatch();
 
 useEffect(() => {
 if (auth && auth.token) accountStatus();
-},[auth]);
+});
 
 const accountStatus = async () => {
     try {

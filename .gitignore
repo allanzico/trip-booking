@@ -7,6 +7,7 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
+build/
 node_modules/
 /socket/production.env
 /server/production.env

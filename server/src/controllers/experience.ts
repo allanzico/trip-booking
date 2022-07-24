@@ -28,7 +28,7 @@ export class ExperienceSetup {
     }
   }
 
-  async getExperiences(req: any, res: any) {
+  async getExperiences(res: any) {
     try {
       let experiences = await Experience.find({})
         .select({})
@@ -210,14 +210,14 @@ export class ExperienceSetup {
     }
   }
 
-  async getCloudinarySignature (req: any, res: any) {
+  async getCloudinarySignature (res: any) {
     const timestamp = Math.round(new Date().getTime() / 1000);
 
     var signature = cloudinary.utils.api_sign_request(
       {
         timestamp: timestamp,
       },
-      process.env.CLOUDINARY_API_SECRET
+      process.env?.['CLOUDINARY_API_SECRET']
     );
   
     res.statusCode = 200;

@@ -82,18 +82,20 @@ UserType.pre("save", async function (next) {
 });
 
 //Login User
-UserType.methods.matchPasswords = async function (password: any) {
-  return await bcrypt.compare(password, this.password);
+//Login User
+UserType.methods["matchPasswords"] = async function (password: any) {
+  return await bcrypt.compare(password, this["password"]);
 };
 
 //User reset token
-UserType.methods.getResetPasswordToken = function () {
+//User reset token
+UserType.methods["getResetPasswordToken"] = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
-  this.resetPasswordToken = crypto
+  this["resetPasswordToken"] = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+  this["resetPasswordExpire"] = Date.now() + 10 * (60 * 1000);
   return resetToken;
 };
 

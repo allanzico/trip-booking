@@ -53,15 +53,15 @@ cron.schedule('0 0 0 * * *', async () => {
 app.use(errorHandler)
 
 //Database Connection
-const mongoUrl = process.env.MONGO_URI
+const mongoUrl  =  <string> process.env?.['MONGO_URI']
 mongoose.connect(<string>mongoUrl)
 .then(()=> console.log('connected to database'))
 .catch((error)=> console.log('database connection failed', error))
 
 //server connection
-const port = process.env.PORT || 5000
+const port  = <string> process.env?.['PORT'] || 5000
 const server = app.listen(port, () => console.log(`Server running on port ${port}`))
-process.on("unhandledRejection", (err, promise)=> {
+process.on("unhandledRejection", (err)=> {
     console.log(`Logged Error: ${err}`, )
     server.close(() => process.exit(1))
 })

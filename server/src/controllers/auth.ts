@@ -7,8 +7,8 @@ import UserInterests from "../models/UserInterests";
 export default class Authentication {
   //register users
   async registerUser(req: any, res: any, next: any): Promise<void> {
-    const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
-    const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+    const accountSid = <string>process.env?.['TWILIO_ACCOUNT_SID'];
+    const authToken = <string>process.env?.['TWILIO_AUTH_TOKEN'];
     const client = require("twilio")(accountSid, authToken);
     const twilioVerifyService = await client.verify.v2.services
       .create({ friendlyName: "Kusimbula" })
@@ -96,7 +96,7 @@ export default class Authentication {
   //Login users
   async loginUser(req: any, res: any, next: any) {
     const { email, password } = req.body;
-    const tokenSecret = process.env.JWT_SECRET;
+    const tokenSecret = process.env?.['JWT_SECRET'];
     // console.log(require('crypto').randomBytes(64).toString('hex'))
 
     if (!email || !password) {
@@ -108,8 +108,8 @@ export default class Authentication {
     try {
       let user = await User.findOne({ email }).select("+password");
 
-      const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
-      const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+      const accountSid = <string>process.env?.['TWILIO_ACCOUNT_SID'];
+      const authToken = <string>process.env?.['TWILIO_AUTH_TOKEN'];
       const client = require("twilio")(accountSid, authToken);
 
       if (!user)
@@ -195,7 +195,7 @@ export default class Authentication {
 
   async forgotPassword(req: any, res: any, next: any) {
     const { email } = req.body;
-    const passwordResetUrl = process.env.RESET_URL;
+    const passwordResetUrl = process.env?.['RESET_URL'];
     const emailSender = new EmailSender();
     try {
       const user = await User.findOne({ email });
@@ -283,11 +283,11 @@ export default class Authentication {
     const userId = req.user._id;
     const user = await User.findById(userId).select("-password");
     const phoneNumber = user.phone.number;
-    const tokenSecret = process.env.JWT_SECRET;
+    const tokenSecret = process.env?.['JWT_SECRET'];
     const service = user.verifyToken;
     try {
-      const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
-      const authToken = <string>process.env.TWILIO_AUTH_TOKEN;
+      const accountSid = <string>process.env?.['TWILIO_ACCOUNT_SID'];
+      const authToken = <string>process.env?.['TWILIO_AUTH_TOKEN'];
       const client = require("twilio")(accountSid, authToken);
 
       const verificationCheck = await client.verify.v2
@@ -345,7 +345,7 @@ export default class Authentication {
     }
   }
 
-  async getUserInterests(req: any, res: any) {
+  async getUserInterests(res: any) {
     try {
       let userInterests = await UserInterests.find({})
         .select("-image.data")

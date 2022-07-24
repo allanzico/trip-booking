@@ -1,15 +1,12 @@
 import {
   ArchiveIcon,
   CashIcon,
-  ChatIcon,
   CogIcon,
   CollectionIcon,
   HeartIcon,
-  HomeIcon,
-  PlusIcon,
+
   TicketIcon,
 } from "@heroicons/react/outline";
-import { UserGroupIcon } from "@heroicons/react/solid";
 
 import React from "react";
 import SideBarRow from "./SideBarRow";

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUserById } from "../actions/auth";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
@@ -9,14 +9,13 @@ import ConversationComponent from "./ConversationComponent";
 const UserHeader = ({ conversations, currentUser, currentChat }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
-  const [user, setUser] = useState(null);
+
   const source = axios.CancelToken.source();
-  const [currentReceiver, setCurrentReceiver] = useState(null);
 
   const getUser = async (userId) => {
     try {
-      let res = await getUserById(userId, token, source.token);
-      setUser(res.data);
+      await getUserById(userId, token, source.token);
+    
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +67,7 @@ const UserHeader = ({ conversations, currentUser, currentChat }) => {
           {conversations.map((conversation) => (
                       <div
                         key={conversation._id}
-                        onClick={() => setCurrentReceiver(conversation)}
+                        // onClick={() => setCurrentReceiver(conversation)}
                       >
                         <ConversationComponent
                           conversations={conversation}

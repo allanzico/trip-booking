@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import IteneraryForm from "./IteneraryForm";
+
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { getDatesInRange } from "../components/shared/Utils";
-import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/outline";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+// import { getDatesInRange } from "../components/shared/Utils";
+
 import ItenerarySections from "./ItenerarySections";
 import { createItenerary, getSingleExperience } from "../actions/experience";
 import toast from "react-hot-toast";
@@ -21,16 +18,16 @@ const CreateItenerary = ({ match }) => {
   const source = axios.CancelToken.source();
   const dispatch = useDispatch()
 
-  const formatStartDate = new Date(
-    moment(experience.startDate).format("YYYY-MM-DD")
-  );
-  const formatEndDate = new Date(
-    moment(experience.endDate).format("YYYY-MM-DD")
-  );
-  const dates = getDatesInRange(formatStartDate, formatEndDate);
+  // const formatStartDate = new Date(
+  //   moment(experience.startDate).format("YYYY-MM-DD")
+  // );
+  // const formatEndDate = new Date(
+  //   moment(experience.endDate).format("YYYY-MM-DD")
+  // );
+  // const dates = getDatesInRange(formatStartDate, formatEndDate);
 
-  console.log("EXP", experience.startDate)
-  console.log("DT", formatStartDate)
+  // console.log("EXP", experience.startDate)
+  // console.log("DT", formatStartDate)
   useEffect(() => {
     loadSingleExperience()
     // setsections(dates);

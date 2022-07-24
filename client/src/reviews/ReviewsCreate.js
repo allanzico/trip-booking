@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {  useState } from "react";
+import {  useSelector } from "react-redux";
 import { reviewExperience } from "../actions/experience";
 
 
 const ReviewsCreate = ({ expId }) => {
   const {
-    auth: { user, token },
+    auth: { token },
   } = useSelector((state) => ({ ...state }));
   const [values, setValues] = useState({
     rating: 0,

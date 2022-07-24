@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { currencyFormatter } from "../../actions/stripe";
 import { diffDays } from "../../actions/experience";
-import { Link, useHistory } from "react-router-dom";
-import { EditOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+
 import OrderModal from "../modals/OrderModal";
 
 const BookingCard = ({ experience, session, orderedBy }) => {
-  const history = useHistory();
+  
   const [showModal, setShowModal] = useState(false);
 
   return (

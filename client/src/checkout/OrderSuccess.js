@@ -1,4 +1,4 @@
-import {  ChevronDoubleRightIcon, DocumentTextIcon } from '@heroicons/react/outline';
+import {  ChevronDoubleRightIcon, } from '@heroicons/react/outline';
 import { CheckCircleIcon,  } from '@heroicons/react/solid';
 import React from 'react'
 import ImageComponent from '../components/shared/ImageComponent';

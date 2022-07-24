@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { createOrder } from "../actions/orders";
 const CheckoutComponent = ({ history }) => {
   const { auth } = useSelector((state) => ({ ...state }));
-  const { token, user } = auth;
+  const { token,} = auth;
   const experience = history.location.state.experience;
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form,} from "formik";
 import * as Yup from "yup";
 import CustomTextField from "../../../components/CustomMUI/CustomTextField";
-import RegisterSVG from "../../../images/RegisterSVG";
 import SignupSVG from "../../../images/SignupSVG";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";

@@ -1,13 +1,13 @@
 import { TextField } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
-import React, { useState } from "react";
+import { styled } from "@mui/material/styles";
+import React from "react";
 import { useField } from "formik";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const CustomDatePicker = ({ name, label, onChange, value, ...otherProps }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+
   const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
       color: "#F97316",

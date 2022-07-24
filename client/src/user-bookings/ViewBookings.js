@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { getSingleBooking } from '../actions/experience';
 import { fetchSingleBooking } from '../Redux/reducers/experiences';
-import { createConversation, getConversations } from '../actions/conversations';
-import { currentChatSet, fetchChats } from '../Redux/reducers/messaging';
+import { currentChatSet,  } from '../Redux/reducers/messaging';
 import SingleBooking from './SingleBooking';
 import { createChat } from '../actions/chat';
-import { useHistory } from 'react-router-dom';
+
 
 const ViewBookings = ({match}) => {
   const { auth } = useSelector((state) => ({ ...state }));
-  const { token, user } = auth;
+  const { token} = auth;
   const singleBooking = useSelector((state) => state.experiences.singleBooking);
   const dispatch = useDispatch();
   const source = axios.CancelToken.source();
@@ -20,7 +19,7 @@ const ViewBookings = ({match}) => {
     return () => {
       source.cancel();
     };
-  }, []);
+  });
 
   const loadSingleBooking = async () => {
     try {

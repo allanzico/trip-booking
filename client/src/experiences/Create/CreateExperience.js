@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
 import { addExperience} from "../../actions/experience";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import ExperienceData from "../steps/ExperienceData";
 import TicketData from "../steps/TicketData";
 import { getDatesInRange } from "../../components/shared/Utils";
-import { experienceCreate } from "../../Redux/reducers/experiences";
-import moment from "moment";
 
 
 const CreateExperience = () => {
@@ -40,18 +38,8 @@ const CreateExperience = () => {
     place: "",
   });
 
-  const [preview, setPreview] = useState(
-    "https://via.placeholder.com/300x150.png?text=PREVIEW"
-  );
 
   const [currentStep, setCurrentStep] = useState(0);
-
-  const dispatch = useDispatch();
-
-  const handleImageChange = (evt) => {
-    setPreview(URL.createObjectURL(evt.target.files[0]));
-    setData({ ...data, image: evt.target.files[0] });
-  };
 
 
   //select place
@@ -75,7 +63,7 @@ const CreateExperience = () => {
         data: new Map(),
       };
     })
-    console.log("Dates", mergeData.itenerary);
+
     mergeData.startDate = formatStartDate.toLocaleString()
     mergeData.endDate = formatEndDate.toLocaleString()
     const refreshToast = toast.loading("Adding...");
@@ -119,7 +107,7 @@ const CreateExperience = () => {
       address={address}
       setAddress={setAddress}
       handleSelect={handleSelect}
-      handleImageChange={handleImageChange}
+      location={location}
     />,
     <TicketData setData={setData} next={handleNextStep} prev={handlePrevStep} data={data} />,
   ];

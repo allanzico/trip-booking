@@ -1,9 +1,9 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { Fragment} from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Avatar from "@mui/material/Avatar";
+
 import BackgroundLetterAvatars from "../shared/ProfileAvatar";
 import { logoutUser } from "../../actions/auth";
 import NotificationsComponent from "./NotificationsComponent";
@@ -12,7 +12,7 @@ const ResponsiveNav = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+
   const userName = auth?.user?.firstName + " " + auth?.user?.lastName;
   const user = {
     name: userName,

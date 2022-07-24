@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { createStripeAccount } from "../../actions/stripe";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {GrStripe} from 'react-icons/gr'
 
 const PaymentComponent = () => {
   const { auth } = useSelector((state) => ({ ...state }));

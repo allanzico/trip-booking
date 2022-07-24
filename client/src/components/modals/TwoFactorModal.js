@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
-import PhoneInput, {getCountryCallingCode,getCountries,  formatPhoneNumberIntl, isPossiblePhoneNumber, parsePhoneNumber } from 'react-phone-number-input'
+import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 import { useDispatch } from "react-redux";
 import { enableTwofactorAuth } from "../../actions/auth";
 const TwoFactorModal = ({ auth, showModal, setShowModal }) => {
     const {user, token} = auth
     const [phoneNumber, setPhoneNumber] = useState("")
-    const [localNumber, setLocalNumber]= useState("")
-    const [countryCode, setCountryCode]= useState("")
-    const dispatch = useDispatch()
 
   const handleEnableTwofactorAuth = async () => {
     const internationalNumber = parsePhoneNumber(phoneNumber)

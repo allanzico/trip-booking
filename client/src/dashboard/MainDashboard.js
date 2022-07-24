@@ -1,6 +1,5 @@
 import React from 'react'
-import { HashRouter, Switch } from 'react-router-dom'
-import MainFooter from '../components/footers/MainFooter'
+import { HashRouter, } from 'react-router-dom'
 import SideBar from '../components/navigation/SideBar/SideBar'
 import  MiddleContent  from './MiddleContent'
 import Widgets from './Widgets'

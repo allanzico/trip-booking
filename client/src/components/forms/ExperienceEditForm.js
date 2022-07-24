@@ -12,9 +12,9 @@ const ExperienceEditForm = (props) => {
     handleChange,
     handleImageChange,
     handleSelect,
-    handleSubmit,
+
   } = props;
-  const { title, description, image, price, startDate, endDate, available } =
+  const { title, description, price, startDate, endDate, available } =
     values;
     const customStyle = {
       styles:

@@ -1,22 +1,18 @@
 import React, { useState } from "react";
 import {
   ChatAlt2Icon,
-  ChatAltIcon,
   ChevronRightIcon,
   ClipboardListIcon,
-  DocumentIcon,
-  FilterIcon,
   TicketIcon,
 } from "@heroicons/react/outline";
 import moment from "moment";
 import { diffDays } from "../actions/experience";
 import TicketModal from "./tickets/TicketModal";
-import {Link, useHistory } from "react-router-dom";
+import {useHistory } from "react-router-dom";
 import ReviewsCreate from "../reviews/ReviewsCreate";
 import { useSelector } from "react-redux";
 
 const SingleBooking = ({ handleCreateChat, booking }) => {
-  const [showModal, setShowModal] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
   const { auth } = useSelector((state) => ({ ...state }));
   const user = auth === undefined ? null : auth?.user;

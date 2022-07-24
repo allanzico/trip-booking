@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, TextField } from "@mui/material";
-import * as Yup from "yup";
 import PersonalInfo from "./steps/PersonalInfo";
 import UserInterests from "./steps/UserInterests";
-import SignupSVG from "../../images/SignupSVG";
+
 import { register } from "../../actions/auth";
 import { parsePhoneNumber } from "react-phone-number-input";
 
@@ -41,7 +38,7 @@ const Register = ({ history }) => {
         history.push("/login");
       } catch (error) {
         console.log(error)
-        setError(error.response.data.error);
+        
       }
   };
 
@@ -61,7 +58,7 @@ const Register = ({ history }) => {
   };
 
   const steps = [
-    <PersonalInfo next={handleNextStep} data={data} />,
+    <PersonalInfo next={handleNextStep} data={data} error={error} />,
     <UserInterests next={handleNextStep} prev={handlePrevStep} data={data} />,
   ];
 

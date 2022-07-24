@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import PageTitle from "../../components/Typography/PageTitle";
-import { getLatLng, geocodeByAddress } from "react-places-autocomplete";
-import {
-  createExperience,
-  getSingleExperience,
-  updateExperience,
-} from "../../actions/experience";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ProfileEditForm from "./ProfileEditForm";
 import { editProfile } from "../../actions/auth";
 import axios from "axios";
-import { updateUser, userUpdateLoading } from "../../Redux/reducers/auth";
-import TwoFactorModal from "../../components/modals/TwoFactorModal";
 import { parsePhoneNumber } from "react-phone-number-input";
-
 
 const EditProfile = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -26,14 +16,7 @@ const EditProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState("");
-  const [image, setImage] = useState([]);
-  const [preview, setPreview] = useState(
-    "https://via.placeholder.com/300x150.png?text=PREVIEW"
-  );
-  const [showModal, setShowModal] = useState(false);
-
-  const dispatch = useDispatch();
-
+ 
   useEffect(() => {
     setEmail(user.email);
     setFirstName(user.firstName);
@@ -42,7 +25,7 @@ const EditProfile = () => {
     return () => {
       source.cancel();
     };
-  }, []);
+  }, [user.email, user.firstName, user.lastName, user.phone.number, source]);
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -81,11 +64,7 @@ const EditProfile = () => {
     }
   };
 
-  const handleImageChange = (evt) => {
-    setPreview(URL.createObjectURL(evt.target.files[0]));
-    setImage(evt.target.files[0]);
-  };
-
+  
   //Two factor authentication
 
   return (

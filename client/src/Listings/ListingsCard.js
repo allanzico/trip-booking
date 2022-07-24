@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import moment from "moment";
 import {
-  ChevronDownIcon,
   ClipboardCheckIcon,
   
   PencilIcon,

@@ -4,14 +4,13 @@ import moment from "moment";
 import {
   getAccountBalance,
   currencyFormatter,
-  payoutSetting,
 } from "../../actions/stripe";
 import { GiCash } from "react-icons/gi";
 const ConnectNav = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const { user, token } = auth;
   const [balance, setBalance] = useState(0);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getAccountBalance(token).then((res) => {
@@ -19,17 +18,17 @@ const ConnectNav = () => {
     });
   }, []);
 
-  const handlePayoutSettings = async () => {
-    setLoading(true);
-    try {
-      const res = await payoutSetting(token);
-      window.location.href = res.data.url;
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  // const handlePayoutSettings = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await payoutSetting(token);
+  //     window.location.href = res.data.url;
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
       <card class="w-full flex flex-col md:mr-2 lg:mr-2">

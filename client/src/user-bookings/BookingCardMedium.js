@@ -5,7 +5,6 @@ import moment from "moment";
 
 const BookingCardMedium = ({ experience, bookingId }) => {
   const history = useHistory();
-
   const img =
     experience?.files.length > 0
       ? `${experience?.files[0]?.url}`

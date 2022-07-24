@@ -2,7 +2,7 @@ export {};
 
 const ErrorResponse = require("../lib/errorResponse");
 
-const errorHandler = (err: any, req: any, res: any, next: any) => {
+const errorHandler = (err: any,  res: any,) => {
   let error = { ...err };
   error.message = err.message;
 

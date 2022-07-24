@@ -35,15 +35,5 @@ io.on("connection", (socket: any) => {
             if(member._id == newMessageReceived.sender._id) return
             socket.in(member._id).emit("message received", newMessageReceived)
         });
-            
-        
       })
-
-
-      //disconnect
-    //   socket.on("disconnect", () => {
-    //     console.log ("user disconnected")
-    //     removeUser(socket.id)
-    //     io.emit("getUsers", users)
-    // })
 })

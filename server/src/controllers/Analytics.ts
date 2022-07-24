@@ -2,8 +2,8 @@ import Analytics  from 'analytics-node'
 
 
 export class AnalyticsClass {
-  async getAnalytics(req: any, res: any) {
-    var analyticsKey = <string> process.env.TWILIO_ANALYTICS_KEY;
+  async getAnalytics() {
+    var analyticsKey = <string> process.env?.['TWILIO_ANALYTICS_KEY'];
     var analytics = new Analytics(analyticsKey);
 
    return analytics.identify({

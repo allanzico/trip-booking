@@ -3,7 +3,7 @@ import Experience from "../models/Experience";
 import User from "../models/User";
 import rateLimit from 'express-rate-limit'
 
-const tokenSecret = process.env.JWT_SECRET;
+const tokenSecret = process.env?.['JWT_SECRET'];
 export const requireSignIn = expressJwt({ secret: <string>tokenSecret, algorithms: ["HS256"] })
 
 export const expOwner = async (req:any, res: any, next: any) => {

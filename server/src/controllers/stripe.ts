@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import queryString from "query-string";
 import Experience from "../models/Experience";
 import Order from "../models/Order";
-const stripe = new Stripe(<string>process.env.STRIPE_SECRET, {
+const stripe = new Stripe(<string>process.env?.['STRIPE_SECRET'], {
   apiVersion: "2020-08-27",
 });
 
@@ -12,8 +12,8 @@ export class StripeSetup {
 
   async createStripeAccount(req: any, res: any) {
     const user = await User.findById(req.user._id).exec();
-    const stripeRedirectUrl = process.env.STRIPE_REDIRECT_URL;
-    const stripe = new Stripe(<string>process.env.STRIPE_SECRET, {
+    const stripeRedirectUrl = process.env?.['STRIPE_REDIRECT_URL'];
+    const stripe = new Stripe(<string>process.env?.['STRIPE_SECRET'], {
       apiVersion: "2020-08-27",
     });
     try {
@@ -96,7 +96,7 @@ export class StripeSetup {
 
   async payoutSetting(req: any, res: any) {
     try {
-      const stripeSettingRedirectUrl = process.env.STRIPE_SETTING_REDIRECT_URL;
+      const stripeSettingRedirectUrl = process.env?.['STRIPE_SETTING_REDIRECT_URL'];
       const user = await User.findById(req.user._id).exec();
       const loginLink = await stripe.accounts.createLoginLink(
         user.stripe_seller.id,
@@ -111,8 +111,8 @@ export class StripeSetup {
   }
 
   async stripeSessionId(req: any, res: any) {
-    const stripeSuccessUrl = process.env.STRIPE_SUCCESS_URL;
-    const stripeCancelUrl = process.env.STRIPE_CANCEL_URL;
+    const stripeSuccessUrl = process.env?.['STRIPE_SUCCESS_URL'];
+    const stripeCancelUrl = process.env?.['STRIPE_CANCEL_URL'];
 
     const { expId } = req.body;
     const item = await Experience.findById(expId).populate("postedBy").exec();
@@ -156,7 +156,7 @@ export class StripeSetup {
     const { expId } = req.body;
     const user = await User.findById(req.user._id).exec();
     
-    const stripe = new Stripe(<string>process.env.STRIPE_SECRET, {
+    const stripe = new Stripe(<string>process.env?.['STRIPE_SECRET'], {
       apiVersion: "2020-08-27",
     });
     try {

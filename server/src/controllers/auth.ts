@@ -280,11 +280,11 @@ export default class Authentication {
 
   async verifyTwofactorAuth(req: any, res: any) {
     const { code } = req.body;
-    const userId = req.user._id;
+    const userId = req.user?._id;
     const user = await User.findById(userId).select("-password");
-    const phoneNumber = user.phone.number;
+    const phoneNumber = user.phone?.number;
     const tokenSecret = process.env?.['JWT_SECRET'];
-    const service = user.verifyToken;
+    const service = user?.verifyToken;
     try {
       const accountSid = <string>process.env?.['TWILIO_ACCOUNT_SID'];
       const authToken = <string>process.env?.['TWILIO_AUTH_TOKEN'];
@@ -310,18 +310,18 @@ export default class Authentication {
           token,
           user: {
             _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-            userInterest: user.userInterests,
-            verificationStatus: user.verificationStatus,
-            stripe_account_id: user.stripe_account_id,
-            stripe_seller: user.stripe_seller,
-            stripeSession: user.stripeSession,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: user?.email,
+            phone: user?.phone,
+            role: user?.role,
+            userInterest: user?.userInterests,
+            verificationStatus: user?.verificationStatus,
+            stripe_account_id: user?.stripe_account_id,
+            stripe_seller: user?.stripe_seller,
+            stripeSession: user?.stripeSession,
+            createdAt: user?.createdAt,
+            updatedAt: user?.updatedAt,
           },
         });
       } else {

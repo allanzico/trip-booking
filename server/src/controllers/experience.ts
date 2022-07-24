@@ -28,7 +28,7 @@ export class ExperienceSetup {
     }
   }
 
-  async getExperiences(res: any) {
+  async getExperiences( _req: any, res: any) {
     try {
       let experiences = await Experience.find({})
         .select({})
@@ -39,7 +39,6 @@ export class ExperienceSetup {
       console.log(error);
     }
   }
-
 
   async getImages(req: any, res: any) {
     try {

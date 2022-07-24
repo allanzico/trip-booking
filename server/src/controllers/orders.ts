@@ -24,11 +24,11 @@ export class OrderClass {
       // })
 
     const user = await User.findById(req.user._id).exec();
-    const email = user.email;
+    const email = user?.email;
     const emailSender = new EmailSender();
     const message = `
         <h1> Thank you for your order </h1>
-        <p> ${exp.postedBy.firstName} can't wait to see You there! </p>
+        <p> ${exp?.postedBy?.firstName || undefined} can't wait to see You there! </p>
         `;
 
     try {
@@ -116,11 +116,11 @@ export class OrderClass {
     //check if ID exists in orders array
     let ids = [];
     for (let i = 0; i < userOrders.length; i++) {
-      ids.push(userOrders[i].experience.toString());
+      ids?.push(userOrders[i]?.experience?.toString());
     }
 
     res.json({
-      ok: ids.includes(expId),
+      ok: ids?.includes(expId),
     });
   }
 }

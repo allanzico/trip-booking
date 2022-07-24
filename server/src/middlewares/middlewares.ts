@@ -8,7 +8,7 @@ export const requireSignIn = expressJwt({ secret: <string>tokenSecret, algorithm
 
 export const expOwner = async (req:any, res: any, next: any) => {
     let experience = await Experience.findById(req.params.expId).exec()
-    let owner = experience.postedBy._id == req.user._id;
+    let owner = experience?.postedBy?._id == req?.user?._id;
     if (!owner) {
         return res.status(403).send("Unauthorized")
     }
@@ -17,7 +17,7 @@ export const expOwner = async (req:any, res: any, next: any) => {
 
 export const authSeller = async (req: any, res: any, next: any) => {
     let user = await User.findById(req.user._id).exec()
-    const userRole = user.role
+    const userRole = user?.role
     if (userRole === "seller") {
         next()
     }else {

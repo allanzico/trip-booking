@@ -11,14 +11,14 @@ export class StripeSetup {
   //  testVariable: string = "TEST"
 
   async createStripeAccount(req: any, res: any) {
-    const user = await User.findById(req.user._id).exec();
+    const user = await User.findById(req.user?._id).exec();
     const stripeRedirectUrl = process.env?.['STRIPE_REDIRECT_URL'];
     const stripe = new Stripe(<string>process.env?.['STRIPE_SECRET'], {
       apiVersion: "2020-08-27",
     });
     try {
       if (!user.stripe_account_id) {
-        const account = await stripe.accounts.create({
+        const account = await stripe?.accounts.create({
           type: "express",
           country: "NL",
           capabilities: {
@@ -31,7 +31,7 @@ export class StripeSetup {
       }
 
       let accountLink = await stripe.accountLinks.create({
-        account: user.stripe_account_id,
+        account: user?.stripe_account_id,
         refresh_url: <string>stripeRedirectUrl,
         return_url: <string>stripeRedirectUrl,
         type: "account_onboarding",
@@ -39,9 +39,9 @@ export class StripeSetup {
 
       //prefil user info
       accountLink = Object.assign(accountLink, {
-        "stripe_user[email]": user.email || undefined,
+        "stripe_user[email]": user?.email || undefined,
       });
-      let link = `${accountLink.url}?${queryString.stringify(accountLink)}`;
+      let link = `${accountLink?.url}?${queryString.stringify(accountLink)}`;
       res.send(link);
     } catch (error) {
       console.log(error);
@@ -50,10 +50,10 @@ export class StripeSetup {
 
   async getAccountStatus(req: any, res: any) {
     const user = await User.findById(req.user._id).exec();
-    const account = await stripe.accounts.retrieve(user.stripe_account_id);
+    const account = await stripe?.accounts.retrieve(user?.stripe_account_id);
     // const updatedAccount = await this.updateDelayDays(account.id);
     const updatedUser = await User.findByIdAndUpdate(
-      user._id,
+      user?._id,
       {
         stripe_seller: account,
       },
@@ -82,10 +82,10 @@ export class StripeSetup {
 
   async getAccountBalance(req: any, res: any) {
 
-    const user = await User.findById(req.user._id).exec();
+    const user = await User.findById(req.user?._id).exec();
     try {
       const balance = await stripe.balance.retrieve({
-        stripeAccount: user.stripe_account_id,
+        stripeAccount: user?.stripe_account_id,
       });
       // console.log(this.testVariable)
       res.json(balance);

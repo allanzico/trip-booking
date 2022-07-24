@@ -75,12 +75,6 @@ router.get(
 );
 
 router.get(
-  "/experience/image/:experienceId",
-  apiLimiter,
-  experience.getImages
-);
-
-router.get(
   "/seller-experiences",
   requireSignIn,
   authSeller,

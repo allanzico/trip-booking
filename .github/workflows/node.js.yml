@@ -30,9 +30,6 @@ jobs:
       - name: Build server
         working-directory: ./server
         run: npm run build
-      
-      - name: Start pm2
-        run: pm2 start 0
     
   client:
 

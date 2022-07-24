@@ -43,10 +43,10 @@
     "ts-node-dev": "^1.1.8"
   },
   "scripts": {
-    "start": "nodemon build/app.js",
+    "start": "nodemon lib/app.js",
     "build": "tsc",
     "build:watch": "tsc -w",
-    "dev": "npm run build && nodemon build/app.js"
+    "dev": "npm run build && nodemon lib/app.js"
   },
   "author": "",
   "license": "ISC"

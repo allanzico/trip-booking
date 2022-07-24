@@ -77,8 +77,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "craco --max_old_space_size=8192 start",
+    "build": "craco --max_old_space_size=8192 build",
     "eject": "craco eject"
   },
   "eslintConfig": {

@@ -47,7 +47,7 @@ jobs:
         
       - name: Install dependencies
         working-directory: ./client
-        run: npm i
+        run: npm install --force
       
       - name: Build client
         working-directory: ./client

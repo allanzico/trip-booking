@@ -1,3 +1,6 @@
+
+// @ts-nocheck
+
 import Company from "../models/Company";
 
 export class CompanyClass {

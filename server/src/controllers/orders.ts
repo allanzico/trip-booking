@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import EmailSender from "../lib/sendEmail";
 import Experience from "../models/Experience";
 import Order from "../models/Order";

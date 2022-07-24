@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import User from "../models/User";
 import Stripe from "stripe";
 import queryString from "query-string";
@@ -8,8 +10,6 @@ const stripe = new Stripe(<string>process.env?.['STRIPE_SECRET'], {
 });
 
 export class StripeSetup {
-  //  testVariable: string = "TEST"
-
   async createStripeAccount(req: any, res: any) {
     const user = await User.findById(req.user?._id).exec();
     const stripeRedirectUrl = process.env?.['STRIPE_REDIRECT_URL'];

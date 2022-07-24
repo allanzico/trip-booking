@@ -51,7 +51,7 @@ jobs:
       
       - name: Build client
         working-directory: ./client
-        run: npm run dev
+        run: npm run build
 
   socket:
 

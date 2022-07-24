@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9f2f91ce.css",
+    "main.js": "/static/js/main.b4dcd089.js",
+    "static/js/27.1939f024.chunk.js": "/static/js/27.1939f024.chunk.js",
+    "static/js/mapbox-gl-csp-worker.05904e6a.worker.js": "/static/js/mapbox-gl-csp-worker.05904e6a.worker.js",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.9f2f91ce.css",
+    "static/js/main.b4dcd089.js"
+  ]
+}

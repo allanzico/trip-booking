@@ -41,7 +41,7 @@ function App() {
       <Toaster />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/experiences" component={Experiences} />
+       {/* <Route exact path="/experiences" component={Experiences} /> */}
         <Route exact path="/login" component={Login} />
         <Route exact path="/verify" component={TwoFactorAuth} />
         <Route exact path="/register" component={Register} />

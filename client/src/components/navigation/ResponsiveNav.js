@@ -24,12 +24,12 @@ const ResponsiveNav = () => {
     ...(auth && auth.user.verificationStatus === "approved"
       ? [
           { name: "Home", to: "/", current: false },
-          { name: "Experiences", to: "/experiences", current: false },
+          // { name: "Experiences", to: "/experiences", current: false },
           { name: "Dashboard", to: "/dashboard", current: false },
         ]
       : [
           { name: "Home", to: "/", current: false },
-          { name: "Experiences", to: "/experiences", current: false },
+          // { name: "Experiences", to: "/experiences", current: false },
         ]),
   ];
 
@@ -110,7 +110,7 @@ const ResponsiveNav = () => {
                             <Link key={item.name} to={item.to}>
                               <button
                                 type="button"
-                                class="text-white bg-orange-500 font-medium rounded-sm text-sm px-3 py-2.5 text-center mr-1"
+                                class="text-white bg-orange-500 font-medium rounded-sm text-sm px-3 py-1 text-center mr-1"
                               >
                                 {item.name}
                               </button>
@@ -125,8 +125,8 @@ const ResponsiveNav = () => {
                               text-white
                               bg-orange-500
                               rounded-sm
-                              px-2
-                              py-2
+                              px-3 
+                              py-1
                               transition
                               hover:bg-orange-700
                               mr-5

@@ -1,7 +1,10 @@
+// @ts-nocheck
+
 import Chat from "../models/UserChat";
 import User from "../models/User";
 
 export class ChatClass {
+
   async accessChat(req: any, res: any) {
     const { userId } = req.body;
 

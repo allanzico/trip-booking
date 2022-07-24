@@ -1,5 +1,4 @@
 import Experience from "../models/Experience";
-import fs from "fs";
 const cloudinary = require("cloudinary").v2;
 export class ExperienceSetup {
   async createExperience(req: any, res: any) {
@@ -7,12 +6,6 @@ export class ExperienceSetup {
     try {
       let experience = await new Experience(data);
       experience.postedBy = req.user._id;
-
-      //read Image data
-      if (data.image) {
-        experience.image.data = fs.readFileSync(data.image.path);
-        experience.image.contentType = data.image.type;
-      }
       experience.save((error: any, result: any) => {
         if (error) {
           console.log(error);
@@ -35,21 +28,6 @@ export class ExperienceSetup {
         .populate("postedBy", "_id firstName lastName")
         .exec();
       res.json(experiences);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getImages(req: any, res: any) {
-    try {
-      let experience = await Experience.findById(
-        req.params.experienceId
-      ).exec();
-      if (experience && experience.image && experience.image.data !== null) {
-        res.set("Content-Type", experience.image.contentType);
-
-        return res.send(experience.image.data);
-      }
     } catch (error) {
       console.log(error);
     }

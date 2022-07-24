@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import UserInterests from "./UserInterests";
 
 const { Schema } = mongoose;
 

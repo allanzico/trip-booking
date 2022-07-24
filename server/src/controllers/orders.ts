@@ -6,7 +6,6 @@ import User from "../models/User";
 export class OrderClass {
   async createOrder(req: any, res: any, next: any) {
     const { experience, cart } = req.body;
-    const expId = experience._id;
     const totalSold = cart.reduce(
       (acc: any, curr: any) => acc + curr.quantity,
       0

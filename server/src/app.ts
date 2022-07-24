@@ -54,7 +54,6 @@ app.use(errorHandler)
 
 //Database Connection
 const mongoUrl = process.env.MONGO_URI
-const databaseName = process.env.DB_NAME
 mongoose.connect(<string>mongoUrl)
 .then(()=> console.log('connected to database'))
 .catch((error)=> console.log('database connection failed', error))

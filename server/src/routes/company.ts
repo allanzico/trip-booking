@@ -1,6 +1,6 @@
 
 import express from "express";
-import {  apiLimiter, authSeller, expOwner, requireSignIn } from "../middlewares/middlewares";
+import {  apiLimiter, requireSignIn } from "../middlewares/middlewares";
 import { CompanyClass } from "../controllers/company";
 
 const company = new CompanyClass()

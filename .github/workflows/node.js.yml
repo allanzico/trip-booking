@@ -27,9 +27,9 @@ jobs:
         working-directory: ./server
         run: npm i
       
-      - name: Build server
-        working-directory: ./server
-        run: npm run build
+      # - name: Build server
+      #   working-directory: ./server
+      #   run: npm run build
     
   client:
 
@@ -71,6 +71,6 @@ jobs:
         working-directory: ./socket
         run: npm i
       
-      - name: Build socket
-        working-directory: ./socket
-        run: npm run build
+      # - name: Build socket
+      #   working-directory: ./socket
+      #   run: npm run build

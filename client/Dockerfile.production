@@ -13,7 +13,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1-alpine
+FROM nginx:1.24-alpine
 
 EXPOSE 80
 
